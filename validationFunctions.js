@@ -28,4 +28,23 @@ module.exports = class ValidationFunctions {
         const alphaNumericRegex = /^[a-zA-Z0-9]+$/;
         return alphaNumericRegex.test(str);
     }
+
+    static isZipCode(str) {
+        //regex patterns for different global postal code formats
+        const patterns = {
+            US: /^\d{5}(-\d{4})?$/,                     
+            UK: /^[A-Z]{1,2}\d[A-Z\d]? \d[A-Z]{2}$/i,  
+            Canada: /^[A-Z]\d[A-Z] \d[A-Z]\d$/i,      
+            Australia: /^\d{4}$/,                     
+            Germany: /^\d{5}$/,                      
+            France: /^\d{5}$/,                         
+            Japan: /^\d{3}-\d{4}$/,                   
+            Brazil: /^\d{5}-\d{3}$/,                   
+            India: /^[1-9]\d{5}$/                    
+        };
+
+        const cleanedStr = str.replace(/\s/g, '');
+
+        return Object.values(patterns).some(regex => regex.test(cleanedStr));
+    }
 }

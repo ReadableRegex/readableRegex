@@ -114,6 +114,17 @@ app.get('/api/isAlphaNumeric', (req, res) => {
   res.json({ result });
 });
 
+app.get('/api/isZipCode', (req, res) => {
+  const { inputString } = req.query;
+
+  if (!inputString) {
+    return res.status(400).json({ error: 'inputString is required.' });
+  }
+
+  const result = ValidationFunctions.isZipCode(inputString);
+  res.json({ result });
+});
+
 app.get('/', (req, res) => {
   res.render('index')
 })
