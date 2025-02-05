@@ -114,14 +114,14 @@ app.get('/api/isAlphaNumeric', (req, res) => {
   res.json({ result });
 });
 
-app.get('/api/isZipCode', (req, res) => {
-  const { inputString } = req.query;
+app.post('/api/isZipCode', (req, res) => {
+  const { inputString, countryCode } = req.body;
 
-  if (!inputString) {
-    return res.status(400).json({ error: 'inputString is required.' });
+  if (!inputString || !countryCode) {
+    return res.status(400).json({ error: 'inputString and countryCode are required.' });
   }
 
-  const result = ValidationFunctions.isZipCode(inputString);
+  const result = ValidationFunctions.isZipCode(inputString, countryCode);
   res.json({ result });
 });
 
