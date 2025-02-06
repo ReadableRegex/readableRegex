@@ -1,8 +1,9 @@
 Example call using Javascript
 <pre>
     <code>
+        const apiUrl = '#{apiUrl}'; // Access the API URL from the server-side
         try {
-            const response = await fetch("https://readable-regex-8d81b79167bf.herokuapp.com/api/onlyNumbers", {
+            const response = await fetch(`${apiUrl}/api/onlyNumbers`, {
                 method: 'POST',
                 body: JSON.stringify({
                     inputString: "1234abc"
@@ -42,7 +43,7 @@ Response:
 <pre>
             <code>
             {
-                result: string
+                result: string 
             }
         </code>
     </pre>
