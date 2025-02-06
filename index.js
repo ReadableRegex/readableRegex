@@ -4,63 +4,32 @@ const port = process.env.PORT || 3000;
 const cors = require('cors')
 const ValidationFunctions = require('./validationFunctions')
 
+const requiredParameterResponse = 'Input string required as a parameter.'
+
 app.use(cors())
-/**
- * Global request middlware
- * 
- * Handles decoding of input strings that are using encodeURIComponent on the client side
- * This way we can process special character decoding per request in one spot
- */
-app.use((req, res, next) => {
-  if (req.path.includes('/api')) {
-    if (req.query.inputString) {
-      const decodedInputString = getDecodedInputString(req.query.inputString)
-      if (decodedInputString === decodeErrorMessage) {
-        return getDecodedInputStringErrResponse()
-      }
-    }
-  }
-  next()
-})
+app.use(express.json())
+
 // Middleware to parse JSON request bodies
 app.use(express.json());
 app.set('view engine', 'pug')
 
-const decodeErrorMessage = 'Invalid input string. Could not decode URI component.'
-
-
-function getDecodedInputString(inputString) {
-
-  // Decode the URI component to handle special characters
-  try {
-    inputString = decodeURIComponent(inputString);
-  } catch (error) {
-    return decodeErrorMessage
-  }
-  return inputString
-}
-
-function getDecodedInputStringErrResponse() {
-  return res.status(400).json({ error: decodeErrorMessage })
-}
-
 // GET routes for isEmailAddress and isPhoneNumber
-app.get('/api/isEmailAddress', (req, res) => {
-  let inputString = req.query.inputString;
+app.post('/api/isEmailAddress', (req, res) => {
+  let inputString = req.body.inputString;
 
   if (!inputString) {
-    return res.status(400).json({ error: 'Input string is required as a query parameter.' });
+    return res.status(400).json({ error: requiredParameterResponse });
   }
 
   const result = ValidationFunctions.isEmailAddress(inputString);
   res.json({ result });
 });
 
-app.get('/api/isPhoneNumber', (req, res) => {
-  let inputString = req.query.inputString;
+app.post('/api/isPhoneNumber', (req, res) => {
+  let inputString = req.body.inputString;
 
   if (!inputString) {
-    return res.status(400).json({ error: 'Input string is required as a query parameter.' });
+    return res.status(400).json({ error: requiredParameterResponse });
   }
 
   const result = ValidationFunctions.isPhoneNumber(inputString);
@@ -69,11 +38,11 @@ app.get('/api/isPhoneNumber', (req, res) => {
 
 
 // GET route for onlySpecialCharacters
-app.get('/api/onlySpecialCharacters', (req, res) => {
-  let inputString = req.query.inputString;
+app.post('/api/onlySpecialCharacters', (req, res) => {
+  let inputString = req.body.inputString;
 
   if (!inputString) {
-    return res.status(400).json({ error: 'Input string is required as a query parameter.' });
+    return res.status(400).json({ error: requiredParameterResponse });
   }
 
   const result = ValidationFunctions.onlySpecialCharacters(inputString);
@@ -82,37 +51,38 @@ app.get('/api/onlySpecialCharacters', (req, res) => {
 
 // Example using query parameters (GET requests)
 
-app.get('/api/onlyNumbers', (req, res) => {
-  const inputString = req.query.inputString;
+app.post('/api/onlyNumbers', (req, res) => {
+  const inputString = req.body.inputString;
   if (!inputString) {
-    return res.status(400).json({ error: 'Input string is required as a query parameter.' });
+    return res.status(400).json({ error: requiredParameterResponse });
   }
 
   const result = ValidationFunctions.onlyNumbers(inputString);
   res.json({ result });
 });
 
-app.get('/api/onlyLetters', (req, res) => {
-  const inputString = req.query.inputString;
+app.post('/api/onlyLetters', (req, res) => {
+  const inputString = req.body.inputString;
 
   if (!inputString) {
-    return res.status(400).json({ error: 'Input string is required as a query parameter.' });
+    return res.status(400).json({ error: requiredParameterResponse });
   }
 
   const result = ValidationFunctions.onlyLetters(inputString);
   res.json({ result });
 });
 
-app.get('/api/isAlphaNumeric', (req, res) => {
-  const { inputString } = req.query;
+app.post('/api/isAlphaNumeric', (req, res) => {
+  const { inputString } = req.body;
 
   if (!inputString) {
-    return res.status(400).json({ error: 'inputString is required.' });
+    return res.status(400).json({ error: requiredParameterResponse });
   }
 
   const result = ValidationFunctions.isAlphaNumeric(inputString);
   res.json({ result });
 });
+
 
 app.post('/api/isZipCode', (req, res) => {
   const { inputString, countryCode } = req.body;
@@ -122,6 +92,19 @@ app.post('/api/isZipCode', (req, res) => {
   }
 
   const result = ValidationFunctions.isZipCode(inputString, countryCode);
+
+app.post('/api/isInteger', (req, res) => {
+  const { inputString } = req.body;
+  
+  if (!inputString) {
+      return res.status(400).json({ 
+          error: "inputString is required." 
+      });
+  }
+  
+  const result = ValidationFunctions.isInteger(inputString);
+  
+
   res.json({ result });
 });
 

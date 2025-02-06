@@ -8,7 +8,7 @@ Although the project has Regex in the name, it's not a requirement to use Regex 
 
 ## Summary
 
-The API offers two primary functions: removing non-numeric characters and removing non-letter characters from a given string. These functions are accessible via GET requests to dedicated endpoints. The API accepts a JSON payload containing the input string and returns a JSON response with the modified string.
+The API offers two primary functions: removing non-numeric characters and removing non-letter characters from a given string. These functions are accessible via POST requests to dedicated endpoints. The API accepts a JSON payload containing the input string and returns a JSON response with the modified string.
 
 ## Benefits
 
@@ -24,30 +24,30 @@ The API offers two primary functions: removing non-numeric characters and removi
 
 ## Usage (Example)
 
-Clients interact with the API by sending GET requests with query params containing the input string and endpoint. The API returns a JSON response with the modified string. See the individual endpoint documentation (if needed) for specific request and response formats.
+Clients interact with the API by sending POST requests with query params containing the input string and endpoint. The API returns a JSON response with the modified string. See the individual endpoint documentation (if needed) for specific request and response formats.
 
-Sample GET Request 
-`https://readable-regex-8d81b79167bf.herokuapp.com/api/onlyNumeric?inputString=a1234c321`
-
-If using special characters for the inputString you have to encode the entire value to ensure the payload is passed properly
+Sample POST Request 
 
 ```
-        async function getResponse() {
-            const baseUrl = 'https://readable-regex-8d81b79167bf.herokuapp.com/api/'
-            const inputString = "%8&3a"
-            const encodedInputString = encodeURIComponent(inputString)
-            try {
-                const response = await fetch(baseUrl + "onlyNumeric?inputString=" + encodedInputString)
-                const json = await response.json()
-                const transformedString = json.result
-                console.log(transformedString)
-                // output 83
-                
+    try {
+        const response = await fetch("https://readable-regex-8d81b79167bf.herokuapp.com/api/onlyNumbers", {
+            method: 'POST',
+            body: JSON.stringify({
+                inputString: "1234abc"
+            }),
+            headers: {
+                "Content-Type": "application/json"
             }
-            catch(exception) {
-                throw exception
-            }
-        }
+        })
+        const json = await response.json()
+        const transformedString = json.result
+        document.querySelector('#responseBox').textContent = transformedString // 1234
+
+    }
+    catch (exception) {
+        alert('Error executing regex, try again later! Contact developer for support')
+        throw exception
+    }
 ```
 
 ## How to Contribute
@@ -55,7 +55,7 @@ If using special characters for the inputString you have to encode the entire va
 1. `git clone` the project locally
 2. Create a branch off of the `main` branch and run `git checkout` on that branch
 3. Change the base URL locally to `localhost` in the client-side app or when testing to make sure you are testing against the local api
-4. Add your changes and validate they are working locally
+4. Add your changes and validate they are working locally. Add routes as POST.
 5. Open a PR to the main branch containing the value of the PR, any screenshots or video recordings to demonstrate the value and any tests that can be added (unit, feature, proof of manual testing)
 6. A repo admin/moderator will review the PR along with other contributors. If there is feedback, please address it, commit any changes, and reach out for a rereview.
 7. Once approved a repo admin/moderator will merge the PR to `main`, deploying the service to production
@@ -67,7 +67,7 @@ I want to keep this casual for now, but still want to deliver quality.
 Please at a minimum try to do the following to upkeep the quality of this project: 
 
 1. Write code that is easily readable (small functions, organized files, easy to understand and descriptive function names/files/etc)
-3. Test code thoroughly (manually with screenshots or proof of it working or with unit tests if possible)
+2. Test code thoroughly (manually with screenshots or proof of it working or with unit tests if possible)
 
 ## New Features/Issues
 

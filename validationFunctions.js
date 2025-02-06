@@ -49,5 +49,7 @@ module.exports = class ValidationFunctions {
         }
 
         return patterns[countryCode.toUpperCase()].test(str.replace(/\s/g, ''));
+    static isInteger(str) {
+        return /^-?\d+$/.test(str);
     }
 }
