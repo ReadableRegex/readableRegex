@@ -1,23 +1,23 @@
-const express = require("express");
+const express = require('express');
 const app = express();
 const port = process.env.PORT || 3000;
-const cors = require("cors");
-const ValidationFunctions = require("./validationFunctions");
+const cors = require('cors');
+const ValidationFunctions = require('./validationFunctions');
 
 // Load environment variables
-require("dotenv").config();
+require('dotenv').config();
 
 // Set API URL based on environment
 const apiUrl =
-  process.env.NODE_ENV === "production"
+  process.env.NODE_ENV === 'production'
     ? process.env.PROD_API_URL
     : process.env.DEV_API_URL;
 
-const requiredParameterResponse = "Input string required as a parameter.";
+const requiredParameterResponse = 'Input string required as a parameter.';
 
 app.use(cors());
 app.use(express.json());
-app.set("view engine", "pug");
+app.set('view engine', 'pug');
 
 // Expose API URL to client-side
 app.use((req, res, next) => {
@@ -26,7 +26,7 @@ app.use((req, res, next) => {
 });
 
 // POST routes for isEmailAddress and isPhoneNumber
-app.post("/api/isEmailAddress", (req, res) => {
+app.post('/api/isEmailAddress', (req, res) => {
   const { inputString } = req.body;
 
   if (!inputString) {
@@ -37,7 +37,7 @@ app.post("/api/isEmailAddress", (req, res) => {
   res.json({ result });
 });
 
-app.post("/api/isPhoneNumber", (req, res) => {
+app.post('/api/isPhoneNumber', (req, res) => {
   const { inputString } = req.body;
 
   if (!inputString) {
@@ -49,7 +49,7 @@ app.post("/api/isPhoneNumber", (req, res) => {
 });
 
 // POST route for onlySpecialCharacters
-app.post("/api/onlySpecialCharacters", (req, res) => {
+app.post('/api/onlySpecialCharacters', (req, res) => {
   const { inputString } = req.body;
 
   if (!inputString) {
@@ -61,7 +61,7 @@ app.post("/api/onlySpecialCharacters", (req, res) => {
 });
 
 // POST routes for onlyNumbers and onlyLetters
-app.post("/api/onlyNumbers", (req, res) => {
+app.post('/api/onlyNumbers', (req, res) => {
   const { inputString } = req.body;
   if (!inputString) {
     return res.status(400).json({ error: requiredParameterResponse });
@@ -71,7 +71,7 @@ app.post("/api/onlyNumbers", (req, res) => {
   res.json({ result });
 });
 
-app.post("/api/onlyLetters", (req, res) => {
+app.post('/api/onlyLetters', (req, res) => {
   const { inputString } = req.body;
 
   if (!inputString) {
@@ -83,7 +83,7 @@ app.post("/api/onlyLetters", (req, res) => {
 });
 
 // POST route for isAlphaNumeric
-app.post("/api/isAlphaNumeric", (req, res) => {
+app.post('/api/isAlphaNumeric', (req, res) => {
   const { inputString } = req.body;
 
   if (!inputString) {
@@ -95,12 +95,12 @@ app.post("/api/isAlphaNumeric", (req, res) => {
 });
 
 // POST route for isInteger
-app.post("/api/isInteger", (req, res) => {
+app.post('/api/isInteger', (req, res) => {
   const { inputString } = req.body;
 
   if (!inputString) {
     return res.status(400).json({
-      error: "inputString is required.",
+      error: 'inputString is required.',
     });
   }
 
@@ -109,8 +109,8 @@ app.post("/api/isInteger", (req, res) => {
   res.json({ result });
 });
 
-app.get("/", (req, res) => {
-  res.render("index");
+app.get('/', (req, res) => {
+  res.render('index');
 });
 
 app.listen(port, () => {
