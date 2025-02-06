@@ -4,7 +4,7 @@ html
     style
         include style.css
     body
-        h1 Readable Regex 
+        h1(id="main-header") Readable Regex 
         h4 API to execute readable regex
         label Enter a string to run regex on
         br
@@ -21,8 +21,13 @@ html
             option(value='onlySpecialCharacters') Only Special Characters
             option(value='isEmailAddress') Is Email Address
             option(value='isPhoneNumber') Is Phone Number
+            //- TODO cannot currently run excludedCharacters this because it requires another input box for the excluded characters. 
+            //- Maybe instead of using input box, we should just have a place to define a json body and send the request
+            //- option(value='excludeTheseCharacters') Exclude These Characters
             option(value='isInteger') Is Integer
             option(value='isAlphaNumeric') Is Alpha Numeric
+            option(value='isDecimal') Is Decimal
+
 
         br
         br

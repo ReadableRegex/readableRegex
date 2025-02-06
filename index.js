@@ -72,6 +72,20 @@ app.post('/api/onlyLetters', (req, res) => {
   res.json({ result });
 });
 
+// POST route for excludeTheseCharacters
+app.post("/api/excludeTheseCharacters", (req, res) => {
+  const { excludeTheseCharacters, inputString } = req.body;
+
+  if (!excludeTheseCharacters || !inputString) {
+    return res.status(400).json({
+      error: "excludeTheseCharacters and inputString are required.",
+    });
+  }
+
+  const result = ValidationFunctions.excludeTheseCharacters(inputString, excludeTheseCharacters);
+
+})
+
 app.post('/api/isAlphaNumeric', (req, res) => {
   const { inputString } = req.body;
 
@@ -105,6 +119,20 @@ app.post('/api/isInteger', (req, res) => {
   const result = ValidationFunctions.isInteger(inputString);
   
 
+  res.json({ result });
+});
+
+app.post('/api/isDecimal', (req, res) => {
+  const { inputString } = req.body;
+  
+  if (!inputString) {
+      return res.status(400).json({ 
+          error: "inputString is required." 
+      });
+  }
+  
+  const result = ValidationFunctions.isDecimal(inputString);
+  
   res.json({ result });
 });
 
