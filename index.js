@@ -91,7 +91,9 @@ app.post('/api/isZipCode', (req, res) => {
     return res.status(400).json({ error: 'inputString and countryCode are required.' });
   }
 
-  const result = ValidationFunctions.isZipCode(inputString, countryCode);
+  const result = ValidationFunctions.isZipCode(inputString, countryCode.toUpperCase());
+  res.json({ result });
+});
 
 app.post('/api/isInteger', (req, res) => {
   const { inputString } = req.body;

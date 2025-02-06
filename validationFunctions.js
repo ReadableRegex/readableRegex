@@ -32,24 +32,18 @@ module.exports = class ValidationFunctions {
 
     static isZipCode(str, countryCode) {
         //regex patterns for different global postal code formats
-        const patterns = {
-            US: /^\d{5}(-\d{4})?$/,
-            UK: /^[A-Z]{1,2}\d[A-Z\d]? \d[A-Z]{2}$/i,
-            CA: /^[A-Z]\d[A-Z] \d[A-Z]\d$/i,
-            AU: /^\d{4}$/,
-            DE: /^\d{5}$/,
-            FR: /^\d{5}$/,
-            JP: /^\d{3}-\d{4}$/,
-            BR: /^\d{5}-\d{3}$/,
-            IN: /^[1-9]\d{5}$/
-        };
-
-        if (!countryCode || !patterns[countryCode.toUpperCase()]) {
-            return false;
-        }
-
-        return patterns[countryCode.toUpperCase()].test(str.replace(/\s/g, ''));
-    static isInteger(str) {
-        return /^-?\d+$/.test(str);
+            const patterns = {
+                US: /^\d{5}(-\d{4})?$/,
+                UK: /^[A-Z]{1,2}\d[A-Z\d]? \d[A-Z]{2}$/i,
+                CA: /^[A-Z]\d[A-Z] \d[A-Z]\d$/i,
+                AU: /^\d{4}$/,
+                DE: /^\d{5}$/,
+                FR: /^\d{5}$/,
+                JP: /^\d{3}-\d{4}$/,
+                BR: /^\d{5}-\d{3}$/,
+                IN: /^[1-9]\d{5}$/
+            };
+    
+            return patterns[countryCode].test(str.replace(/\s/g, ''));
     }
 }
