@@ -44,6 +44,10 @@ module.exports = class ValidationFunctions {
         return /^-?\d+$/.test(str);
     }
 
+    static isLowercase(str) {
+        return /^[a-z]+$/g.test(str);
+    }
+
     static isHexadecimal(str) {
         return /^0x[0-9a-fA-F]+$/.test(str);
     }

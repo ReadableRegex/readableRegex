@@ -167,6 +167,17 @@ app.post('/api/isDecimal', (req, res) => {
   res.json({ result });
 });
 
+app.post('/api/isLowercase', (req, res) => {
+  const { inputString } = req.body;
+
+  if(!inputString) {
+    return res.status(400).json({ error: requiredParameterResponse });
+  }
+  const result = ValidationFunctions.isLowercase(inputString);
+
+  res.json({ result });
+});
+
 app.post('/api/isDate', (req, res) => {
   const { inputString } = req.body;
 
