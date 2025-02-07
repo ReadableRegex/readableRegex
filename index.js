@@ -19,12 +19,6 @@ app.use(cors());
 app.use(express.json());
 app.set('view engine', 'pug');
 
-// Expose API URL to client-side
-app.use((req, res, next) => {
-  res.locals.apiUrl = apiUrl;
-  next();
-});
-
 // POST routes for isEmailAddress and isPhoneNumber
 app.post('/api/isEmailAddress', (req, res) => {
   const { inputString } = req.body;
