@@ -84,8 +84,8 @@ app.post('/api/isAlphaNumeric', (req, res) => {
 });
 
 
-app.get('/api/isZipCode', (req, res) => {
-  const { inputString, countryCode } = req.query;
+app.post('/api/isZipCode', (req, res) => {
+  const { inputString, countryCode } = req.body;
 
   const patterns = {
     US: /^\d{5}(-\d{4})?$/,
@@ -107,7 +107,7 @@ app.get('/api/isZipCode', (req, res) => {
 
   if (!patterns[upperCountryCode]) {
     return res.status(400).json({ 
-      error: 'Invalid country code', 
+      error: 'Country code not supported at this time. If this is a valid country code, please open an issue with the developers.', 
       supportedCountries: Object.keys(patterns) 
     });
   }
