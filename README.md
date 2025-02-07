@@ -86,7 +86,33 @@ Or if you want your backend changes to refresh automatically you can use `nodemo
 nodemon index.js
 ```
 
+## Testing
+
+### Writing tests
+
+We are using the [Jest framework](https://jestjs.io/) for testing.
+
+It's best to write tests for custom logic and not external functions you have not written. 
+The goal is to test this API to ensure it's functioning properly. 
+
+Tests will live in the `tests` folder. 
+
+Create a new file for each function or set of related functions you are testing. I.e. `onlyNumbers.js` tests the `onlyNumbers` function
+
+Test edge cases and different scenarios to ensure the function behaves with different inputs for each parameter. 
+
+
+### Running tests 
+
+1. Run `npm install` to install any test packages needed
+2. Run `npm test` to run the jest tests
+
+
 ## Support
+
+Here is the official Readable Regex [Slack Channel Invite Link](https://join.slack.com/t/readableregex/shared_invite/zt-2zdksij4k-wEYXgPNSFOWXYlNM3CSq0Q)
+
+Collaborate, ask questions, get feedback, and get to know your fellow devs on Slack today!
 
 Please feel free to contact drewg2009@gmail.com for information about contributing, troubleshooting, or other concerns.
 

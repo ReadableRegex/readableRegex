@@ -1,87 +1,176 @@
+/* Import Google Fonts for modern typography */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body Styling */
 body {
-    font-family: sans-serif;
+    font-family: 'Poppins', sans-serif;
+    background-color: #f0f2f5; /* Light, soft background for a modern look */
+    color: #333;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+#main-header{
+    font-size: 84px;
+}
+
+/* Container Styling */
+.container {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    width: 100%;
+    max-width: 900px;
     margin: 20px;
-    background-color: #f8f8f8; /* Light gray background */
-    color: #333; /* Dark gray text color */
 }
 
+/* Headings Styling */
 h1, h4 {
-    text-align: center; /* Center the headings */
-    margin-bottom: 10px;
-}
-
-label {
-    display: block; /* Make labels stack on top of inputs */
-    margin-bottom: 5px;
-}
-
-input[type="text"], select {
-    width: 300px;
-    padding: 8px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box; /* Include padding in width */
-}
-
-button {
-    padding: 10px 20px;
-    background-color: #4CAF50; /* Green */
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-button:disabled {
-    background-color: #ddd; /* Gray when disabled */
-    cursor: default;
-}
-
-#responseBox {
-    border: 1px solid #ccc;
-    padding: 10px;
+    text-align: center;
+    color: #2C3E50; /* Darker shade for headings */
+    font-weight: 600;
     margin-bottom: 20px;
-    background-color: white;
-    border-radius: 4px;
-    min-height: 50px; /* Ensure some height even when empty */
 }
 
-pre {
-    background-color: #eee; /* Light gray for code samples */
-    padding: 10px;
-    border-radius: 4px;
-    overflow-x: auto; /* Add horizontal scroll if needed */
-    white-space: pre-wrap; /* Allow code to wrap */
+/* Form Labels */
+label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 500;
+    color: #7F8C8D;
 }
 
-/* Responsive adjustments (example) */
-@media (max-width: 400px) {
-    input[type="text"], select {
-        width: 90%; /* Make inputs full width on smaller screens */
-    }
-}
-
-/* Add some hover effects */
-button:hover {
-    opacity: 0.8;
+/* Input Fields and Select Elements */
+input[type="text"], select {
+    width: 50%;
+    padding: 14px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    border: 1px solid #BDC3C7;
+    font-size: 16px;
+    background-color: #ECF0F1;
+    transition: all 0.3s ease;
 }
 
 input[type="text"]:focus, select:focus {
-    border-color: #4CAF50; /* Green on focus */
+    border-color: #4CAF50;
     outline: none;
-    box-shadow: 0 0 5px rgba(76, 175, 80, 0.3); /* Green glow on focus */
+    box-shadow: 0 0 8px rgba(76, 175, 80, 0.4);
 }
 
-/* Style the code samples area */
+/* Button Styling */
+button {
+    width: 30%;
+    padding: 14px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #388E3C;
+    transform: translateY(-4px);
+}
+
+button:disabled {
+    background-color: #BDC3C7;
+    cursor: not-allowed;
+}
+
+/* API Response Box */
+#responseBox {
+    background-color: #F9F9F9;
+    content:"The response ..";
+    border-radius: 8px;
+    border: 1px solid #BDC3C7;
+    padding: 20px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    min-height: 50px;
+    min-width:100px;
+    text-align: center;
+}
+
+/* Code Samples Styling */
 pre {
-    max-height: 300px; /* Limit the height of code samples */
-    overflow-y: auto; /* Add vertical scroll if needed */
+    background-color: #2C3E50;
+    color: #ECF0F1;
+    padding: 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    line-height: 1.6;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-wrap: break-word;
 }
 
-#footer {
-    height: 100px;
+/* Footer Styling */
+footer {
     position: fixed;
-    bottom: 0;
+    bottom: 10px;
     right: 20px;
+    background-color: #4CAF50;
+    padding: 12px 20px;
+    border-radius: 50px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+footer a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+footer:hover {
+    transform: translateY(-4px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        padding: 20px;
+        width: 100%;
+    }
+
+    input[type="text"], select, button {
+        width: 100%;
+    }
+    
+    footer {
+        position: relative;
+        bottom: 0;
+        right: 0;
+        padding: 15px;
+        border-radius: 0;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 26px;
+    }
+
+    h4 {
+        font-size: 18px;
+    }
+
+    input[type="text"], select, button {
+        font-size: 14px;
+    }
 }
