@@ -197,6 +197,16 @@ app.post('/api/onlyTheseCharacters', (req, res) => {
   res.json({ result });
 });
 
+app.post('/api/isAllCaps', (req, res) => {
+  const { inputString } = req.body;
+
+  if(!inputString) {
+    return res.status(400).json({ error: requiredParameterResponse });
+  }
+  const result = ValidationFunctions.isAllCaps(inputString);
+
+  res.json({ result });
+});
 
 app.get('/', (req, res) => {
   res.render('index')
