@@ -4,7 +4,8 @@ const axios = require('axios');
 const app = express();
 const port = process.env.PORT || 3000;
 const cors = require('cors')
-const ValidationFunctions = require('./validationFunctions')
+const ValidationFunctions = require('./validationFunctions');
+const { urlUtils } = require("./utils/urlUtils");
 
 /**
  * Global rate limiter middleware
@@ -255,57 +256,13 @@ app.post('/api/isUrl', async (req, res) => {
   if(!connectToUrlTest){
     return res.json({ result });
   }
-  
-  try{
-    const response = await axios.get(inputString, {
-      timeout: 5000,
-      maxRedirects: 5,
-      validateStatus: function (status) {
-        return status < 500;
-      }
-    });
 
-    return res.json({
-      result,
-      connectToUrlResult: {
-        responseCode: response.status,
-        statusText: response.statusText
-      }
-    });     
-  }
+  const connectToUrlResult = await urlUtils.isUrlReachable(inputString);
 
-  catch(error){
-    let error_details;
-    if(error.response){
-      error_details = {
-        type: "server-side",
-        responseCode: error.response.status,
-        statusText: error.response.statusText,
-        message: "The server responded with some error"
-      };
-    }
-    else if(error.request){
-      error_details = { 
-        type: "network",
-        responseCode: 503,
-        statusText: "No response received",
-        message: "The request was made, but no response was received from the server."
-      };
-    }
-    else{
-      error_details = {
-        type: "request",
-        responseCode: 400,
-        statusText: "Request setting error",
-        message: error.message || "Something went wrong in setting up the request."
-      }
-    }
-
-    return res.json({
-      result,
-      connectToUrlResult: error_details
-    });
-  }
+  return res.json({
+    result,
+    connectToUrlResult
+  });
 });
 
 app.get('/', (req, res) => {
