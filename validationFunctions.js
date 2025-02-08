@@ -58,6 +58,10 @@ module.exports = class ValidationFunctions {
       return isDecimalRegex.test(str);
     }
 
+    static isAllCaps(str) {
+        return /^[A-Z]+$/.test(str);
+    }
+
   static isDate(dateStr) {
     if (!dateStr || typeof dateStr !== "string") return false;
 
