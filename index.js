@@ -259,7 +259,10 @@ app.post('/api/isUrl', async (req, res) => {
   try{
     const response = await axios.get(inputString, {
       timeout: 5000,
-      maxRedirects: 5
+      maxRedirects: 5,
+      validateStatus: function (status) {
+        return status < 500;
+      }
     });
 
     return res.json({
@@ -270,17 +273,39 @@ app.post('/api/isUrl', async (req, res) => {
       }
     });     
   }
+
   catch(error){
-    const statusText = error.code === 'ECONNABORTED' ? 'timeout' : 'failure';
+    let error_details;
+    if(error.response){
+      error_details = {
+        type: "server-side",
+        responseCode: error.response.status,
+        statusText: error.response.statusText,
+        message: "The server responded with some error"
+      };
+    }
+    else if(error.request){
+      error_details = { 
+        type: "network",
+        responseCode: 503,
+        statusText: "No response received",
+        message: "The request was made, but no response was received from the server."
+      };
+    }
+    else{
+      error_details = {
+        type: "request",
+        responseCode: 400,
+        statusText: "Request setting error",
+        message: error.message || "Something went wrong in setting up the request."
+      }
+    }
 
     return res.json({
       result,
-      connectToUrlResult: {
-        responseCode: error.response?.status || 500,
-        statusText
-      }
-    })
-  } 
+      connectToUrlResult: error_details
+    });
+  }
 });
 
 app.get('/', (req, res) => {
