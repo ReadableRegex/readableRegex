@@ -40,8 +40,13 @@ module.exports = class ValidationFunctions {
         return alphaNumericRegex.test(str);
     }
 
-    static isInteger(str) {
-        return /^-?\d+$/.test(str);
+
+    static isZipCode(str, countryCode, patterns) {
+        return patterns[countryCode].test(str.replace(/\s/g, ''));
+    }
+
+    static isLowercase(str) {
+        return /^[a-z]+$/g.test(str);
     }
 
     static isLowercase(str) {
@@ -56,6 +61,10 @@ module.exports = class ValidationFunctions {
       // Allowed decimal: 23.45; 34.; .45; -273.15; -42.; -.45;
       const isDecimalRegex = /^[+-]?((\d+(\.\d*))|(\.\d+))$/;
       return isDecimalRegex.test(str);
+    }
+
+    static isAllCaps(str) {
+        return /^[A-Z]+$/.test(str);
     }
 
   static isDate(dateStr) {

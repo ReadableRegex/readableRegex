@@ -128,7 +128,39 @@ app.post('/api/isAlphaNumeric', (req, res) => {
   res.json({ result });
 });
 
-// POST route for isInteger
+
+app.post('/api/isZipCode', (req, res) => {
+  const { inputString, countryCode } = req.body;
+
+  const patterns = {
+    US: /^\d{5}(-\d{4})?$/,
+    UK: /^[A-Z]{1,2}\d[A-Z\d]? \d[A-Z]{2}$/i,
+    CA: /^[A-Z]\d[A-Z] \d[A-Z]\d$/i,
+    AU: /^\d{4}$/,
+    DE: /^\d{5}$/,
+    FR: /^\d{5}$/,
+    JP: /^\d{3}-\d{4}$/,
+    BR: /^\d{5}-\d{3}$/,
+    IN: /^[1-9]\d{5}$/
+  };
+
+  if (!inputString || !countryCode) {
+    return res.status(400).json({ error: 'inputString and countryCode are required.' });
+  }
+
+  const upperCountryCode = countryCode.toUpperCase();
+
+  if (!patterns[upperCountryCode]) {
+    return res.status(400).json({ 
+      error: 'Country code not supported at this time. If this is a valid country code, please open an issue with the developers.', 
+      supportedCountries: Object.keys(patterns) 
+    });
+  }
+
+  const result = ValidationFunctions.isZipCode(inputString, upperCountryCode, patterns);
+  res.json({ result });
+});
+
 app.post('/api/isInteger', (req, res) => {
   const { inputString } = req.body;
 
@@ -202,6 +234,16 @@ app.post('/api/onlyTheseCharacters', (req, res) => {
   res.json({ result });
 });
 
+app.post('/api/isAllCaps', (req, res) => {
+  const { inputString } = req.body;
+
+  if(!inputString) {
+    return res.status(400).json({ error: requiredParameterResponse });
+  }
+  const result = ValidationFunctions.isAllCaps(inputString);
+
+  res.json({ result });
+});
 
 app.get('/', (req, res) => {
   res.render('index');
