@@ -62,8 +62,12 @@ module.exports = class ValidationFunctions {
     static isAllCaps(str) {
         return /^[A-Z]+$/.test(str);
     }
-
-  static isDate(dateStr) {
+    
+    static isUrl(str) {
+        return /^(https?:\/\/)?([\w.-]+)\.([a-z]{2,6})(\/[^\s]*)?$/i.test(str);
+    }
+  
+    static isDate(dateStr) {
     if (!dateStr || typeof dateStr !== "string") return false;
 
     const date = new Date(dateStr);

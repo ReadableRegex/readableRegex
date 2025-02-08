@@ -1,5 +1,6 @@
 const express = require('express');
 const { rateLimit } = require("express-rate-limit");
+const axios = require('axios');
 const app = express();
 const port = process.env.PORT || 3000;
 const cors = require('cors')
@@ -19,6 +20,7 @@ const limiter = rateLimit({
 app.use(limiter)
 
 const requiredParameterResponse = 'Input string required as a parameter.'
+let connectToUrlTest = false;
 
 app.use(cors())
 app.use(express.json())
@@ -240,6 +242,45 @@ app.post('/api/isAllCaps', (req, res) => {
   const result = ValidationFunctions.isAllCaps(inputString);
 
   res.json({ result });
+});
+
+app.post('/api/isUrl', async (req, res) => {
+  const { inputString, connectToUrlTest } = req.body;
+
+  if(!inputString) {
+    return res.status(400).json({ error: requiredParameterResponse });
+  }
+  const result = ValidationFunctions.isUrl(inputString);
+    
+  if(!connectToUrlTest){
+    return res.json({ result });
+  }
+  
+  try{
+    const response = await axios.get(inputString, {
+      timeout: 5000,
+      maxRedirects: 5
+    });
+
+    return res.json({
+      result,
+      connectToUrlResult: {
+        responseCode: response.status,
+        statusText: response.statusText
+      }
+    });     
+  }
+  catch(error){
+    const statusText = error.code === 'ECONNABORTED' ? 'timeout' : 'failure';
+
+    return res.json({
+      result,
+      connectToUrlResult: {
+        responseCode: error.response?.status || 500,
+        statusText
+      }
+    })
+  } 
 });
 
 app.get('/', (req, res) => {
