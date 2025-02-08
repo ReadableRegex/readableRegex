@@ -119,18 +119,6 @@ pre {
     word-wrap: break-word;
 }
 
-/* Footer Styling */
-footer {
-    position: fixed;
-    bottom: 10px;
-    right: 20px;
-    background-color: #4CAF50;
-    padding: 12px 20px;
-    border-radius: 50px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
-}
-
 footer a {
     color: #fff;
     text-decoration: none;
