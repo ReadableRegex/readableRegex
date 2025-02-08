@@ -40,8 +40,9 @@ module.exports = class ValidationFunctions {
         return alphaNumericRegex.test(str);
     }
 
-    static isInteger(str) {
-        return /^-?\d+$/.test(str);
+
+    static isZipCode(str, countryCode, patterns) {
+        return patterns[countryCode].test(str.replace(/\s/g, ''));
     }
 
     static isLowercase(str) {
