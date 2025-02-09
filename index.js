@@ -38,6 +38,7 @@ const options = {
   // Base directory which we use to locate your JSDOC files
   baseDir: __dirname,
   // Glob pattern to find your jsdoc files (multiple patterns can be added in an array)
+  // This pattern finds any .js file. The default value from the docs didn't work
   filesPattern: '*.js',
   // URL where SwaggerUI will be rendered
   swaggerUIPath: '/api-docs',
