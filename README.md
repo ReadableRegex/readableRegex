@@ -68,6 +68,7 @@ Please at a minimum try to do the following to upkeep the quality of this projec
 
 1. Write code that is easily readable (small functions, organized files, easy to understand and descriptive function names/files/etc)
 2. Test code thoroughly (manually with screenshots or proof of it working or with unit tests if possible)
+3. Write JSDoc strings with schemas and endpoint information for each endpoint to generate docs for the API. See the Documentation section for more details below.
 
 ## New Features/Issues
 
@@ -85,6 +86,14 @@ Or if you want your backend changes to refresh automatically you can use `nodemo
 ```bash
 nodemon index.js
 ```
+
+## Documentation
+
+We are using the [`express-jsdoc-swagger`](https://www.npmjs.com/package/swagger-jsdoc) package to write docs for the API. 
+
+It's utilizing the OpenAPI pattern for API specs and swagger to generate a UI for testing/reading docs.
+
+To view the docs, visit the `/api-docs` path from the base url. 
 
 ## Testing
 
