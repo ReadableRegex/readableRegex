@@ -1,9 +1,11 @@
 const express = require('express');
 const { rateLimit } = require("express-rate-limit");
+const axios = require('axios');
 const app = express();
 const port = process.env.PORT || 3000;
 const cors = require('cors')
-const ValidationFunctions = require('./validationFunctions')
+const ValidationFunctions = require('./validationFunctions');
+const { urlUtils } = require("./utils/urlUtils");
 
 /**
  * Global rate limiter middleware
@@ -19,6 +21,7 @@ const limiter = rateLimit({
 app.use(limiter)
 
 const requiredParameterResponse = 'Input string required as a parameter.'
+let connectToUrlTest = false;
 
 app.use(cors())
 app.use(express.json())
@@ -240,6 +243,26 @@ app.post('/api/isAllCaps', (req, res) => {
   const result = ValidationFunctions.isAllCaps(inputString);
 
   res.json({ result });
+});
+
+app.post('/api/isUrl', async (req, res) => {
+  const { inputString, connectToUrlTest } = req.body;
+
+  if(!inputString) {
+    return res.status(400).json({ error: requiredParameterResponse });
+  }
+  const result = ValidationFunctions.isUrl(inputString);
+    
+  if(!connectToUrlTest){
+    return res.json({ result });
+  }
+
+  const connectToUrlResult = await urlUtils.isUrlReachable(inputString);
+
+  return res.json({
+    result,
+    connectToUrlResult
+  });
 });
 
 app.get('/', (req, res) => {
