@@ -89,7 +89,7 @@ nodemon index.js
 
 ## Documentation
 
-We are using the [`express-jsdoc-swagger`]([https://www.npmjs.com/package/swagger-jsdoc](https://brikev.github.io/express-jsdoc-swagger-docs/#/)) package to write docs for the API. 
+We are using the [`express-jsdoc-swagger`](https://brikev.github.io/express-jsdoc-swagger-docs/#/) package to write docs for the API. 
 
 It's utilizing the OpenAPI pattern for API specs and swagger to generate a UI for testing/reading docs.
 
