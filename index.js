@@ -66,8 +66,6 @@ const requiredParameterResponse = 'Input string required as a parameter.'
 let connectToUrlTest = false;
 
 app.use(cors())
-app.use(express.json())
-
 // Middleware to parse JSON request bodies
 app.use(express.json());
 app.set('view engine', 'pug')
