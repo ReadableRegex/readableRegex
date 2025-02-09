@@ -1,6 +1,5 @@
 const express = require('express');
 const { rateLimit } = require("express-rate-limit");
-const axios = require('axios');
 const app = express();
 const port = process.env.PORT || 3000;
 const cors = require('cors')
@@ -64,7 +63,6 @@ expressJSDocSwagger(app)(options);
 app.use(limiter)
 
 const requiredParameterResponse = 'Input string required as a parameter.'
-let connectToUrlTest = false;
 
 app.use(cors())
 // Middleware to parse JSON request bodies
@@ -323,8 +321,9 @@ app.post('/api/isAllCaps', (req, res) => {
 });
 
 app.post('/api/isUrl', async (req, res) => {
-  const { inputString, connectToUrlTest } = req.body;
-
+  const inputString = req.body.inputString;
+  const connectToUrlTest = req.body.connectToUrlTest ?? false
+  
   if(!inputString) {
     return res.status(400).json({ error: requiredParameterResponse });
   }
