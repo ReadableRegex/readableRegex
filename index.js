@@ -6,6 +6,7 @@ const port = process.env.PORT || 3000;
 const cors = require('cors')
 const ValidationFunctions = require('./validationFunctions');
 const { urlUtils } = require("./utils/urlUtils");
+const expressJSDocSwagger = require('express-jsdoc-swagger');
 
 /**
  * Global rate limiter middleware
@@ -18,6 +19,47 @@ const limiter = rateLimit({
   standardHeaders: true, 
   legacyHeaders: false, 
 });
+
+const options = {
+  info: {
+    version: '1.0.0',
+    title: 'Readable Regex',
+    license: {
+      name: 'MIT',
+    },
+  },
+  //TODO will add this later when we have API tokens
+  // security: {
+  //   BasicAuth: {
+  //     type: 'http',
+  //     scheme: 'basic',
+  //   },
+  // },
+  // Base directory which we use to locate your JSDOC files
+  baseDir: __dirname,
+  // Glob pattern to find your jsdoc files (multiple patterns can be added in an array)
+  filesPattern: './**/*.js',
+  // URL where SwaggerUI will be rendered
+  swaggerUIPath: '/api-docs',
+  // Expose OpenAPI UI
+  exposeSwaggerUI: true,
+  // Expose Open API JSON Docs documentation in `apiDocsPath` path.
+  exposeApiDocs: false,
+  // Open API JSON Docs endpoint.
+  apiDocsPath: '/v3/api-docs',
+  // Set non-required fields as nullable by default
+  notRequiredAsNullable: false,
+  // You can customize your UI options.
+  // you can extend swagger-ui-express config. You can checkout an example of this
+  // in the `example/configuration/swaggerOptions.js`
+  swaggerUiOptions: {},
+  // multiple option in case you want more that one instance
+  multiple: true,
+};
+
+expressJSDocSwagger(app)(options);
+
+
 app.use(limiter)
 
 const requiredParameterResponse = 'Input string required as a parameter.'
@@ -30,7 +72,12 @@ app.use(express.json())
 app.use(express.json());
 app.set('view engine', 'pug')
 
-// POST routes for isEmailAddress and isPhoneNumber
+/**
+ * POST /api/v1
+ * @summary Returns true if valid email address, false otherwise
+ * @return {object} 200 - success response
+ * @return {object} 400 - bad request response
+ */
 app.post('/api/isEmailAddress', (req, res) => {
   let inputString = req.body.inputString;
 
