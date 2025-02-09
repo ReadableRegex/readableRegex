@@ -102,8 +102,9 @@ button:disabled {
     margin-bottom: 30px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     min-height: 50px;
-    min-width:100px;
+    min-width:300px;
     text-align: center;
+    overflow: auto;
 }
 
 /* Code Samples Styling */
@@ -117,18 +118,6 @@ pre {
     overflow-x: auto;
     white-space: pre-wrap;
     word-wrap: break-word;
-}
-
-/* Footer Styling */
-footer {
-    position: fixed;
-    bottom: 10px;
-    right: 20px;
-    background-color: #4CAF50;
-    padding: 12px 20px;
-    border-radius: 50px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
 }
 
 footer a {

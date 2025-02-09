@@ -1,6 +1,8 @@
 html
     head
         title= title
+    //- Google Adsense script to enable ads to show on site
+    script(async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1957345351542704" crossorigin="anonymous")
     style
         include style.css
     body
@@ -32,6 +34,7 @@ html
             option(value='isLowercase') Is Lowercase
             option(value='isDate') Is Date
             option(value='isAllCaps') Is AllCaps
+            option(value='isUrl') Is Url
 
         br
         br
@@ -47,8 +50,6 @@ html
         pre
             include codeSamples.html
         footer(id='footer')
-            a(href="https://www.producthunt.com/posts/readble-regex?embed=true&utm_source=badge-featured&utm_medium=badge&utm_souce=badge-readble&#0045;regex" target="_blank")
-                img(src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=841898&theme=light&t=1738718093901" alt="Readble&#0032;Regex - Regex&#0032;REST&#0032;API&#0032;for&#0032;easier&#0032;codebase&#0032;maintenance&#0032;of&#0032;regex | Product Hunt" style="width: 250px; height: 54px;" width="250" height="54")
     script(src='https://code.jquery.com/jquery-3.2.1.min.js'
         integrity='sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4='
         crossorigin='anonymous')

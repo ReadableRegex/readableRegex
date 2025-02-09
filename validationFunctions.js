@@ -49,10 +49,6 @@ module.exports = class ValidationFunctions {
         return /^[a-z]+$/g.test(str);
     }
 
-    static isLowercase(str) {
-        return /^[a-z]+$/g.test(str);
-    }
-
     static isHexadecimal(str) {
         return /^0x[0-9a-fA-F]+$/.test(str);
     }
@@ -66,8 +62,12 @@ module.exports = class ValidationFunctions {
     static isAllCaps(str) {
         return /^[A-Z]+$/.test(str);
     }
-
-  static isDate(dateStr) {
+    
+    static isUrl(str) {
+        return /^(https?:\/\/)?([\w.-]+)\.([a-z]{2,6})(\/[^\s]*)?$/i.test(str);
+    }
+  
+    static isDate(dateStr) {
     if (!dateStr || typeof dateStr !== "string") return false;
 
     const date = new Date(dateStr);

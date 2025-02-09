@@ -2,8 +2,10 @@ const express = require('express');
 const { rateLimit } = require("express-rate-limit");
 const app = express();
 const port = process.env.PORT || 3000;
-const cors = require('cors');
+const cors = require('cors')
 const ValidationFunctions = require('./validationFunctions');
+const { urlUtils } = require("./utils/urlUtils");
+const expressJSDocSwagger = require('express-jsdoc-swagger');
 
 // Load environment variables
 require('dotenv').config();
@@ -18,6 +20,48 @@ const limiter = rateLimit({
   standardHeaders: true, 
   legacyHeaders: false, 
 });
+
+const options = {
+  info: {
+    version: '1.0.0',
+    title: 'Readable Regex',
+    license: {
+      name: 'MIT',
+    },
+  },
+  //TODO will add this later when we have API tokens
+  // security: {
+  //   BasicAuth: {
+  //     type: 'http',
+  //     scheme: 'basic',
+  //   },
+  // },
+  // Base directory which we use to locate your JSDOC files
+  baseDir: __dirname,
+  // Glob pattern to find your jsdoc files (multiple patterns can be added in an array)
+  // This pattern finds any .js file. The default value from the docs didn't work
+  filesPattern: '*.js',
+  // URL where SwaggerUI will be rendered
+  swaggerUIPath: '/api-docs',
+  // Expose OpenAPI UI
+  exposeSwaggerUI: true,
+  // Expose Open API JSON Docs documentation in `apiDocsPath` path.
+  exposeApiDocs: false,
+  // Open API JSON Docs endpoint.
+  apiDocsPath: '/v3/api-docs',
+  // Set non-required fields as nullable by default
+  notRequiredAsNullable: false,
+  // You can customize your UI options.
+  // you can extend swagger-ui-express config. You can checkout an example of this
+  // in the `example/configuration/swaggerOptions.js`
+  swaggerUiOptions: {},
+  // multiple option in case you want more that one instance
+  multiple: true,
+};
+
+expressJSDocSwagger(app)(options);
+
+
 app.use(limiter)
 
 // Set API URL based on environment
@@ -26,13 +70,48 @@ const apiUrl =
     ? process.env.PROD_API_URL
     : process.env.DEV_API_URL;
 
-const requiredParameterResponse = 'Input string required as a parameter.';
-
-app.use(cors());
+app.use(cors())
+// Middleware to parse JSON request bodies
 app.use(express.json());
 app.set('view engine', 'pug');
 
-// POST routes for isEmailAddress and isPhoneNumber
+/**
+ * Basic request
+ * @typedef {object} BasicRequest
+ * @property {string} inputString.required - Input string
+ */
+
+/**
+ * Basic response
+ * @typedef {object} BasicResponse
+ * @property {string} result - Result
+ */
+
+/**
+ * Bad request response
+ * @typedef {object} BadRequestResponse
+ * @property {string} error
+ */
+
+/**
+ * POST /api/isEmailAddress
+ * @summary Returns true if valid email address, false otherwise
+ * @param {BasicRequest} request.body.required
+ * @return {BasicResponse} 200 - Success response
+ * @return {BadRequestResponse} 400 - Bad request response
+ * @example request - test
+ * {
+ *   "inputString": "test@gmail.com"
+ * }
+ * @example response - 200 - example payload
+ * {
+ *   "result": true
+ * }
+ * @example response - 400 - example
+ * {
+ *   "error": "Input string required as a parameter."
+ * }
+ */
 app.post('/api/isEmailAddress', (req, res) => {
   const { inputString } = req.body;
 
@@ -171,6 +250,7 @@ app.post('/api/isInteger', (req, res) => {
   }
 
   const result = ValidationFunctions.isInteger(inputString);
+  
 
   res.json({ result });
 });
@@ -243,6 +323,27 @@ app.post('/api/isAllCaps', (req, res) => {
   const result = ValidationFunctions.isAllCaps(inputString);
 
   res.json({ result });
+});
+
+app.post('/api/isUrl', async (req, res) => {
+  const inputString = req.body.inputString;
+  const connectToUrlTest = req.body.connectToUrlTest ?? false
+  
+  if(!inputString) {
+    return res.status(400).json({ error: requiredParameterResponse });
+  }
+  const result = ValidationFunctions.isUrl(inputString);
+    
+  if(!connectToUrlTest){
+    return res.json({ result });
+  }
+
+  const connectToUrlResult = await urlUtils.isUrlReachable(inputString);
+
+  return res.json({
+    result,
+    connectToUrlResult
+  });
 });
 
 app.get('/', (req, res) => {
