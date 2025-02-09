@@ -1,5 +1,5 @@
 const axios = require("axios");
-const {  axios_Error_handling  } = require("./axios");
+const {  handleAxiosError  } = require("./axios");
 
 class urlUtils {
     static async isUrlReachable(inputString){
@@ -18,7 +18,7 @@ class urlUtils {
             };     
         }
         catch(error){
-            return axios_Error_handling(error);
+            return handleAxiosError(error);
         };
     };    
 };

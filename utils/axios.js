@@ -1,4 +1,4 @@
-function axios_Error_handling(error){
+function handleAxiosError(error){
     let error_details;
 
     if(error.response){
@@ -29,4 +29,4 @@ function axios_Error_handling(error){
     return error_details;
 }
 
-module.exports = { axios_Error_handling };
+module.exports = { handleAxiosError };
