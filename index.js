@@ -341,6 +341,16 @@ app.post('/api/isUrl', async (req, res) => {
   });
 });
 
+app.post('/api/isBinaryString', (req, res) => {
+  const inputString = req.body.inputString;
+
+  if (!inputString) {
+    return res.status(400).json({ error: requiredParameterResponse });
+  }
+  const result = ValidationFunctions.isBinaryString(inputString);
+  return res.json({ result });
+});
+
 app.get('/', (req, res) => {
   res.render('index')
 })
