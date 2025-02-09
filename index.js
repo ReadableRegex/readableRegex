@@ -72,10 +72,41 @@ app.use(express.json());
 app.set('view engine', 'pug')
 
 /**
- * POST /api/v1
+ * Basic request
+ * @typedef {object} BasicRequest
+ * @property {string} inputString.required - Input string
+ */
+
+/**
+ * Basic response
+ * @typedef {object} BasicResponse
+ * @property {string} result - Result
+ */
+
+/**
+ * Bad request response
+ * @typedef {object} BadRequestResponse
+ * @property {string} error
+ */
+
+/**
+ * POST /api/isEmailAddress
  * @summary Returns true if valid email address, false otherwise
- * @return {object} 200 - success response
- * @return {object} 400 - bad request response
+ * @param {BasicRequest} request.body.required
+ * @return {BasicResponse} 200 - Success response
+ * @return {BadRequestResponse} 400 - Bad request response
+ * @example request - test
+ * {
+ *   "inputString": "test@gmail.com"
+ * }
+ * @example response - 200 - example payload
+ * {
+ *   "result": true
+ * }
+ * @example response - 400 - example
+ * {
+ *   "error": "Input string required as a parameter."
+ * }
  */
 app.post('/api/isEmailAddress', (req, res) => {
   let inputString = req.body.inputString;
