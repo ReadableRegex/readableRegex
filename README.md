@@ -94,7 +94,9 @@ We are using the [`express-jsdoc-swagger`](https://www.npmjs.com/package/swagger
 It's utilizing the OpenAPI pattern for API specs and swagger to generate a UI for testing/reading docs.
 
 To view the docs, visit the `/api-docs` path from the base URL. 
+
 [Prod Docs](https://readable-regex-8d81b79167bf.herokuapp.com/api-docs/)
+
 [Local Docs](http://localhost:3000/api-docs/)
 
 
