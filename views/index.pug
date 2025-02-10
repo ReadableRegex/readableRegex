@@ -6,6 +6,14 @@ html
     style
         include style.css
     body
+        nav.navbar
+            .nav-content
+                a.nav-brand(href="/") Readable Regex
+                .nav-links
+                    a(href="/" class=(currentPath === '/' ? 'active' : '')) Home
+                    a(href="/about" class=(currentPath === '/about' ? 'active' : '')) About
+                    a(href="/contact" class=(currentPath === '/contact' ? 'active' : '')) Contact
+                    a(href="/docs" class=(currentPath === '/docs' ? 'active' : '')) Docs
         h1(id="main-header") Readable Regex 
         h4 API to execute readable regex
         label Enter a string to run regex on
