@@ -116,6 +116,7 @@ Create a new file for each function or set of related functions you are testing.
 
 Test edge cases and different scenarios to ensure the function behaves with different inputs for each parameter. 
 
+Tests are configured to run on every push and pull requests for every branch using a Node Github Workflow that builds and runs tests.
 
 ### Running tests 
 
