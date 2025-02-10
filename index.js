@@ -68,7 +68,7 @@ app.use(limiter)
 const apiUrl =
   process.env.NODE_ENV === 'production'
     ? process.env.PROD_API_URL
-    : process.env.DEV_API_URL;
+    : 'http://localhost:3000'
 
 app.use(cors())
 // Middleware to parse JSON request bodies
