@@ -1,64 +1,24 @@
 Example call using Javascript
 <pre>
     <code>
-        try {
-            const response = await fetch("https://readable-regex-8d81b79167bf.herokuapp.com/api/onlyNumbers", {
-                method: 'POST',
-                body: JSON.stringify({
-                    inputString: "1234abc"
-                }),
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            })
-            const json = await response.json()
-            const transformedString = json.result
-            document.querySelector('#responseBox').textContent = transformedString // 1234
-    
+try {
+    const response = await fetch("https://readable-regex-8d81b79167bf.herokuapp.com/api/onlyNumbers", {
+        method: 'POST',
+        body: JSON.stringify({
+            inputString: "1234abc"
+        }),
+        headers: {
+            "Content-Type": "application/json"
         }
-        catch (exception) {
-            alert('Error executing regex, try again later! Contact developer for support')
-            throw exception
-        }
-    </code>
+    })
+    const json = await response.json()
+    const transformedString = json.result
+    document.querySelector('#responseBox').textContent = transformedString // 1234
+
+}
+catch (exception) {
+    alert('Error executing regex, try again later! Contact developer for support')
+    throw exception
+}
+</code>
 </pre>
-
-<code>POST https://readable-regex-8d81b79167bf.herokuapp.com/api
-
-Endpoints:
-onlyNumbers
-onlyLetters
-onlySpecialCharacters
-isEmailAddress
-isPhoneNumber
-excludeTheseCharacters
-isInteger
-isAlphaNumeric
-isHexadecimal
-isDecimal
-isLowercase
-isDate
-isAllCaps
-isUrl
-
-Params:
-inputString: string
-
-example: "1+323_%8&3a"
-Response:
-<pre>
-            <code>
-            {
-                result: string
-            }
-        </code>
-    </pre>
-Result is the transformed string
-<pre>
-                <code>
-            example for onlyLetters:
-                {
-                    result: 'a'
-                }
-            </code>
-        </pre>
