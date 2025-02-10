@@ -18,6 +18,7 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
+    padding-top: 80px;
 }
 #main-header{
     font-size: 84px;
@@ -161,5 +162,86 @@ footer:hover {
 
     input[type="text"], select, button {
         font-size: 14px;
+    }
+}
+
+/* Navbar Styles */
+.navbar {
+    background-color: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(8px);
+    padding: 1.2rem 2rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    box-shadow: 0 2px 15px rgba(44, 62, 80, 0.06);
+    z-index: 1000;
+    border-bottom: 1px solid rgba(189, 195, 199, 0.2);
+}
+
+.nav-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.nav-brand {
+    color: #2C3E50;
+    font-size: 1.8rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    letter-spacing: -0.5px;
+}
+
+
+.nav-links {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+}
+
+.nav-links a {
+    color: #2C3E50;
+    text-decoration: none;
+    padding: 0.6rem 1.2rem;
+    font-weight: 500;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+}
+
+.nav-links a:hover {
+    color: #4CAF50;
+    background-color: rgba(76, 175, 80, 0.08);
+    transform: translateY(-2px);
+}
+
+.nav-links a.active {
+    color: #4CAF50;
+    background-color: rgba(76, 175, 80, 0.12);
+    font-weight: 600;
+}
+
+/* Add responsive styles for navbar */
+@media (max-width: 768px) {
+    .navbar {
+        padding: 1rem;
+    }
+
+    .nav-brand {
+        font-size: 1.5rem;
+    }
+
+    .nav-links {
+        gap: 0.8rem;
+    }
+
+    .nav-links a {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.9rem;
     }
 }
