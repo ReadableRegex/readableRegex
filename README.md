@@ -82,7 +82,7 @@ Using `node`
 ```bash
 node index.js  // Or npm start Or npm run start
 ```
-Or if you want your backend changes to refresh automatically ( Development Mode )
+Or if you want your backend changes to refresh automatically you can use "nodemon" ( Development Mode )
 ```bash
 nodemon index.js // Or npm run dev
 ```
