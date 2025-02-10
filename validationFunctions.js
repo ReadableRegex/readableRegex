@@ -59,6 +59,11 @@ module.exports = class ValidationFunctions {
       return isDecimalRegex.test(str);
     }
 
+    static isBinaryString(str) {
+      const regex = new RegExp("^[01]+$");
+      return regex.test(str);
+    }
+
     static isAllCaps(str) {
         return /^[A-Z]+$/.test(str);
     }
