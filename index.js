@@ -7,6 +7,8 @@ const ValidationFunctions = require('./validationFunctions');
 const { urlUtils } = require("./utils/urlUtils");
 const expressJSDocSwagger = require('express-jsdoc-swagger');
 
+// Load environment variables
+require('dotenv').config();
 /**
  * Global rate limiter middleware
  * limits the number of request sent to our application
@@ -62,12 +64,16 @@ expressJSDocSwagger(app)(options);
 
 app.use(limiter)
 
-const requiredParameterResponse = 'Input string required as a parameter.'
+// Set API URL based on environment
+const apiUrl =
+  process.env.NODE_ENV === 'production'
+    ? process.env.PROD_API_URL
+    : 'http://localhost:3000'
 
 app.use(cors())
 // Middleware to parse JSON request bodies
 app.use(express.json());
-app.set('view engine', 'pug')
+app.set('view engine', 'pug');
 
 /**
  * Basic request
@@ -107,7 +113,7 @@ app.set('view engine', 'pug')
  * }
  */
 app.post('/api/isEmailAddress', (req, res) => {
-  let inputString = req.body.inputString;
+  const { inputString } = req.body;
 
   if (!inputString) {
     return res.status(400).json({ error: requiredParameterResponse });
@@ -118,7 +124,7 @@ app.post('/api/isEmailAddress', (req, res) => {
 });
 
 app.post('/api/isPhoneNumber', (req, res) => {
-  let inputString = req.body.inputString;
+  const { inputString } = req.body;
 
   if (!inputString) {
     return res.status(400).json({ error: requiredParameterResponse });
@@ -128,10 +134,9 @@ app.post('/api/isPhoneNumber', (req, res) => {
   res.json({ result });
 });
 
-
 // POST route for onlySpecialCharacters
 app.post('/api/onlySpecialCharacters', (req, res) => {
-  let inputString = req.body.inputString;
+  const { inputString } = req.body;
 
   if (!inputString) {
     return res.status(400).json({ error: requiredParameterResponse });
@@ -156,7 +161,7 @@ app.post('/api/trim', (req, res) => {
 // Example using query parameters (POST requests)
 
 app.post('/api/onlyNumbers', (req, res) => {
-  const inputString = req.body.inputString;
+  const { inputString } = req.body;
   if (!inputString) {
     return res.status(400).json({ error: requiredParameterResponse });
   }
@@ -166,7 +171,7 @@ app.post('/api/onlyNumbers', (req, res) => {
 });
 
 app.post('/api/onlyLetters', (req, res) => {
-  const inputString = req.body.inputString;
+  const { inputString } = req.body;
 
   if (!inputString) {
     return res.status(400).json({ error: requiredParameterResponse });
@@ -237,13 +242,13 @@ app.post('/api/isZipCode', (req, res) => {
 
 app.post('/api/isInteger', (req, res) => {
   const { inputString } = req.body;
-  
+
   if (!inputString) {
-      return res.status(400).json({ 
-          error: "inputString is required." 
-      });
+    return res.status(400).json({
+      error: 'inputString is required.',
+    });
   }
-  
+
   const result = ValidationFunctions.isInteger(inputString);
   
 
@@ -352,9 +357,10 @@ app.post('/api/isBinaryString', (req, res) => {
 });
 
 app.get('/', (req, res) => {
-  res.render('index')
-})
+  res.render('index');
+});
 
 app.listen(port, () => {
   console.log(`Server is listening on port ${port}`);
+  console.log(`API URL: ${apiUrl}`);
 });
