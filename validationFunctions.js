@@ -96,4 +96,9 @@ module.exports = class ValidationFunctions {
     const regex = new RegExp(`[^${onlyTheseCharacters.join("")}]`, "g");
     return inputString.replace(regex, "");
   }
+
+  static isBoolean(inputString) {
+    const validBooleanValues = ['true', 'false', '0', '1', 'TRUE', 'FALSE', 'True', 'False']
+    return validBooleanValues.includes(inputString)
+  }
 }

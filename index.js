@@ -123,6 +123,36 @@ app.post('/api/isEmailAddress', (req, res) => {
   res.json({ result });
 });
 
+/**
+ * POST /api/isBoolean
+ * @summary Returns true if valid boolean value, otherwise false. Valid boolean values include: 'true', 'false', '0', '1', 'TRUE', 'FALSE', 'True', 'False'
+ * @param {BasicRequest} request.body.required
+ * @return {BasicResponse} 200 - Success response
+ * @return {BadRequestResponse} 400 - Bad request response
+ * @example request - test
+ * {
+ *   "inputString": "TRUE"
+ * }
+ * @example response - 200 - example payload
+ * {
+ *   "result": true
+ * }
+ * @example response - 400 - example
+ * {
+ *   "error": "Input string required as a parameter."
+ * }
+ */
+app.post('/api/isBoolean', (req, res) => {
+  const { inputString } = req.body;
+
+  if (!inputString) {
+    return res.status(400).json({ error: requiredParameterResponse });
+  }
+
+  const result = ValidationFunctions.isBoolean(inputString);
+  res.json({ result });
+});
+
 app.post('/api/isPhoneNumber', (req, res) => {
   const { inputString } = req.body;
 
