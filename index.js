@@ -6,6 +6,8 @@ const cors = require('cors')
 const ValidationFunctions = require('./validationFunctions');
 const { urlUtils } = require("./utils/urlUtils");
 const expressJSDocSwagger = require('express-jsdoc-swagger');
+const run= require('./runPrompt');
+const extractJSON = require('./extractJSON');
 
 // Load environment variables
 require('dotenv').config();
@@ -75,6 +77,7 @@ app.use(cors())
 app.use(express.json());
 app.set('view engine', 'pug');
 
+
 /**
  * Basic request
  * @typedef {object} BasicRequest
@@ -94,8 +97,8 @@ app.set('view engine', 'pug');
  */
 
 /**
- * POST /api/isEmailAddress
- * @summary Returns true if valid email address, false otherwise
+ * POST /api/isField
+ * @summary Returns true/false based on the input string and fieldToValidate
  * @param {BasicRequest} request.body.required
  * @return {BasicResponse} 200 - Success response
  * @return {BadRequestResponse} 400 - Bad request response
@@ -105,63 +108,38 @@ app.set('view engine', 'pug');
  * }
  * @example response - 200 - example payload
  * {
- *   "result": true
- * }
+ *    "result": true,
+ *    "explanation": "The email address 'test@gmail.com' follows the standard format: local-part@domain.  It contains a username ('test'), an '@' symbol, and a domain name ('gmail.com')."
+  }
  * @example response - 400 - example
  * {
- *   "error": "Input string required as a parameter."
+ *   "error": "Input string/FieldTovalidate required as a parameter."
  * }
  */
-app.post('/api/isEmailAddress', (req, res) => {
-  const { inputString } = req.body;
+app.post('/api/isField', async(req, res) => {
+  const { inputString, fieldToValidate } = req.body;
 
-  if (!inputString) {
+  if (!inputString || !fieldToValidate) {
     return res.status(400).json({ error: requiredParameterResponse });
   }
-
-  const result = ValidationFunctions.isEmailAddress(inputString);
-  res.json({ result });
-});
-
-/**
- * POST /api/isBoolean
- * @summary Returns true if valid boolean value, otherwise false. Valid boolean values include: 'true', 'false', '0', '1', 'TRUE', 'FALSE', 'True', 'False'
- * @param {BasicRequest} request.body.required
- * @return {BasicResponse} 200 - Success response
- * @return {BadRequestResponse} 400 - Bad request response
- * @example request - test
- * {
- *   "inputString": "TRUE"
- * }
- * @example response - 200 - example payload
- * {
- *   "result": true
- * }
- * @example response - 400 - example
- * {
- *   "error": "Input string required as a parameter."
- * }
- */
-app.post('/api/isBoolean', (req, res) => {
-  const { inputString } = req.body;
-
-  if (!inputString) {
-    return res.status(400).json({ error: requiredParameterResponse });
-  }
-
-  const result = ValidationFunctions.isBoolean(inputString);
-  res.json({ result });
-});
-
-app.post('/api/isPhoneNumber', (req, res) => {
-  const { inputString } = req.body;
-
-  if (!inputString) {
-    return res.status(400).json({ error: requiredParameterResponse });
-  }
-
-  const result = ValidationFunctions.isPhoneNumber(inputString);
-  res.json({ result });
+  const instructionToLLM = `Can you return true or false if this field '${fieldToValidate}' is valid? Here is the value for this field: '${inputString}'. Can you only return this in a JSON response(and don't write anything else like json or quotes,just the json result) where the 'result' property will be true or false, and the 'explanation' will be the reason for why it's true or false?
+  Note:treat special characters(.,@/-+ etc) and digits as Lowercase
+  Note:Consider date formats of all over the world
+  "// YYYY-MM-DD
+  // MM/DD/YYYY or DD/MM/YYYY
+  // YYYY/MM/DD
+  // DD-MM-YYYY or MM-DD-YYYY
+  // YYYY.MM.DD
+  // DD.MM.YYYY or MM.DD.YYYY
+  // YYYYMMDD
+  // YYYY-MM-DD HH:mm:ss"
+  Note:Consider strings with only 0 and 1 to be binary
+  Note:In case of phone number take into consideration all phone number formats all over the world
+  Note:In case of zip code take into consideration zip codes all over the world
+  `;
+  const jsonResult =extractJSON(await run(instructionToLLM)) // get the string returned from LLM and extract only the JSON part from it
+  console.log(jsonResult)
+  res.json(jsonResult);
 });
 
 // POST route for onlySpecialCharacters
@@ -225,166 +203,6 @@ app.post("/api/excludeTheseCharacters", (req, res) => {
   res.json({ result });
 
 })
-
-app.post('/api/isAlphaNumeric', (req, res) => {
-  const { inputString } = req.body;
-
-  if (!inputString) {
-    return res.status(400).json({ error: requiredParameterResponse });
-  }
-
-  const result = ValidationFunctions.isAlphaNumeric(inputString);
-  res.json({ result });
-});
-
-
-app.post('/api/isZipCode', (req, res) => {
-  const { inputString, countryCode } = req.body;
-
-  const patterns = {
-    US: /^\d{5}(-\d{4})?$/,
-    UK: /^[A-Z]{1,2}\d[A-Z\d]? \d[A-Z]{2}$/i,
-    CA: /^[A-Z]\d[A-Z] \d[A-Z]\d$/i,
-    AU: /^\d{4}$/,
-    DE: /^\d{5}$/,
-    FR: /^\d{5}$/,
-    JP: /^\d{3}-\d{4}$/,
-    BR: /^\d{5}-\d{3}$/,
-    IN: /^[1-9]\d{5}$/
-  };
-
-  if (!inputString || !countryCode) {
-    return res.status(400).json({ error: 'inputString and countryCode are required.' });
-  }
-
-  const upperCountryCode = countryCode.toUpperCase();
-
-  if (!patterns[upperCountryCode]) {
-    return res.status(400).json({ 
-      error: 'Country code not supported at this time. If this is a valid country code, please open an issue with the developers.', 
-      supportedCountries: Object.keys(patterns) 
-    });
-  }
-
-  const result = ValidationFunctions.isZipCode(inputString, upperCountryCode, patterns);
-  res.json({ result });
-});
-
-app.post('/api/isInteger', (req, res) => {
-  const { inputString } = req.body;
-
-  if (!inputString) {
-    return res.status(400).json({
-      error: 'inputString is required.',
-    });
-  }
-
-  const result = ValidationFunctions.isInteger(inputString);
-  
-
-  res.json({ result });
-});
-
-app.post('/api/isHexadecimal', (req, res) => {
-  const { inputString } = req.body;
-
-  if (!inputString) {
-    return res.status(400).json({ error: requiredParameterResponse });
-  }
-
-  const result = ValidationFunctions.isHexadecimal(inputString);
-  res.json({ result });
-});
-app.post('/api/isDecimal', (req, res) => {
-  const { inputString } = req.body;
-  
-  if (!inputString) {
-      return res.status(400).json({ 
-          error: "inputString is required." 
-      });
-  }
-  
-  const result = ValidationFunctions.isDecimal(inputString);
-  
-  res.json({ result });
-});
-
-app.post('/api/isLowercase', (req, res) => {
-  const { inputString } = req.body;
-
-  if(!inputString) {
-    return res.status(400).json({ error: requiredParameterResponse });
-  }
-  const result = ValidationFunctions.isLowercase(inputString);
-
-  res.json({ result });
-});
-
-app.post('/api/isDate', (req, res) => {
-  const { inputString } = req.body;
-
-  if (!inputString) {
-    return res.status(400).json({ error: requiredParameterResponse });
-  }
-
-  const result = ValidationFunctions.isDate(inputString);
-  res.json({ result });
-});
-
-app.post('/api/onlyTheseCharacters', (req, res) => {
-  const { onlyTheseCharacters, inputString } = req.body;
-
-  if (!onlyTheseCharacters || !inputString) {
-    return res.status(400).json({
-      error: "characters to include and inputString are required.",
-    });
-  }
-
-  const result = ValidationFunctions.includeOnlyTheseCharacters(inputString, onlyTheseCharacters);
-  res.json({ result });
-});
-
-app.post('/api/isAllCaps', (req, res) => {
-  const { inputString } = req.body;
-
-  if(!inputString) {
-    return res.status(400).json({ error: requiredParameterResponse });
-  }
-  const result = ValidationFunctions.isAllCaps(inputString);
-
-  res.json({ result });
-});
-
-app.post('/api/isUrl', async (req, res) => {
-  const inputString = req.body.inputString;
-  const connectToUrlTest = req.body.connectToUrlTest ?? false
-  
-  if(!inputString) {
-    return res.status(400).json({ error: requiredParameterResponse });
-  }
-  const result = ValidationFunctions.isUrl(inputString);
-    
-  if(!connectToUrlTest){
-    return res.json({ result });
-  }
-
-  const connectToUrlResult = await urlUtils.isUrlReachable(inputString);
-
-  return res.json({
-    result,
-    connectToUrlResult
-  });
-});
-
-app.post('/api/isBinaryString', (req, res) => {
-  const inputString = req.body.inputString;
-
-  if (!inputString) {
-    return res.status(400).json({ error: requiredParameterResponse });
-  }
-  const result = ValidationFunctions.isBinaryString(inputString);
-  return res.json({ result });
-});
 
 app.get('/', (req, res) => {
   res.render('index');
