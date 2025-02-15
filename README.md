@@ -84,6 +84,10 @@ Create new issues for features, innovation ideas, bugs, or enhancements. If you 
 
 ## Running the API
 
+First clone or fork the project using Git.
+
+Then `cd` into the root of the project to run the project.
+
 Using `node`  
 ```bash
 node index.js  // Or npm start
