@@ -6,6 +6,7 @@ const cors = require('cors')
 const ValidationFunctions = require('./validationFunctions');
 const { urlUtils } = require("./utils/urlUtils");
 const expressJSDocSwagger = require('express-jsdoc-swagger');
+const requiredParameterResponse = 'Input string required as a parameter.'
 
 // Load environment variables
 require('dotenv').config();
