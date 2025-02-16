@@ -8,6 +8,7 @@ const { urlUtils } = require("./utils/urlUtils");
 const expressJSDocSwagger = require('express-jsdoc-swagger');
 const fetchAiGeneratedContent = require('./runGeminiPrompt');
 const extractJSON = require('./extractJSON');
+const requiredParameterResponse = 'Input string required as a parameter.'
 
 // Load environment variables
 require('dotenv').config();
