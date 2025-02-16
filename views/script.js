@@ -11,7 +11,7 @@ async function getResponse() {
       method: "POST",
       body: JSON.stringify({
         inputString: inputString,
-        fieldToValidate: fieldToValidate,
+        fieldToValidate: fieldToValidate.slice(0, 100), // Limit to 100 characters
       }),
       headers: {
         "Content-Type": "application/json",
