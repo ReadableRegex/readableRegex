@@ -8,7 +8,7 @@ async function fetchAiGeneratedContent(prompt) {
     return result.response.text(); // return the string result
   } catch (e) {
     console.error("Error generating content:", e.message);
-    return e.message;
+    throw e
   }
 }
 module.exports = fetchAiGeneratedContent;
