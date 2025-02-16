@@ -166,9 +166,10 @@ app.post('/api/isField', async (req, res) => {
   Note:In case of phone number take into consideration all phone number formats all over the world
   Note:In case of zip code take into consideration zip codes all over the world
   `;
-    const aiJsonResponse = await fetchAiGeneratedContent(instructionToLLM)
-    const jsonResult = extractJSON(aiJsonResponse) // get the string returned from LLM and extract only the JSON part from it
-    res.json(jsonResult);
+  
+  const aiJsonResponse = await fetchAiGeneratedContent(instructionToLLM)
+  const jsonResult = extractJSON(aiJsonResponse) // get the string returned from LLM and extract only the JSON part from it
+  res.json(jsonResult);
 
 });
 
