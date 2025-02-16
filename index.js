@@ -7,7 +7,6 @@ const ValidationFunctions = require('./validationFunctions');
 const { urlUtils } = require("./utils/urlUtils");
 const expressJSDocSwagger = require('express-jsdoc-swagger');
 const fetchAiGeneratedContent = require('./runGeminiPrompt');
-const extractJSON = require('./extractJSON');
 const requiredParameterResponse = 'Input string required as a parameter.'
 
 // Load environment variables
@@ -151,7 +150,7 @@ app.post('/api/isField', async (req, res) => {
   if (!inputString || !fieldToValidate) {
     return res.status(400).json({ error: requiredParameterResponse });
   }
-  const instructionToLLM = `Can you return true or false if this field '${fieldToValidate}' is valid? Here is the value for this field: '${inputString}'. Can you only return this in a JSON response(and don't write anything else like json or quotes,just the json result) where the 'result' property will be true or false, and the 'explanation' will be the reason for why it's true or false?
+  const instructionToLLM = `Can you return true or false if this field '${fieldToValidate}' is valid? Here is the value for this field: '${inputString}'. Can you only return this in a valid JSON string so I can parse it without the text formatting for JSON, and don't write anything else like json or quotes,just the json result) where the 'result' property will be true or false, and the 'explanation' will be the reason for why it's true or false?
   Note:treat special characters(.,@/-+ etc) and digits as Lowercase
   Note:Consider date formats of all over the world
   "// YYYY-MM-DD
@@ -168,8 +167,8 @@ app.post('/api/isField', async (req, res) => {
   `;
   try {
     const aiJsonResponse = await fetchAiGeneratedContent(instructionToLLM)
-    const jsonResult = extractJSON(aiJsonResponse) // get the string returned from LLM and extract only the JSON part from it
-    res.json(jsonResult);
+    const jsonResult = JSON.parse(aiJsonResponse)// get the string returned from LLM and extract only the JSON part from it
+    res.json(jsonResult)
   }
   catch (e) {
     res.json({error: e.message})
