@@ -1,5 +1,5 @@
 const { GoogleGenerativeAI } = require("@google/generative-ai");
-require("dotenv").config({ path: ".env.example" });
+require("dotenv").config({ path: ".env" });
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 async function fetchAiGeneratedContent(prompt) {
   try {
