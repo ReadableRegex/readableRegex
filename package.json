@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest",
     "start": "node index.js",
-    "watch": "nodemon index.js"
+    "dev": "nodemon index.js"
   },
   "author": "",
   "license": "ISC",
