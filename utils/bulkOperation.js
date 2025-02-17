@@ -15,6 +15,8 @@ const ValidationFunctions = require("../validationFunctions")
  *      {
  *          value: "1234.021a",
  *          operations: [{operation: "isNumber"}, {operation: "isAlphaNumeric"}], 
+ *          getAndBooleanResult: true,
+ *          getOrBooleanResult: false
  *      },
  *      {
  *          value: "test1234@gmail.com", 
@@ -50,9 +52,9 @@ const bulkOperation = (operationSet) => {
 
         let resultForValueObject = {
             originalValue: value,
-            results: []
+            results: [],
         }
-        
+
         operationsArray.forEach((operationForValueObject) => {
             const { operation } = operationForValueObject
             // index the function from a class by it's name and invoke it
@@ -62,6 +64,12 @@ const bulkOperation = (operationSet) => {
                 result: result
             })
         })
+        if(operationMetadataObject.getAndBooleanResult) {
+            resultForValueObject.andBooleanResult = resultForValueObject.results.every(resultObject => resultObject.result === true)
+        }
+        if(operationMetadataObject.getOrBooleanResult) {
+            resultForValueObject.orBooleanResult = resultForValueObject.results.some(resultObject => resultObject.result === true)
+        }
         bulkOperationsResultObject.results.push(resultForValueObject)
         
     })
