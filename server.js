@@ -6,6 +6,7 @@ const express = require('express');
 const { rateLimit } = require("express-rate-limit");
 const app = express();
 const cors = require('cors')
+const bulkOperation = require('./utils/bulkOperation')
 const ValidationFunctions = require('./validationFunctions');
 const { urlUtils } = require("./utils/urlUtils");
 const expressJSDocSwagger = require('express-jsdoc-swagger');
@@ -809,14 +810,12 @@ app.post('/api/isEqual', (req, res) => {
 
 
 app.post('/api/bulkOperation', (req, res) => {
-  
-
-
-  if (!inputString || !comparisonString) {
-    return res.status(400).json({ error: "inputString and comparisonString are required." });
+  const {operationSet} = req.body
+  if (!operationSet || !(operationSet  instanceof Array)) {
+    return res.status(400).json({ error: "Request must have operationSet property and must be array" });
   }
 
-  const result = ValidationFunctions.bulkOperation(inputString, comparisonString, caseSensitive);
+  const result = bulkOperation(operationSet);
   res.json({ result });
 });
 
