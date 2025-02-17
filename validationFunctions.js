@@ -4,6 +4,14 @@ module.exports = class ValidationFunctions {
     return value.replace(/[^0-9]/g, '');
   }
 
+  /**
+   * If integer return true, otherwise false
+   */
+  static isInteger(value) {
+    const regex = /^(0|[1-9][0-9]*)$/
+    return regex.test(value)
+  }
+
   // Function to remove all non-letter characters (including spaces and punctuation)
   static onlyLetters(value) {
     return value.replace(/[^a-zA-Z]/g, '');
@@ -71,7 +79,7 @@ module.exports = class ValidationFunctions {
   static isUrl(value) {
     return /^(https?:\/\/)?([\w.-]+)\.([a-z]{2,6})(\/[^\s]*)?$/i.test(value);
   }
-  
+
   static isDate(dateStr) {
     if (!dateStr || typeof dateStr !== "string") return false;
 
@@ -79,14 +87,14 @@ module.exports = class ValidationFunctions {
     if (!isNaN(date.getTime())) return true;
 
     const dateFormats = [
-        /^\d{4}-\d{2}-\d{2}$/,                   // YYYY-MM-DD
-        /^\d{2}\/\d{2}\/\d{4}$/,                 // MM/DD/YYYY or DD/MM/YYYY
-        /^\d{4}\/\d{2}\/\d{2}$/,                 // YYYY/MM/DD
-        /^\d{2}-\d{2}-\d{4}$/,                   // DD-MM-YYYY or MM-DD-YYYY
-        /^\d{4}\.\d{2}\.\d{2}$/,                 // YYYY.MM.DD
-        /^\d{2}\.\d{2}\.\d{4}$/,                 // DD.MM.YYYY or MM.DD.YYYY
-        /^\d{8}$/,                               // YYYYMMDD
-        /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/  // YYYY-MM-DD HH:mm:ss
+      /^\d{4}-\d{2}-\d{2}$/,                   // YYYY-MM-DD
+      /^\d{2}\/\d{2}\/\d{4}$/,                 // MM/DD/YYYY or DD/MM/YYYY
+      /^\d{4}\/\d{2}\/\d{2}$/,                 // YYYY/MM/DD
+      /^\d{2}-\d{2}-\d{4}$/,                   // DD-MM-YYYY or MM-DD-YYYY
+      /^\d{4}\.\d{2}\.\d{2}$/,                 // YYYY.MM.DD
+      /^\d{2}\.\d{2}\.\d{4}$/,                 // DD.MM.YYYY or MM.DD.YYYY
+      /^\d{8}$/,                               // YYYYMMDD
+      /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/  // YYYY-MM-DD HH:mm:ss
     ];
 
     return dateFormats.some((regex) => regex.test(dateStr));
@@ -108,5 +116,5 @@ module.exports = class ValidationFunctions {
     }
     return caseSensitive ? value === comparison : value.toLowerCase() === comparison.toLowerCase();
   }
-  
+
 }

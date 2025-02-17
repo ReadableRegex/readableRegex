@@ -490,7 +490,7 @@ app.post('/api/isInteger', (req, res) => {
 
   if (!inputString) {
     return res.status(400).json({
-      error: 'inputString is required.',
+      error: { error: requiredParameterResponse }
     });
   }
 
