@@ -1,26 +1,26 @@
 module.exports = class ValidationFunctions {
   // Function to remove all non-numeric characters
-  static onlyNumbers(str) {
-    return str.replace(/[^0-9]/g, '');
+  static onlyNumbers(value) {
+    return value.replace(/[^0-9]/g, '');
   }
 
   // Function to remove all non-letter characters (including spaces and punctuation)
-  static onlyLetters(str) {
-    return str.replace(/[^a-zA-Z]/g, '');
+  static onlyLetters(value) {
+    return value.replace(/[^a-zA-Z]/g, '');
   }
 
-  static onlySpecialCharacters(str) {
-    return str.replace(/[a-zA-Z0-9\s]/g, ''); // Keep only special characters
+  static onlySpecialCharacters(value) {
+    return value.replace(/[a-zA-Z0-9\s]/g, ''); // Keep only special characters
   }
 
-  static isEmailAddress(str) {
+  static isEmailAddress(value) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(str);
+    return emailRegex.test(value);
   }
 
   // Function to trim leading and trailing whitespace
-  static trim(str) {
-    return str.trim();
+  static trim(value) {
+    return value.trim();
   }
 
   // Function to exclude specific characters
@@ -29,47 +29,47 @@ module.exports = class ValidationFunctions {
     return inputString.replace(regex, "");
   }
   
-  static isPhoneNumber(str) {
+  static isPhoneNumber(value) {
     // A basic phone number regex (you might need to adjust it for your specific needs)
     const phoneRegex = /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4}$/im;
-    return phoneRegex.test(str);
+    return phoneRegex.test(value);
   }
 
-  static isAlphaNumeric(str) {
+  static isAlphaNumeric(value) {
     const alphaNumericRegex = /^[a-zA-Z0-9]+$/;
-    return alphaNumericRegex.test(str);
+    return alphaNumericRegex.test(value);
   }
 
 
-  static isZipCode(str, countryCode, patterns) {
-    return patterns[countryCode].test(str.replace(/\s/g, ''));
+  static isZipCode(value, countryCode, patterns) {
+    return patterns[countryCode].test(value.replace(/\s/g, ''));
   }
 
-  static isLowercase(str) {
-    return /^[a-z]+$/g.test(str);
+  static isLowercase(value) {
+    return /^[a-z]+$/g.test(value);
   }
 
-  static isHexadecimal(str) {
-    return /^0x[0-9a-fA-F]+$/.test(str);
+  static isHexadecimal(value) {
+    return /^0x[0-9a-fA-F]+$/.test(value);
   }
 
-  static isDecimal(str) {
+  static isDecimal(value) {
     // Allowed decimal: 23.45; 34.; .45; -273.15; -42.; -.45;
     const isDecimalRegex = /^[+-]?((\d+(\.\d*))|(\.\d+))$/;
-    return isDecimalRegex.test(str);
+    return isDecimalRegex.test(value);
   }
 
-  static isBinaryString(str) {
+  static isBinaryString(value) {
     const regex = new RegExp("^[01]+$");
-    return regex.test(str);
+    return regex.test(value);
   }
 
-  static isAllCaps(str) {
-    return /^[A-Z]+$/.test(str);
+  static isAllCaps(value) {
+    return /^[A-Z]+$/.test(value);
   }
   
-  static isUrl(str) {
-    return /^(https?:\/\/)?([\w.-]+)\.([a-z]{2,6})(\/[^\s]*)?$/i.test(str);
+  static isUrl(value) {
+    return /^(https?:\/\/)?([\w.-]+)\.([a-z]{2,6})(\/[^\s]*)?$/i.test(value);
   }
   
   static isDate(dateStr) {
@@ -102,11 +102,11 @@ module.exports = class ValidationFunctions {
     return validBooleanValues.includes(inputString)
   }
 
-  static isEqual(str, comparison, caseSensitive = true) {
-    if (typeof str !== "string" || typeof comparison !== "string") {
+  static isEqual(value, comparison, caseSensitive = true) {
+    if (typeof value !== "string" || typeof comparison !== "string") {
       return false;
     }
-    return caseSensitive ? str === comparison : str.toLowerCase() === comparison.toLowerCase();
+    return caseSensitive ? value === comparison : value.toLowerCase() === comparison.toLowerCase();
   }
   
 }
