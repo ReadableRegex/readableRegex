@@ -168,11 +168,3 @@ TBD
 
 To support the deployment, scaling, and distribution of this API (big or small), we will want to gather funds.
 The plan for this is pending as this is a very new release
-
-## Contributors
-
-Here are the amazing people taking this idea and turning it into a reality!
-
-<a href="https://github.com/drewg2009/readableRegex/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=drewg2009/readableRegex" />
-</a>
