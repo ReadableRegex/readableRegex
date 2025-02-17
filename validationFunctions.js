@@ -29,50 +29,50 @@ module.exports = class ValidationFunctions {
     return inputString.replace(regex, "");
   }
   
-    static isPhoneNumber(str) {
-        // A basic phone number regex (you might need to adjust it for your specific needs)
-        const phoneRegex = /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4}$/im;
-        return phoneRegex.test(str);
-    }
+  static isPhoneNumber(str) {
+    // A basic phone number regex (you might need to adjust it for your specific needs)
+    const phoneRegex = /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4}$/im;
+    return phoneRegex.test(str);
+  }
 
-    static isAlphaNumeric(str) {
-        const alphaNumericRegex = /^[a-zA-Z0-9]+$/;
-        return alphaNumericRegex.test(str);
-    }
+  static isAlphaNumeric(str) {
+    const alphaNumericRegex = /^[a-zA-Z0-9]+$/;
+    return alphaNumericRegex.test(str);
+  }
 
 
-    static isZipCode(str, countryCode, patterns) {
-        return patterns[countryCode].test(str.replace(/\s/g, ''));
-    }
+  static isZipCode(str, countryCode, patterns) {
+    return patterns[countryCode].test(str.replace(/\s/g, ''));
+  }
 
-    static isLowercase(str) {
-        return /^[a-z]+$/g.test(str);
-    }
+  static isLowercase(str) {
+    return /^[a-z]+$/g.test(str);
+  }
 
-    static isHexadecimal(str) {
-        return /^0x[0-9a-fA-F]+$/.test(str);
-    }
+  static isHexadecimal(str) {
+    return /^0x[0-9a-fA-F]+$/.test(str);
+  }
 
-    static isDecimal(str) {
-      // Allowed decimal: 23.45; 34.; .45; -273.15; -42.; -.45;
-      const isDecimalRegex = /^[+-]?((\d+(\.\d*))|(\.\d+))$/;
-      return isDecimalRegex.test(str);
-    }
+  static isDecimal(str) {
+    // Allowed decimal: 23.45; 34.; .45; -273.15; -42.; -.45;
+    const isDecimalRegex = /^[+-]?((\d+(\.\d*))|(\.\d+))$/;
+    return isDecimalRegex.test(str);
+  }
 
-    static isBinaryString(str) {
-      const regex = new RegExp("^[01]+$");
-      return regex.test(str);
-    }
+  static isBinaryString(str) {
+    const regex = new RegExp("^[01]+$");
+    return regex.test(str);
+  }
 
-    static isAllCaps(str) {
-        return /^[A-Z]+$/.test(str);
-    }
-    
-    static isUrl(str) {
-        return /^(https?:\/\/)?([\w.-]+)\.([a-z]{2,6})(\/[^\s]*)?$/i.test(str);
-    }
+  static isAllCaps(str) {
+    return /^[A-Z]+$/.test(str);
+  }
   
-    static isDate(dateStr) {
+  static isUrl(str) {
+    return /^(https?:\/\/)?([\w.-]+)\.([a-z]{2,6})(\/[^\s]*)?$/i.test(str);
+  }
+  
+  static isDate(dateStr) {
     if (!dateStr || typeof dateStr !== "string") return false;
 
     const date = new Date(dateStr);
@@ -101,4 +101,12 @@ module.exports = class ValidationFunctions {
     const validBooleanValues = ['true', 'false', '0', '1', 'TRUE', 'FALSE', 'True', 'False']
     return validBooleanValues.includes(inputString)
   }
+
+  static isMatch(str, comparison, caseSensitive = true) {
+    if (typeof str !== "string" || typeof comparison !== "string") {
+      return false;
+    }
+    return caseSensitive ? str === comparison : str.toLowerCase() === comparison.toLowerCase();
+  }
+  
 }

@@ -1,4 +1,4 @@
-const ValidationFunctions = require('../validationFunctions');
+const ValidationFunctions = require('../../validationFunctions');
 
 describe('ValidationFunctions.onlyTheseCharacters', () => {
     it("should only include certain characters", () => {

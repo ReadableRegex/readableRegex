@@ -90,11 +90,11 @@ Then `cd` into the root of the project to run the project.
 
 Using `node`  
 ```bash
-node index.js  // Or npm start
+node app.js  // Or npm start
 ```
-Or if you want your backend changes to refresh automatically you can use `nodemon`
+Or if you want your backend changes to refresh automatically you can use `nodemon` with the following command:
 ```bash
-nodemon index.js
+npm run dev  // This runs nodemon app.js
 ```
 
 ## Documentation

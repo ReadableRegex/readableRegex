@@ -1,15 +1,12 @@
 const express = require('express');
 const { rateLimit } = require("express-rate-limit");
 const app = express();
-const port = process.env.PORT || 3000;
 const cors = require('cors')
 const ValidationFunctions = require('./validationFunctions');
 const { urlUtils } = require("./utils/urlUtils");
 const expressJSDocSwagger = require('express-jsdoc-swagger');
 const requiredParameterResponse = 'Input string required as a parameter.'
 
-// Load environment variables
-require('dotenv').config();
 /**
  * Global rate limiter middleware
  * limits the number of request sent to our application
@@ -65,12 +62,6 @@ expressJSDocSwagger(app)(options);
 
 app.use(limiter)
 
-// Set API URL based on environment
-const apiUrl =
-  process.env.NODE_ENV === 'production'
-    ? process.env.PROD_API_URL
-    : 'http://localhost:3000'
-
 app.use(cors())
 // Middleware to parse JSON request bodies
 app.use(express.json());
@@ -120,6 +111,14 @@ app.set('view engine', 'pug');
  * @typedef {object} IsUrlModel
  * @property {string} inputString.required - The URL string to validate
  * @property {boolean} [connectToUrlTest] - Optionally test if the URL is reachable
+ */
+
+/**
+ * A MatchRequest
+ * @typedef {object} MatchRequest
+ * @property {string} inputString.required - The input string to compare
+ * @property {string} comparisonString.required - The string to compare against
+ * @property {boolean} [caseSensitive=true] - Whether the comparison should be case-sensitive (default: true)
  */
 
 /**
@@ -760,11 +759,51 @@ app.post('/api/isBinaryString', (req, res) => {
   return res.json({ result });
 });
 
+/**
+ * POST /api/isMatch
+ * @summary Checks if the input string matches the comparison string
+ * @description Compares two strings and returns true if they match. Supports optional case sensitivity.
+ * @param {MatchRequest} request.body.required - The request body containing the strings to compare
+ * @return {BasicResponse} 200 - Success response with a boolean result indicating if the strings match
+ * @return {BadRequestResponse} 400 - Bad request response when input is missing or invalid
+ * @example request - case-sensitive match
+ * {
+ *   "inputString": "Hello",
+ *   "comparisonString": "Hello",
+ *   "caseSensitive": true
+ * }
+ * @example response - 200 - example payload
+ * {
+ *   "result": true
+ * }
+ * @example request - case-insensitive match
+ * {
+ *   "inputString": "Hello",
+ *   "comparisonString": "hello",
+ *   "caseSensitive": false
+ * }
+ * @example response - 200 - example payload
+ * {
+ *   "result": true
+ * }
+ * @example response - 400 - example for missing input string
+ * {
+ *   "error": "inputString and comparisonString are required."
+ * }
+ */
+app.post('/api/isMatch', (req, res) => {
+  const { inputString, comparisonString, caseSensitive = true } = req.body;
+
+  if (!inputString || !comparisonString) {
+    return res.status(400).json({ error: "inputString and comparisonString are required." });
+  }
+
+  const result = ValidationFunctions.isMatch(inputString, comparisonString, caseSensitive);
+  res.json({ result });
+});
+
 app.get('/', (req, res) => {
   res.render('index');
 });
 
-app.listen(port, () => {
-  console.log(`Server is listening on port ${port}`);
-  console.log(`API URL: ${apiUrl}`);
-});
+module.exports = app;
