@@ -807,8 +807,6 @@ app.post('/api/isEqual', (req, res) => {
   res.json({ result });
 });
 
-
-
 app.post('/api/bulkOperation', (req, res) => {
   const {operationSet} = req.body
   if (!operationSet || !(operationSet  instanceof Array)) {
