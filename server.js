@@ -806,6 +806,21 @@ app.post('/api/isEqual', (req, res) => {
   res.json({ result });
 });
 
+
+
+app.post('/api/bulkOperation', (req, res) => {
+  
+
+
+  if (!inputString || !comparisonString) {
+    return res.status(400).json({ error: "inputString and comparisonString are required." });
+  }
+
+  const result = ValidationFunctions.bulkOperation(inputString, comparisonString, caseSensitive);
+  res.json({ result });
+});
+
+
 app.get('/', (req, res) => {
   res.render('index');
 });
