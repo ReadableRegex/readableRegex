@@ -4,6 +4,14 @@ module.exports = class ValidationFunctions {
     return str.replace(/[^0-9]/g, '');
   }
 
+  /**
+   * If integer return true, otherwise false
+   */
+  static isInteger(str) {
+    const regex = /^(0|[1-9][0-9]*)$/
+    return regex.test(str)
+  }
+
   // Function to remove all non-letter characters (including spaces and punctuation)
   static onlyLetters(str) {
     return str.replace(/[^a-zA-Z]/g, '');
@@ -28,7 +36,7 @@ module.exports = class ValidationFunctions {
     const regex = new RegExp(`[${excludeChars}]`, "g");
     return inputString.replace(regex, "");
   }
-  
+
   static isPhoneNumber(str) {
     // A basic phone number regex (you might need to adjust it for your specific needs)
     const phoneRegex = /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4}$/im;
@@ -67,11 +75,11 @@ module.exports = class ValidationFunctions {
   static isAllCaps(str) {
     return /^[A-Z]+$/.test(str);
   }
-  
+
   static isUrl(str) {
     return /^(https?:\/\/)?([\w.-]+)\.([a-z]{2,6})(\/[^\s]*)?$/i.test(str);
   }
-  
+
   static isDate(dateStr) {
     if (!dateStr || typeof dateStr !== "string") return false;
 
@@ -79,14 +87,14 @@ module.exports = class ValidationFunctions {
     if (!isNaN(date.getTime())) return true;
 
     const dateFormats = [
-        /^\d{4}-\d{2}-\d{2}$/,                   // YYYY-MM-DD
-        /^\d{2}\/\d{2}\/\d{4}$/,                 // MM/DD/YYYY or DD/MM/YYYY
-        /^\d{4}\/\d{2}\/\d{2}$/,                 // YYYY/MM/DD
-        /^\d{2}-\d{2}-\d{4}$/,                   // DD-MM-YYYY or MM-DD-YYYY
-        /^\d{4}\.\d{2}\.\d{2}$/,                 // YYYY.MM.DD
-        /^\d{2}\.\d{2}\.\d{4}$/,                 // DD.MM.YYYY or MM.DD.YYYY
-        /^\d{8}$/,                               // YYYYMMDD
-        /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/  // YYYY-MM-DD HH:mm:ss
+      /^\d{4}-\d{2}-\d{2}$/,                   // YYYY-MM-DD
+      /^\d{2}\/\d{2}\/\d{4}$/,                 // MM/DD/YYYY or DD/MM/YYYY
+      /^\d{4}\/\d{2}\/\d{2}$/,                 // YYYY/MM/DD
+      /^\d{2}-\d{2}-\d{4}$/,                   // DD-MM-YYYY or MM-DD-YYYY
+      /^\d{4}\.\d{2}\.\d{2}$/,                 // YYYY.MM.DD
+      /^\d{2}\.\d{2}\.\d{4}$/,                 // DD.MM.YYYY or MM.DD.YYYY
+      /^\d{8}$/,                               // YYYYMMDD
+      /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/  // YYYY-MM-DD HH:mm:ss
     ];
 
     return dateFormats.some((regex) => regex.test(dateStr));
@@ -108,5 +116,5 @@ module.exports = class ValidationFunctions {
     }
     return caseSensitive ? str === comparison : str.toLowerCase() === comparison.toLowerCase();
   }
-  
+
 }
