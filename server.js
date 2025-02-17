@@ -809,7 +809,7 @@ app.post('/api/isEqual', (req, res) => {
 
 app.post('/api/bulkOperation', (req, res) => {
   const {operationSet} = req.body
-  if (!operationSet || !(operationSet  instanceof Array)) {
+  if (!operationSet || !(operationSet instanceof Array)) {
     return res.status(400).json({ error: "Request must have operationSet property and must be array" });
   }
 
