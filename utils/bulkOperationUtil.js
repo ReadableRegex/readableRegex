@@ -11,7 +11,7 @@
  * Any additonal arguments to the function can be passed as key value pairs as well, where the key is the arg name 
  * and the value is the arg value. 
  * 
- * 
+ * ---
  * Example operations object input: 
  * 
  * {
@@ -22,12 +22,33 @@
  *      }
  *  ]
  * }
+ * ---
  * 
+ * We have to take the string value of the functions passed and call them with the arguments. 
+ * 
+ * For example:
+ * ---
+ * If [{operation: "excludeTheseCharacters", excludeTheseCharacters: ["1", "2"]} is passed in as an operation,
+ * we want to call this function with the args by using the Function constructor. We don't want to create a duplicate fn. 
+ * Just want to create a Function to return the result of this one. 
+ * 
+ * The resulting code may look like the following:
+ * 
+ * new Function("return excludeTheseCharacters(["1", "2"]"}
+ * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function
+ * ---
  * 
  * @param {*} operationsObject 
  */
 function bulkOperation(operationsObject) {
 
+    try {
+
+        const { operations} = operationsObject
+
+        
+
+    }
 
 }
 
