@@ -1,6 +1,8 @@
 # Readable Regex API
 
-This API provides endpoints for performing common string manipulation tasks, specifically removing non-numeric and non-letter characters from input strings. It's built using Express.js and designed to encapsulate the underlying regular expression logic for improved readability and maintainability.
+In a nutshell, Readable Regex is a REST API to transform and validate data easily, anywhere, without regex.
+
+It's built using Express.js and designed to encapsulate the underlying regular expression logic for improved readability and maintainability.
 
 Who knows, this API could evolve to do a lot more than it currently does, so please keep an open mind and bring all ideas to the table, they are welcome!
 
