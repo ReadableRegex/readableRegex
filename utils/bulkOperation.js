@@ -56,7 +56,7 @@ const bulkOperation = (operationSet) => {
         operationsArray.forEach((operationForValueObject) => {
             const operation = operationForValueObject.operation
             // index the function from a class and invoke it
-            const result = ValidationFunctions[operation]()
+            const result = ValidationFunctions[operation](value)
             resultForValueObject.results.push({
                 operation: operation,
                 result: result
