@@ -1,3 +1,7 @@
+// app.js
+// The app.js file is used to set up the server, load environment variables, and start listening on a given port.
+// It imports the server configuration from server.js to avoid an issue where SuperTest prevents the server from properly closing after running integration tests.
+
 const app = require('./server.js');
 // Load environment variables
 require('dotenv').config();

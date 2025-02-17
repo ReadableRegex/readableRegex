@@ -1,3 +1,7 @@
+// server.js
+// This file sets up the core express server and middleware.
+// We separate the server configuration into this file to address an issue where SuperTest prevents the server from properly closing after tests are executed.
+
 const express = require('express');
 const { rateLimit } = require("express-rate-limit");
 const app = express();
