@@ -760,7 +760,7 @@ app.post('/api/isBinaryString', (req, res) => {
 });
 
 /**
- * POST /api/isMatch
+ * POST /api/isEqual
  * @summary Checks if the input string matches the comparison string
  * @description Compares two strings and returns true if they match. Supports optional case sensitivity.
  * @param {MatchRequest} request.body.required - The request body containing the strings to compare
@@ -791,14 +791,14 @@ app.post('/api/isBinaryString', (req, res) => {
  *   "error": "inputString and comparisonString are required."
  * }
  */
-app.post('/api/isMatch', (req, res) => {
+app.post('/api/isEqual', (req, res) => {
   const { inputString, comparisonString, caseSensitive = true } = req.body;
 
   if (!inputString || !comparisonString) {
     return res.status(400).json({ error: "inputString and comparisonString are required." });
   }
 
-  const result = ValidationFunctions.isMatch(inputString, comparisonString, caseSensitive);
+  const result = ValidationFunctions.isEqual(inputString, comparisonString, caseSensitive);
   res.json({ result });
 });
 

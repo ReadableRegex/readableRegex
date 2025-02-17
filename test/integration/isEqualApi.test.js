@@ -1,10 +1,10 @@
 const request = require('supertest');
 const app = require('../../index.js');
 
-describe('POST /api/isMatch', () => {
+describe('POST /api/isEqual', () => {
   test('should return true for exact match with case sensitivity enabled', async () => {
     const response = await request(app)
-      .post('/api/isMatch')
+      .post('/api/isEqual')
       .send({ inputString: 'HelloWorld', comparisonString: 'HelloWorld', caseSensitive: true });
 
     expect(response.status).toBe(200);
@@ -13,7 +13,7 @@ describe('POST /api/isMatch', () => {
 
   test('should return false for different case when case sensitivity is enabled', async () => {
     const response = await request(app)
-      .post('/api/isMatch')
+      .post('/api/isEqual')
       .send({ inputString: 'HelloWorld', comparisonString: 'helloworld', caseSensitive: true });
 
     expect(response.status).toBe(200);
@@ -22,7 +22,7 @@ describe('POST /api/isMatch', () => {
 
   test('should return true for case-insensitive match', async () => {
     const response = await request(app)
-      .post('/api/isMatch')
+      .post('/api/isEqual')
       .send({ inputString: 'HelloWorld', comparisonString: 'helloworld', caseSensitive: false });
 
     expect(response.status).toBe(200);
@@ -31,7 +31,7 @@ describe('POST /api/isMatch', () => {
 
   test('should return 400 error if inputString is missing', async () => {
     const response = await request(app)
-      .post('/api/isMatch')
+      .post('/api/isEqual')
       .send({ comparisonString: 'HelloWorld', caseSensitive: true });
 
     expect(response.status).toBe(400);
@@ -40,7 +40,7 @@ describe('POST /api/isMatch', () => {
 
   test('should return 400 error if comparisonString is missing', async () => {
     const response = await request(app)
-      .post('/api/isMatch')
+      .post('/api/isEqual')
       .send({ inputString: 'HelloWorld', caseSensitive: true });
 
     expect(response.status).toBe(400);

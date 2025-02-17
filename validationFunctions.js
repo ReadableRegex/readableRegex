@@ -102,7 +102,7 @@ module.exports = class ValidationFunctions {
     return validBooleanValues.includes(inputString)
   }
 
-  static isMatch(str, comparison, caseSensitive = true) {
+  static isEqual(str, comparison, caseSensitive = true) {
     if (typeof str !== "string" || typeof comparison !== "string") {
       return false;
     }
