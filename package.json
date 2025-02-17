@@ -2,7 +2,7 @@
   "name": "readable_regex",
   "version": "1.0.0",
   "description": "expose endpoints to get string responses from regex expressions easily",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon app.js",

@@ -1,5 +1,5 @@
 const request = require('supertest');
-const app = require('../../index.js');
+const app = require('../../server.js');
 
 describe('POST /api/isEqual', () => {
   test('should return true for exact match with case sensitivity enabled', async () => {

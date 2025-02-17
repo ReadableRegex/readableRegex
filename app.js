@@ -1,4 +1,4 @@
-const app = require('./index.js');
+const app = require('./server.js');
 // Load environment variables
 require('dotenv').config();
 
