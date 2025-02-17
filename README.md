@@ -6,6 +6,22 @@ Who knows, this API could evolve to do a lot more than it currently does, so ple
 
 Although the project has Regex in the name, it's not a requirement to use Regex on the backend if it's not possible or beneficial.
 
+## Navigating The Docs
+
+[Demo](#demo)<br/>
+[Summary](#summary)<br/>
+[Benefits](#benefits)<br/>
+[Usage](#usage)<br/>
+[How to Contribute](#how-to-contribute)<br/>
+[Dev Standards](#dev-standards)<br/>
+[New Features/Issues](#new-featuresissues)<br/>
+[Running the API](#running-the-api)<br/>
+[Documentation](#documentation)<br/>
+[Testing](#testing)<br/>
+[Support](#support)<br/>
+[Deployment](#deployment)<br/>
+[Donations](#donations)
+
 ## Demo
 
 Below is a demo app URL exposed from the API 
@@ -28,7 +44,7 @@ The API offers two primary functions: removing non-numeric characters and removi
 
 *   **Abstraction:** The API provides a layer of abstraction, shielding developers from the complexities of regular expressions. Clients of the API don't need to understand the underlying regex to use the string manipulation functions.
 
-## Usage (Example)
+## Usage
 
 Clients interact with the API by sending POST requests with query params containing the input string and endpoint. The API returns a JSON response with the modified string. See the individual endpoint documentation (if needed) for specific request and response formats.
 
