@@ -8,6 +8,11 @@ const ValidationFunctions = require('./validationFunctions');
 const { urlUtils } = require("./utils/urlUtils");
 const expressJSDocSwagger = require('express-jsdoc-swagger');
 
+// Constants
+const MAX_REQUEST_SIZE = '10mb';  // Maximum request body size (10 megabytes)
+const MAX_REQUEST_SIZE_BYTES = 10 * 1024 * 1024;  // 10MB in bytes
+const requiredParameterResponse = 'Input string required as a parameter.';
+
 // Load environment variables
 require('dotenv').config();
 /**
@@ -72,9 +77,28 @@ const apiUrl =
     : 'http://localhost:3000'
 
 app.use(cors())
-// Middleware to parse JSON request bodies
-app.use(express.json());
+// Middleware to parse JSON request bodies with size limit
+app.use(express.json({ 
+  limit: MAX_REQUEST_SIZE,
+  verify: (req, res, buf) => {
+    if (buf.length > MAX_REQUEST_SIZE_BYTES) {
+      throw new Error('Request payload too large');
+    }
+  }
+}));
+app.use(express.raw({ limit: MAX_REQUEST_SIZE }));
 app.set('view engine', 'pug');
+
+// Error handling middleware for payload size errors
+app.use((err, req, res, next) => {
+  if (err instanceof SyntaxError && err.status === 413) {
+    return res.status(413).json({ error: 'Input exceeds maximum size of 10MB' });
+  }
+  if (err.message === 'Request payload too large') {
+    return res.status(413).json({ error: 'Input exceeds maximum size of 10MB' });
+  }
+  next(err);
+});
 
 /**
  * Basic request
@@ -361,7 +385,12 @@ app.post('/api/isCSV', (req, res) => {
   const { inputString } = req.body;
 
   if (!inputString) {
-    return res.status(400).json(requiredParameterResponse);
+    return res.status(400).json({ error: requiredParameterResponse });
+  }
+
+  // Check if input size exceeds limit
+  if (Buffer.byteLength(inputString, 'utf8') > MAX_REQUEST_SIZE_BYTES) {
+    return res.status(413).json({ error: 'Input exceeds maximum size of 10MB' });
   }
 
   const records = [];
