@@ -18,6 +18,7 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
+    padding-top: 60px;
 }
 #main-header{
     font-size: 84px;
@@ -120,6 +121,51 @@ pre {
     word-wrap: break-word;
 }
 
+/* Navbar Styling */
+#navbar {
+    width: 100%;
+    background-color: #2C3E50;
+    padding: 15px 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+}
+
+#navbar ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    padding: 0;
+    margin: 0;
+}
+
+#navbar ul li {
+    display: inline;
+}
+
+#navbar ul li a {
+    text-decoration: none;
+    color: white;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 10px 15px;
+    transition: 0.3s;
+}
+
+#navbar ul li a:hover {
+    background-color: #4CAF50;
+    border-radius: 5px;
+}
+
+/* Adjust body to avoid content being hidden under navbar */
+body {
+    padding-top: 60px;
+}
+
+/* Footer Styling */
 footer a {
     color: #fff;
     text-decoration: none;
