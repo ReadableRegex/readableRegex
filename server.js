@@ -71,7 +71,11 @@ app.use(cors())
 // Middleware to parse JSON request bodies
 app.use(express.json());
 app.set('view engine', 'pug');
+// Ensure Express looks in the correct folder
+app.set('views', './views');
 
+// Serve static files
+app.use(express.static('public'));
 
 /**
  * Basic request
@@ -191,7 +195,7 @@ app.post('/api/isField', async (req, res) => {
     res.json(jsonResult)
   }
   catch (e) {
-    res.json({error: e.message})
+    res.json({ error: e.message })
   }
 
 });
@@ -878,16 +882,17 @@ app.post('/api/isEqual', (req, res) => {
   res.json({ result });
 });
 
+
 app.get('/', (req, res) => {
-  res.render('index');
+  res.render('pages/index', { title: 'Home' });
 });
 
 app.get('/about', (req, res) => {
-  res.render('about');
+  res.render('pages/about', { title: 'About', aboutPage: true }); // Readable Regex API - Comparison
 });
 
 app.get('/contact', (req, res) => {
-  res.render('contact');
+  res.render('pages/contact', { title: 'Contact' });
 });
 
 module.exports = app;
