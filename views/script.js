@@ -10,9 +10,8 @@ async function getResponse() {
     const response = await fetch(`${baseUrl}/api/${endpoint}`, {
       method: "POST",
       body: JSON.stringify({
-        inputString: inputString,
-        fieldToValidate: fieldToValidate.slice(0, 100), // Limit to 100 characters
-      }),
+        inputString: inputString
+            }),
       headers: {
         "Content-Type": "application/json",
       },
