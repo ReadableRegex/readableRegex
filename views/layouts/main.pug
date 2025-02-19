@@ -2,11 +2,7 @@ doctype html
 html
     head
         title= title
-        //- Default styles
         link(rel='stylesheet' href='/css/style.css')
-        if aboutPage
-            //- Only on About page
-            link(rel='stylesheet' href='/css/about.css')  
     body
         include ../partials/navbar.pug
         block content

@@ -21,7 +21,8 @@ body {
     padding-top: 60px;
 }
 #main-header{
-    font-size: 84px;
+    font-size: 64px;
+    text-align: center;
 }
 
 /* Container Styling */
@@ -33,6 +34,41 @@ body {
     width: 100%;
     max-width: 900px;
     margin: 20px;
+}
+
+/* Comparison Container Styling */
+.comparison-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1200px;
+  background: #fff;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+.comparison-box-parrent {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: start;
+}
+.comparison-box {
+  width: 48%;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+/* Traditional Side */
+.traditional {
+  background-color: #e0e0e0; /* Light gray for traditional side */
+}
+/* API Side */
+.api-side {
+  background-color: #e8f9f3; /* Light green for API side */
+  border: 2px solid #2ecc71; /* Green border to make it stand out */
 }
 
 /* Headings Styling */
@@ -121,6 +157,22 @@ pre {
     word-wrap: break-word;
 }
 
+/* Encouragement */
+.encouragement {
+  max-width: 1200px; /* Limit the width to make it more readable */
+  text-align: justify; /* Justify the text for even spacing */
+  font-size: 18px;
+  line-height: 1.6; /* Add line height for better readability */
+  color: #333;
+  margin: 0 auto 40px; /* Center it and add space below */
+  padding: 0 20px; /* Add padding for responsiveness */
+}
+
+/* Box Description */
+.description {
+  margin-bottom: 20px;
+}
+
 /* Navbar Styling */
 #navbar {
     width: 100%;
@@ -181,6 +233,19 @@ footer:hover {
     .container {
         padding: 20px;
         width: 100%;
+    }
+
+    .comparison-box-parrent {
+        flex-direction: column;
+        align-items: center;
+    }
+    .comparison-container {
+        flex-direction: column;
+        align-items: center;
+    }
+    .comparison-box {
+        width: 100%;
+        margin-bottom: 20px;
     }
 
     input[type="text"], select, button {

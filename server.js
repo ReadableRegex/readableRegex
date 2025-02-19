@@ -888,7 +888,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/about', (req, res) => {
-  res.render('pages/about', { title: 'About', aboutPage: true }); // Readable Regex API - Comparison
+  res.render('pages/about', { title: 'About' });
 });
 
 app.get('/contact', (req, res) => {
