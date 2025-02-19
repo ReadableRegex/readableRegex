@@ -11,7 +11,6 @@ Although the project has Regex in the name, it's not a requirement to use Regex 
 ## Navigating The Docs
 
 [Demo](#demo)<br/>
-[Summary](#summary)<br/>
 [Benefits](#benefits)<br/>
 [Usage](#usage)<br/>
 [How to Contribute](#how-to-contribute)<br/>
@@ -29,10 +28,6 @@ Although the project has Regex in the name, it's not a requirement to use Regex 
 Below is a demo app URL exposed from the API 
 
 https://readable-regex-8d81b79167bf.herokuapp.com/
-
-## Summary
-
-The API offers two primary functions: removing non-numeric characters and removing non-letter characters from a given string. These functions are accessible via POST requests to dedicated endpoints. The API accepts a JSON payload containing the input string and returns a JSON response with the modified string.
 
 ## Benefits
 
