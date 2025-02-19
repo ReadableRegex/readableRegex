@@ -92,6 +92,21 @@ app.set('view engine', 'pug');
  */
 
 /**
+ * Gemini validation request
+ * @typedef {object} GeminiValidationRequest
+ * @property {string} inputString.required - Input string
+ * @property {string} fieldToValidate.required - Field type to validate (i.e email, phone number, etc)
+ */
+
+/**
+ * Gemini response
+ * @typedef {object} GeminiResponse
+ * @property {string} result - true if matches field properties to validate, false otherwise
+ * @property {string} explanation - how it got to that result
+ */
+
+
+/**
  * A ExcludeCharactersModel
  * @typedef {object} ExcludeCharactersModel
  * @property {string} inputString.required - The inputString
@@ -131,12 +146,13 @@ app.set('view engine', 'pug');
 /**
  * POST /api/isField
  * @summary Returns true/false based on the input string and fieldToValidate
- * @param {BasicRequest} request.body.required
- * @return {BasicResponse} 200 - Success response
+ * @param {GeminiValidationRequest} request.body.required
+ * @return {GeminiResponse} 200 - Success response
  * @return {BadRequestResponse} 400 - Bad request response
  * @example request - test
  * {
- *   "inputString": "test@gmail.com"
+ *   "inputString": "test@gmail.com",
+ *   "fieldToValidate": "email"
  * }
  * @example response - 200 - example payload
  * {
