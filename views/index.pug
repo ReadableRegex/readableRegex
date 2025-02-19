@@ -11,7 +11,7 @@ html
         br
         input(id='inputString' type='text' placeholder='i.e. #1234' onkeyup='enableButton()')
         br
-        label Select an operation to perform
+        label Select a simple operation to perform (all operations can be found on our docs page)
         br
         br
         select(name='endpoint')
@@ -21,9 +21,6 @@ html
             option(value='isEmailAddress') Is Email Address
             option(value='isPhoneNumber') Is Phone Number
             option(Value='trim') Trim
-            //- TODO cannot currently run excludedCharacters this because it requires another input box for the excluded characters. 
-            //- Maybe instead of using input box, we should just have a place to define a json body and send the request
-            //- option(value='excludeTheseCharacters') Exclude These Characters
             option(value='isInteger') Is Integer
             option(value='isAlphaNumeric') Is Alpha Numeric
             option(value='isHexadecimal') Is Hexadecimal
