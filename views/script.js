@@ -1,7 +1,6 @@
 async function getResponse() {
   const inputString = document.querySelector("#inputString").value;
-  const fieldToValidate = document.querySelector("#fieldToValidate").value;
-  const endpoint = fieldToValidate.length?"isField":document.querySelector('select[name="endpoint"]').value;
+  const endpoint = document.querySelector('select[name="endpoint"]').value;
 
   // Use window.location.origin to get the base URL
   const baseUrl = window.location.origin;
