@@ -4,13 +4,19 @@
 
 const express = require('express');
 const { rateLimit } = require("express-rate-limit");
+const csv = require('csv-parser');
 const app = express();
 const cors = require('cors')
 const ValidationFunctions = require('./validationFunctions');
 const { urlUtils } = require("./utils/urlUtils");
 const expressJSDocSwagger = require('express-jsdoc-swagger');
 const fetchAiGeneratedContent = require('./runGeminiPrompt');
-const requiredParameterResponse = 'Input string required as a parameter.'
+
+// Constants and Error Messages
+const requiredParameterResponse = 'Input string required as a parameter.';
+const MAX_REQUEST_SIZE = '10mb';  // Maximum request body size (10 megabytes)
+const MAX_REQUEST_SIZE_BYTES = 10 * 1024 * 1024;  // 10MB in bytes
+const SIZE_LIMIT_ERROR = 'Input exceeds maximum size of 10MB';
 
 /**
  * Global rate limiter middleware
@@ -68,14 +74,36 @@ expressJSDocSwagger(app)(options);
 app.use(limiter)
 
 app.use(cors())
-// Middleware to parse JSON request bodies
-app.use(express.json());
+// Middleware to parse JSON request bodies with size limit
+app.use(express.json({ 
+  limit: MAX_REQUEST_SIZE,
+  verify: (req, res, buf) => {
+    if (buf.length > MAX_REQUEST_SIZE_BYTES) {
+      throw new Error('Request payload too large');
+    }
+  }
+}));
+app.use(express.raw({ limit: MAX_REQUEST_SIZE }));
 app.set('view engine', 'pug');
 // Ensure Express looks in the correct folder
 app.set('views', './views');
 
 // Serve static files
 app.use(express.static('public'));
+
+// Error handling middleware for payload size errors
+app.use((err, req, res, next) => {
+  if (err instanceof SyntaxError) {
+    if (err.status === 413 || err.type === 'entity.too.large') {
+      return res.status(413).json({ error: SIZE_LIMIT_ERROR });
+    }
+    return res.status(400).json({ error: 'Invalid JSON format' });
+  }
+  if (err.message === 'Request payload too large') {
+    return res.status(413).json({ error: SIZE_LIMIT_ERROR });
+  }
+  next();
+});
 
 /**
  * Basic request
@@ -882,6 +910,56 @@ app.post('/api/isEqual', (req, res) => {
   res.json({ result });
 });
 
+/**
+ * POST /api/isCSV
+ * @summary Validates if the input string is a valid CSV format
+ * @param {BasicRequest} request.body.required
+ * @return {BasicResponse} 200 - Success response
+ * @return {BadRequestResponse} 400 - Bad request response
+ * @example request - test
+ * {
+ *   "inputString": "name,age\njohn,30\nsmith,25"
+ * }
+ * @example response - 200 - example payload
+ * {
+ *   "result": true
+ * }
+ * @example response - 400 - example
+ * {
+ *   "error": "Input string required as a parameter."
+ * }
+ */
+app.post('/api/isCSV', (req, res) => {
+  const { inputString } = req.body;
+
+  if (!inputString) {
+    return res.status(400).json({ error: requiredParameterResponse });
+  }
+
+  // Check if input size exceeds limit
+  if (Buffer.byteLength(inputString, 'utf8') > MAX_REQUEST_SIZE_BYTES) {
+    return res.status(413).json({ error: SIZE_LIMIT_ERROR });
+  }
+
+  const records = [];
+  const csvParser = csv({ headers: false });
+
+  csvParser.on('data', (row) => {
+    records.push(row);
+  });
+
+  csvParser.on('end', () => {
+    res.json({ result: true });
+  });
+
+  csvParser.on('error', (err) => {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to parse CSV data' });
+  });
+
+  csvParser.write(inputString);
+  csvParser.end();
+});
 
 app.get('/', (req, res) => {
   res.render('pages/index', { title: 'Home' });
