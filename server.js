@@ -93,15 +93,16 @@ app.use(express.static('public'));
 
 // Error handling middleware for payload size errors
 app.use((err, req, res, next) => {
-  if (err instanceof SyntaxError) {
-    if (err.status === 413 || err.type === 'entity.too.large') {
-      return res.status(413).json({ error: SIZE_LIMIT_ERROR });
-    }
-    return res.status(400).json({ error: 'Invalid JSON format' });
-  }
-  if (err.message === 'Request payload too large') {
+  // Check for payload size errors first
+  if (err.status === 413 || err.type === 'entity.too.large' || err.message === 'Request payload too large') {
     return res.status(413).json({ error: SIZE_LIMIT_ERROR });
   }
+  
+  // Then check for syntax errors
+  if (err instanceof SyntaxError) {
+    return res.status(400).json({ error: 'Invalid JSON format' });
+  }
+  
   next();
 });
 

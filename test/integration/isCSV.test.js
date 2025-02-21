@@ -1,6 +1,9 @@
 const request = require('supertest');
 const app = require('../../server');
 
+// Import constants from server
+const SIZE_LIMIT_ERROR = 'Input exceeds maximum size of 10MB';
+
 describe('CSV Validation API', () => {
   // Test valid CSV data
   test('should return true for valid CSV data', async () => {
@@ -50,7 +53,7 @@ describe('CSV Validation API', () => {
     });
 
     // Test extremely large input (exceeding limits)
-    test('should handle oversized input appropriately', async () => {
+    test('should reject oversized input with 413 status', async () => {
       // Create a string larger than the limit
       const hugeString = 'x'.repeat(11 * 1024 * 1024); // 11MB of data
       
@@ -59,14 +62,12 @@ describe('CSV Validation API', () => {
           .post('/api/isCSV')
           .send({ inputString: hugeString });
         
-        // If we get a response, check that it indicates an error
-        expect(response.status).toBeGreaterThanOrEqual(400);
-        if (response.body && response.body.error) {
-          expect(response.body.error).toBeTruthy();
-        }
+        // We should get a 413 Payload Too Large response
+        expect(response.status).toBe(413);
+        expect(response.body.error).toBe(SIZE_LIMIT_ERROR);
       } catch (error) {
-        // If the request fails, that's also acceptable
-        expect(error).toBeTruthy();
+        // If the request fails at the network level, it should be due to size limits
+        expect(error.message).toMatch(/request entity too large|payload too large/i);
       }
     });
   });
