@@ -1,14 +1,33 @@
 # Readable Regex API
 
-This API provides endpoints for performing common string manipulation tasks, specifically removing non-numeric and non-letter characters from input strings. It's built using Express.js and designed to encapsulate the underlying regular expression logic for improved readability and maintainability.
+In a nutshell, Readable Regex is a REST API to transform and validate data easily, anywhere, without regex.
+
+It's built using Express.js and designed to encapsulate the underlying regular expression logic for improved readability and maintainability.
 
 Who knows, this API could evolve to do a lot more than it currently does, so please keep an open mind and bring all ideas to the table, they are welcome!
 
 Although the project has Regex in the name, it's not a requirement to use Regex on the backend if it's not possible or beneficial.
 
-## Summary
+## Navigating The Docs
 
-The API offers two primary functions: removing non-numeric characters and removing non-letter characters from a given string. These functions are accessible via POST requests to dedicated endpoints. The API accepts a JSON payload containing the input string and returns a JSON response with the modified string.
+[Demo](#demo)<br/>
+[Benefits](#benefits)<br/>
+[Usage](#usage)<br/>
+[How to Contribute](#how-to-contribute)<br/>
+[Dev Standards](#dev-standards)<br/>
+[New Features/Issues](#new-featuresissues)<br/>
+[Running the API](#running-the-api)<br/>
+[Documentation](#documentation)<br/>
+[Testing](#testing)<br/>
+[Support](#support)<br/>
+[Deployment](#deployment)<br/>
+[Donations](#donations)
+
+## Demo
+
+Below is a demo app URL exposed from the API 
+
+https://readable-regex-8d81b79167bf.herokuapp.com/
 
 ## Benefits
 
@@ -22,7 +41,7 @@ The API offers two primary functions: removing non-numeric characters and removi
 
 *   **Abstraction:** The API provides a layer of abstraction, shielding developers from the complexities of regular expressions. Clients of the API don't need to understand the underlying regex to use the string manipulation functions.
 
-## Usage (Example)
+## Usage
 
 Clients interact with the API by sending POST requests with query params containing the input string and endpoint. The API returns a JSON response with the modified string. See the individual endpoint documentation (if needed) for specific request and response formats.
 
@@ -78,13 +97,17 @@ Create new issues for features, innovation ideas, bugs, or enhancements. If you 
 
 ## Running the API
 
+First clone or fork the project using Git.
+
+Then `cd` into the root of the project to run the project.
+
 Using `node`  
 ```bash
-node index.js  // Or npm start
+node app.js  // Or npm start
 ```
-Or if you want your backend changes to refresh automatically you can use `nodemon`
+Or if you want your backend changes to refresh automatically you can use `nodemon` with the following command:
 ```bash
-nodemon index.js
+npm run dev  // This runs nodemon app.js
 ```
 
 ## Documentation
@@ -129,8 +152,6 @@ Tests are configured to run on every push and pull requests for every branch usi
 Here is the official Readable Regex [Slack Channel Invite Link](https://join.slack.com/t/readableregex/shared_invite/zt-2zdksij4k-wEYXgPNSFOWXYlNM3CSq0Q)
 
 Collaborate, ask questions, get feedback, and get to know your fellow devs on Slack today!
-
-Please feel free to contact drewg2009@gmail.com for information about contributing, troubleshooting, or other concerns.
 
 ## Deployment
 
