@@ -427,7 +427,9 @@ app.post('/api/contains', (req, res) => {
     return res.status(400).json({error: 'stringContained is a required parameter'})
   }
 
-  if(!caseSensitive) {
+  // only throw an error if caseSensitive is not passed, which means it's undefiend. 
+  // The ! operation won't work because when a boolean is passed, it will flip it, instead of checking if the value exists
+  if(caseSensitive === undefined) {
     return res.status(400).json({error: 'caseSensitive is a required parameter'})
   }
   
