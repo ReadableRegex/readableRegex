@@ -1,4 +1,4 @@
-const ValidationFunctions = require('../validationFunctions');
+const ValidationFunctions = require('../../validationFunctions');
 
 describe('ValidationFunctions.onlyNumbers', () => {
   it('should remove all non-numeric characters', () => {
