@@ -401,7 +401,7 @@ app.post('/api/trim', (req, res) => {
  * @return {BadRequestResponse} 400 - Bad request response
  * @example request - test
  * {
- *   "inputString": "   Hello World!   "
+ *   "inputString": "   Hello World!   ",
  *   "containsString": "World",
  *   "caseSensitive": true
  * }
