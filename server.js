@@ -138,6 +138,13 @@ app.use((err, req, res, next) => {
  * @property {string} explanation - how it got to that result
  */
 
+/**
+ * Contains request
+ * @typedef {object} ContainsRequest
+ * @property {string} inputString.required - Input string
+ * @property {string} stringContained.required - String contained
+ * @property {boolean} caseSensitive.required - Case sensitivity
+ */
 
 /**
  * A ExcludeCharactersModel
@@ -384,6 +391,52 @@ app.post('/api/trim', (req, res) => {
   const result = ValidationFunctions.trim(inputString);
   res.json({ result });
 });
+
+/**
+ * POST /api/contains
+ * @summary Checks if inputString contains a supplied string.
+ * @description Returns true if the inputString contains the supplied string, otherwise false
+ * @param {ContainsRequest} request.body.required - Request body
+ * @return {BasicResponse} 200 - Success response with trimmed string
+ * @return {BadRequestResponse} 400 - Bad request response
+ * @example request - test
+ * {
+ *   "inputString": "   Hello World!   "
+ *   "containsString": "World",
+ *   "caseSensitive": true
+ * }
+ * @example response - 200 - example payload
+ * {
+ *   "result": true
+ * }
+ * @example response - 400 - example
+ * {
+ *   "error": "Input string required as a parameter."
+ * }
+ */
+app.post('/api/contains', (req, res) => {
+  const inputString = req.body.inputString;
+  const stringContained = req.body.stringContained
+  const caseSensitive = req.body.caseSensitive
+
+  if (!inputString) {
+    return res.status(400).json({ error: requiredParameterResponse });
+  }
+
+  if(!stringContained) {
+    return res.status(400).json({error: 'stringContained is a required parameter'})
+  }
+
+  // only throw an error if caseSensitive is not passed, which means it's undefiend. 
+  // The ! operation won't work because when a boolean is passed, it will flip it, instead of checking if the value exists
+  if(caseSensitive === undefined) {
+    return res.status(400).json({error: 'caseSensitive is a required parameter'})
+  }
+  
+  const result = ValidationFunctions.contains(inputString, stringContained, caseSensitive)
+  res.json({ result });
+});
+
 
 /**
  * POST /api/onlyNumbers

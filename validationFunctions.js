@@ -118,4 +118,26 @@ module.exports = class ValidationFunctions {
     return caseSensitive ? str === comparison : str.toLowerCase() === comparison.toLowerCase();
   }
 
+  /**
+   * Return if inputString contains stringContained
+   * True if it contains it, false otherwise
+   * 
+   * If case sensitive, compare them as is,
+   * Else if not case sensitive, convert them both to lowercase to compare them as the same casing
+   * 
+   * @param {string} inputString 
+   * @param {string} stringContained 
+   * @param {boolean} caseSensitive 
+   * 
+   * return {boolean} - True if inputString contains stringContained, false otherwise
+   */
+  static contains(inputString, stringContained, caseSensitive) {
+    if(!caseSensitive) {
+      inputString = inputString.toLowerCase()
+      stringContained = stringContained.toLowerCase()
+    }
+
+    return inputString.includes(stringContained)
+  }
+
 }
