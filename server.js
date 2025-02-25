@@ -1054,4 +1054,47 @@ app.get('/contact', (req, res) => {
   res.render('pages/contact', { title: 'Contact' });
 });
 
+
+/**
+ * POST /api/isCountry
+ * @summary Returns true/false based on the input string and whether it is a valid country
+ * @param {BasicRequest} request.body.required
+ * @return {BasicResponse} 200 - Success response
+ * @return {BadRequestResponse} 400 - Bad request response
+ * @example request - test
+ * {
+ *   "inputString": "United States"
+ * }
+ * @example response - 200 - example payload
+ * {
+ *   "result": true
+ * }
+ * @example response - 400 - example
+ * {
+ *   "error": "Input string required as a parameter."
+ * }
+ */
+app.post('/api/isCountry', async (req, res) => {
+  const inputString = req.body.inputString;
+
+  if (!inputString) {
+    return res.status(400).json({ error: requiredParameterResponse });
+  }
+
+  try {
+    const reply = await axios.post('https://countriesnow.space/api/v0.1/countries/currency', {
+      "country": inputString
+    });
+
+    return res.json({ result: reply.data.error === false });
+  } catch (error) {
+    if (error.response && error.response.status === 404) {
+      return res.json({ result: false });
+    }
+
+    const error_details = handleAxiosError(error);
+    return res.json({ error: error_details });
+  }
+});
+
 module.exports = app;
