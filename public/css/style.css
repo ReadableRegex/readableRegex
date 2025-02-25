@@ -15,12 +15,14 @@ body {
     padding: 0;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: start;
     align-items: center;
     min-height: 100vh;
+    padding-top: 60px;
 }
 #main-header{
-    font-size: 84px;
+    font-size: 64px;
+    text-align: center;
 }
 
 /* Container Styling */
@@ -32,6 +34,41 @@ body {
     width: 100%;
     max-width: 900px;
     margin: 20px;
+}
+
+/* Comparison Container Styling */
+.comparison-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1200px;
+  background: #fff;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+.comparison-box-parrent {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: start;
+}
+.comparison-box {
+  width: 48%;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+/* Traditional Side */
+.traditional {
+  background-color: #e0e0e0; /* Light gray for traditional side */
+}
+/* API Side */
+.api-side {
+  background-color: #e8f9f3; /* Light green for API side */
+  border: 2px solid #2ecc71; /* Green border to make it stand out */
 }
 
 /* Headings Styling */
@@ -120,6 +157,67 @@ pre {
     word-wrap: break-word;
 }
 
+/* Encouragement */
+.encouragement {
+  max-width: 1200px; /* Limit the width to make it more readable */
+  text-align: justify; /* Justify the text for even spacing */
+  font-size: 18px;
+  line-height: 1.6; /* Add line height for better readability */
+  color: #333;
+  margin: 0 auto 40px; /* Center it and add space below */
+  padding: 0 20px; /* Add padding for responsiveness */
+}
+
+/* Box Description */
+.description {
+  margin-bottom: 20px;
+}
+
+/* Navbar Styling */
+#navbar {
+    width: 100%;
+    background-color: #2C3E50;
+    padding: 15px 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+}
+
+#navbar ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    padding: 0;
+    margin: 0;
+}
+
+#navbar ul li {
+    display: inline;
+}
+
+#navbar ul li a {
+    text-decoration: none;
+    color: white;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 10px 15px;
+    transition: 0.3s;
+}
+
+#navbar ul li a:hover {
+    background-color: #4CAF50;
+    border-radius: 5px;
+}
+
+/* Adjust body to avoid content being hidden under navbar */
+body {
+    padding-top: 60px;
+}
+
+/* Footer Styling */
 footer a {
     color: #fff;
     text-decoration: none;
@@ -130,11 +228,43 @@ footer:hover {
     transform: translateY(-4px);
 }
 
+/* Contact Box */
+.contact-box {
+    text-align: center;
+}
+.contact-box ul {
+    list-style-position: inside;
+    display: inline-block;
+    text-align: left;
+    padding: 0;
+}
+.contact-box h3 {
+    margin-top: 32px;
+}
+.contact-box p:first-of-type {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 16px;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .container {
         padding: 20px;
         width: 100%;
+    }
+
+    .comparison-box-parrent {
+        flex-direction: column;
+        align-items: center;
+    }
+    .comparison-container {
+        flex-direction: column;
+        align-items: center;
+    }
+    .comparison-box {
+        width: 100%;
+        margin-bottom: 20px;
     }
 
     input[type="text"], select, button {

@@ -2,15 +2,18 @@
   "name": "readable_regex",
   "version": "1.0.0",
   "description": "expose endpoints to get string responses from regex expressions easily",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
     "test": "jest",
-    "start": "node index.js",
-    "dev": "nodemon index.js"
+    "test:unit": "jest --testPathPattern=unit",
+    "test:integration": "jest --testPathPattern=integration"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@google/generative-ai": "^0.21.0",
     "axios": "^1.7.9",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
@@ -19,10 +22,12 @@
     "express-rate-limit": "^7.5.0",
     "install": "^0.13.0",
     "npm": "^11.1.0",
-    "pug": "^3.0.3"
+    "pug": "^3.0.3",
+    "csv-parser": "^3.2.0"
   },
   "devDependencies": {
     "jest": "^29.7.0",
-    "nodemon": "^3.1.9"
+    "nodemon": "^3.1.9",
+    "supertest": "^7.0.0"
   }
 }
