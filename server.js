@@ -75,7 +75,7 @@ app.use(limiter)
 
 app.use(cors())
 // Middleware to parse JSON request bodies with size limit
-app.use(express.json({ 
+app.use(express.json({
   limit: MAX_REQUEST_SIZE,
   verify: (req, res, buf) => {
     if (buf.length > MAX_REQUEST_SIZE_BYTES) {
@@ -97,12 +97,12 @@ app.use((err, req, res, next) => {
   if (err.status === 413 || err.type === 'entity.too.large' || err.message === 'Request payload too large') {
     return res.status(413).json({ error: SIZE_LIMIT_ERROR });
   }
-  
+
   // Then check for syntax errors
   if (err instanceof SyntaxError) {
     return res.status(400).json({ error: 'Invalid JSON format' });
   }
-  
+
   next();
 });
 
@@ -423,16 +423,16 @@ app.post('/api/contains', (req, res) => {
     return res.status(400).json({ error: requiredParameterResponse });
   }
 
-  if(!stringContained) {
-    return res.status(400).json({error: 'stringContained is a required parameter'})
+  if (!stringContained) {
+    return res.status(400).json({ error: 'stringContained is a required parameter' })
   }
 
   // only throw an error if caseSensitive is not passed, which means it's undefiend. 
   // The ! operation won't work because when a boolean is passed, it will flip it, instead of checking if the value exists
-  if(caseSensitive === undefined) {
-    return res.status(400).json({error: 'caseSensitive is a required parameter'})
+  if (caseSensitive === undefined) {
+    return res.status(400).json({ error: 'caseSensitive is a required parameter' })
   }
-  
+
   const result = ValidationFunctions.contains(inputString, stringContained, caseSensitive)
   res.json({ result });
 });
@@ -593,32 +593,17 @@ app.post('/api/isAlphaNumeric', (req, res) => {
 app.post('/api/isZipCode', (req, res) => {
   const { inputString, countryCode } = req.body;
 
-  const patterns = {
-    US: /^\d{5}(-\d{4})?$/,
-    UK: /^[A-Z]{1,2}\d[A-Z\d]? \d[A-Z]{2}$/i,
-    CA: /^[A-Z]\d[A-Z] \d[A-Z]\d$/i,
-    AU: /^\d{4}$/,
-    DE: /^\d{5}$/,
-    FR: /^\d{5}$/,
-    JP: /^\d{3}-\d{4}$/,
-    BR: /^\d{5}-\d{3}$/,
-    IN: /^[1-9]\d{5}$/
-  };
+  // Validate the input and country code, and check if it's a valid zip code
+  const result = ValidationFunctions.isZipCode(inputString, countryCode);
 
-  if (!inputString || !countryCode) {
-    return res.status(400).json({ error: 'inputString and countryCode are required.' });
-  }
-
-  const upperCountryCode = countryCode.toUpperCase();
-
-  if (!patterns[upperCountryCode]) {
+  if (result === false) {
+    // Return a 400 status if the zip code is invalid or the country code is not supported
     return res.status(400).json({
-      error: 'Country code not supported at this time. If this is a valid country code, please open an issue with the developers.',
-      supportedCountries: Object.keys(patterns)
+      error: 'Invalid input or country code not supported.',
+      supportedCountries: ['US', 'UK', 'CA', 'AU', 'DE', 'FR', 'JP', 'BR', 'IN']
     });
   }
 
-  const result = ValidationFunctions.isZipCode(inputString, upperCountryCode, patterns);
   res.json({ result });
 });
 
