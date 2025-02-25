@@ -7,6 +7,8 @@ const { rateLimit } = require("express-rate-limit");
 const csv = require('csv-parser');
 const app = express();
 const cors = require('cors')
+const axios = require('axios');
+const { handleAxiosError } = require("./utils/axios");
 const ValidationFunctions = require('./validationFunctions');
 const { urlUtils } = require("./utils/urlUtils");
 const expressJSDocSwagger = require('express-jsdoc-swagger');
@@ -391,6 +393,31 @@ app.post('/api/trim', (req, res) => {
 
   const result = ValidationFunctions.trim(inputString);
   res.json({ result });
+});
+
+
+app.post('/api/isCountry', async (req, res) => {
+  const inputString = req.body.inputString;
+  
+  if(!inputString) {
+    return res.status(400).json({ error: requiredParameterResponse });
+  }
+
+  try{
+    const reply = await axios.post('https://countriesnow.space/api/v0.1/countries/currency', {
+       "country": inputString
+      });
+
+    return res.json({ result: reply.data.error === false });
+  }
+  catch(error){
+    if (error.response && error.response.status === 404) {
+      return res.json({ result: false });
+    }
+
+    const error_details = handleAxiosError(error);
+    return res.json({ error: error_details });
+  }
 });
 
 /**
