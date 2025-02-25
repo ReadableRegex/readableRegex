@@ -13,7 +13,6 @@ const ValidationFunctions = require('./validationFunctions');
 const { urlUtils } = require("./utils/urlUtils");
 const expressJSDocSwagger = require('express-jsdoc-swagger');
 const fetchAiGeneratedContent = require('./runGeminiPrompt');
-const axios = require('axios');
 
 // Constants and Error Messages
 const requiredParameterResponse = 'Input string required as a parameter.';
