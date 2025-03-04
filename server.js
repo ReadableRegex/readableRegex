@@ -238,7 +238,6 @@ app.post('/api/isField', async (req, res) => {
 
 });
 
-
 /**
  * POST /api/isEmailAddress
  * @summary Returns true if valid email address, false otherwise
@@ -392,31 +391,6 @@ app.post('/api/trim', (req, res) => {
 
   const result = ValidationFunctions.trim(inputString);
   res.json({ result });
-});
-
-
-app.post('/api/isCountry', async (req, res) => {
-  const inputString = req.body.inputString;
-  
-  if(!inputString) {
-    return res.status(400).json({ error: requiredParameterResponse });
-  }
-
-  try{
-    const reply = await axios.post('https://countriesnow.space/api/v0.1/countries/currency', {
-       "country": inputString
-      });
-
-    return res.json({ result: reply.data.error === false });
-  }
-  catch(error){
-    if (error.response && error.response.status === 404) {
-      return res.json({ result: false });
-    }
-
-    const error_details = handleAxiosError(error);
-    return res.json({ error: error_details });
-  }
 });
 
 /**
@@ -609,7 +583,7 @@ app.post('/api/isAlphaNumeric', (req, res) => {
  * }
  * @example response - 400 - example for missing country code
  * {
- *   "error": "inputString and countryCode are required."
+ *   "error": "Invalid input or country code not supported."
  * }
  * @example response - 400 - example for unsupported country code
  * {
@@ -651,7 +625,7 @@ app.post('/api/isZipCode', (req, res) => {
  * }
  * @example response - 400 - example for missing input string
  * {
- *   "error": "inputString is required."
+ *   "error": "Input string required as a parameter."
  * }
  */
 app.post('/api/isInteger', (req, res) => {
@@ -685,7 +659,7 @@ app.post('/api/isInteger', (req, res) => {
  * }
  * @example response - 400 - example for missing input string
  * {
- *   "error": "inputString is required."
+ *   "error": "Input string required as a parameter."
  * }
  */
 app.post('/api/isHexadecimal', (req, res) => {
@@ -716,7 +690,7 @@ app.post('/api/isHexadecimal', (req, res) => {
  * }
  * @example response - 400 - example for missing input string
  * {
- *   "error": "inputString is required."
+ *   "error": "Input string required as a parameter."
  * }
  */
 app.post('/api/isDecimal', (req, res) => {
@@ -724,7 +698,7 @@ app.post('/api/isDecimal', (req, res) => {
 
   if (!inputString) {
     return res.status(400).json({
-      error: "inputString is required."
+      error: requiredParameterResponse
     });
   }
 
@@ -750,7 +724,7 @@ app.post('/api/isDecimal', (req, res) => {
  * }
  * @example response - 400 - example for missing input string
  * {
- *   "error": "inputString is required."
+ *   "error": "Input string required as a parameter."
  * }
  */
 app.post('/api/isLowercase', (req, res) => {
@@ -781,7 +755,7 @@ app.post('/api/isLowercase', (req, res) => {
  * }
  * @example response - 400 - example for missing input string
  * {
- *   "error": "inputString is required."
+ *   "error": "Input string required as a parameter."
  * }
  */
 app.post('/api/isDate', (req, res) => {
@@ -846,7 +820,7 @@ app.post('/api/onlyTheseCharacters', (req, res) => {
  * }
  * @example response - 400 - example for missing input string
  * {
- *   "error": "inputString is required."
+ *   "error": "Input string required as a parameter."
  * }
  */
 app.post('/api/isAllCaps', (req, res) => {
@@ -879,7 +853,7 @@ app.post('/api/isAllCaps', (req, res) => {
  * }
  * @example response - 400 - example for missing URL
  * {
- *   "error": "inputString is required."
+ *   "error": "Input string required as a parameter."
  * }
  */
 app.post('/api/isUrl', async (req, res) => {
@@ -896,10 +870,9 @@ app.post('/api/isUrl', async (req, res) => {
   }
 
   const connectToUrlResult = await urlUtils.isUrlReachable(inputString);
-
   return res.json({
     result,
-    connectToUrlResult
+    connectToUrlResult,
   });
 });
 
@@ -920,7 +893,7 @@ app.post('/api/isUrl', async (req, res) => {
  * }
  * @example response - 400 - example for missing input string
  * {
- *   "error": "inputString is required."
+ *   "error": "Input string required as a parameter."
  * }
  */
 app.post('/api/isBinaryString', (req, res) => {

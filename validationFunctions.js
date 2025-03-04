@@ -319,9 +319,15 @@ module.exports = class ValidationFunctions {
    * @returns {string} - A new string containing only the allowed characters.
    */
   static includeOnlyTheseCharacters(inputString, onlyTheseCharacters) {
-    const regex = new RegExp(`[^${onlyTheseCharacters.join("")}]`, "g");
-    return inputString.replace(regex, "");
-  }
+    // Escape special characters in the allowed characters string
+    const escapedChars = onlyTheseCharacters.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+  
+    // Create a regex that matches any character not in the allowed set
+    const regex = new RegExp(`[^${escapedChars}]`, "g");
+  
+    // Replace characters not in the allowed set with an empty string
+    return !regex.test(inputString); // Return true if no invalid characters found
+  }  
 
   /**
    * Checks if the given input string represents a valid boolean value.
