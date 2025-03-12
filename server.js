@@ -1053,6 +1053,44 @@ app.post('/api/isCountry', async (req, res) => {
     const error_details = handleAxiosError(error);
     return res.json({ error: error_details });
   }
-});
+} );
+
+/**
+ * POST /api/isAbaRouting
+ * @summary Validates whether a given string is a valid ABA routing number.
+ * @description This endpoint checks if the provided string is a valid ABA routing number using length, prefix validation, and checksum verification.
+ * @param {BasicRequest} request.body.required - Request body containing the routing number to validate.
+ * @return {BasicResponse} 200 - Success response indicating if the routing number is valid.
+ * @return {BadRequestResponse} 400 - Bad request response.
+ * @example request - test
+ * {
+ *   "inputString": "011000015"
+ * }
+ * @example response - 200 - valid routing number
+ * {
+ *   "result": true
+ * }
+ * @example response - 200 - invalid routing number
+ * {
+ *   "result": false
+ * }
+ * @example response - 400 - missing parameter
+ * {
+ *   "error": "input string is required as a parameter."
+ * }
+ */
+app.post( '/api/isAbaRouting', ( req, res ) =>
+{
+  const { inputString } = req.body;
+
+  if ( !inputString )
+  {
+    return res.status( 400 ).json( { error: requiredParameterResponse } );
+  }
+
+  const result = ValidationFunctions.isAbaRouting( inputString );
+  res.json( { result } );
+} );
+
 
 module.exports = app;
