@@ -27,7 +27,7 @@ Although the project has Regex in the name, it's not a requirement to use Regex 
 
 Below is a demo app URL exposed from the API 
 
-https://readable-regex-8d81b79167bf.herokuapp.com/
+https://readableregex.onrender.com/
 
 ## Benefits
 
@@ -49,7 +49,7 @@ Sample POST Request
 
 ```
     try {
-        const response = await fetch("https://readable-regex-8d81b79167bf.herokuapp.com/api/onlyNumbers", {
+        const response = await fetch("https://readableregex.onrender.com/api/onlyNumbers", {
             method: 'POST',
             body: JSON.stringify({
                 inputString: "1234abc"
@@ -119,7 +119,7 @@ It's utilizing the OpenAPI pattern for API specs and swagger to generate a UI fo
 To view the docs, visit the `/api-docs` path from the base URL. 
 
 
-[Prod Docs](https://readable-regex-8d81b79167bf.herokuapp.com/api-docs/)
+[Prod Docs](https://readableregex.onrender.com/api-docs/)
 
 [Local Docs](http://localhost:3000/api-docs/)
 
