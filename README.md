@@ -1,5 +1,8 @@
 # Readable Regex API
 
+![Readable Regex](https://github.com/user-attachments/assets/0130a7aa-e3a1-4762-ae23-3d1b9be63e96)
+
+
 In a nutshell, Readable Regex is a REST API to transform and validate data easily, anywhere, without regex.
 
 It's built using Express.js and designed to encapsulate the underlying regular expression logic for improved readability and maintainability.
