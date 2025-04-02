@@ -1,13 +1,15 @@
-const axios = require('axios');
-module.exports = class ValidationFunctions {
+const axios = require( 'axios' );
+module.exports = class ValidationFunctions
+{
   /**
    * Removes all non-numeric characters from a string.
    * 
    * @param {string} str - The input string to be cleaned.
    * @returns {string} - A new string containing only numeric characters (0-9).
    */
-  static onlyNumbers(str) {
-    return str.replace(/[^0-9]/g, '');
+  static onlyNumbers ( str )
+  {
+    return str.replace( /[^0-9]/g, '' );
   }
 
   /**
@@ -19,9 +21,10 @@ module.exports = class ValidationFunctions {
    * @param {string} str - The input string to test.
    * @returns {boolean} - True if the string represents a valid integer, otherwise `false`.
    */
-  static isInteger(str) {
-    const regex = /^(0|[1-9][0-9]*)$/
-    return regex.test(str)
+  static isInteger ( str )
+  {
+    const regex = /^(0|[1-9][0-9]*)$/;
+    return regex.test( str );
   }
 
   /**
@@ -31,18 +34,20 @@ module.exports = class ValidationFunctions {
    * @param {string} str - The input string to be cleaned
    * @returns {string} - A new string containing only alphabetical characters (a-z, A-Z).
    */
-  static onlyLetters(str) {
-    return str.replace(/[^a-zA-Z]/g, '');
+  static onlyLetters ( str )
+  {
+    return str.replace( /[^a-zA-Z]/g, '' );
   }
 
   /**
-   * Removes all alphanumberic characters and spaces, leaving only special characters.
+   * Removes all alphanumeric characters and spaces, leaving only special characters.
    * 
    * @param {string} str - The input string to filter.
-   * @returns {string} - A new string contaninig only special characters (anything that is not a letter, number, or space).
+   * @returns {string} - A new string containing only special characters (anything that is not a letter, number, or space).
    */
-  static onlySpecialCharacters(str) {
-    return str.replace(/[a-zA-Z0-9\s]/g, '');
+  static onlySpecialCharacters ( str )
+  {
+    return str.replace( /[a-zA-Z0-9\s]/g, '' );
   }
 
   /**
@@ -52,14 +57,17 @@ module.exports = class ValidationFunctions {
    * @param {string} str - The input email to check.
    * @returns {boolean} - Returns `true` if the string is a valid email address, otherwise `false`
    */
-  static isEmailAddress(str) {
+  static isEmailAddress ( str )
+  {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     // Check for valid email pattern
-    if (emailRegex.test(str)) {
+    if ( emailRegex.test( str ) )
+    {
       // Check for consecutive dots in the domain part
-      const domainPart = str.split('@')[1];
-      if (domainPart.includes('..')) {
+      const domainPart = str.split( '@' )[ 1 ];
+      if ( domainPart.includes( '..' ) )
+      {
         return false;
       }
       return true;
@@ -73,7 +81,8 @@ module.exports = class ValidationFunctions {
    * @param {string} str - The input string to trim.
    * @returns {string} - A new string with leading and trailing whitespace removed.
    */
-  static trim(str) {
+  static trim ( str )
+  {
     return str.trim();
   }
 
@@ -84,9 +93,10 @@ module.exports = class ValidationFunctions {
    * @param {string} excludeChars - A string containing the characters to exclude from the inputString.
    * @returns {string} - A new string with the excluded characters removed.
    */
-  static excludeTheseCharacters(inputString, excludeChars) {
-    const regex = new RegExp(`[${excludeChars}]`, "g");
-    return inputString.replace(regex, "");
+  static excludeTheseCharacters ( inputString, excludeChars )
+  {
+    const regex = new RegExp( `[${ excludeChars }]`, "g" );
+    return inputString.replace( regex, "" );
   }
 
   /**
@@ -96,9 +106,10 @@ module.exports = class ValidationFunctions {
    * @returns {boolean} - Returns `true` if the string matches the phone number pattern, otherwise `false`.
    * 
    */
-  static isPhoneNumber(str) {
+  static isPhoneNumber ( str )
+  {
     const phoneRegex = /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4}$/im;
-    return phoneRegex.test(str);
+    return phoneRegex.test( str );
   }
 
   /**
@@ -116,9 +127,10 @@ module.exports = class ValidationFunctions {
    * isAlphaNumeric('abc 123'); // Returns false (contains space)
    * isAlphaNumeric('abc!123'); // Returns false (contains special character)
    */
-  static isAlphaNumeric(str) {
+  static isAlphaNumeric ( str )
+  {
     const alphaNumericRegex = /^[a-zA-Z0-9]+$/;
-    return alphaNumericRegex.test(str);
+    return alphaNumericRegex.test( str );
   }
 
   /**
@@ -136,7 +148,8 @@ module.exports = class ValidationFunctions {
    * isZipCode('K1A 0B1', 'CA'); // Returns true
    * isZipCode('123-45', 'US');  // Returns false
    */
-  static isZipCode(str, countryCode) {
+  static isZipCode ( str, countryCode )
+  {
     const patterns = {
       US: /^\d{5}(-\d{4})?$/,
       UK: /^[A-Z]{1,2}\d[A-Z\d]?(\s?\d[A-Z]{2})$/i,
@@ -150,16 +163,16 @@ module.exports = class ValidationFunctions {
     };
 
     // Ensure the input string and country code are valid
-    if (!str || !countryCode) return false;
+    if ( !str || !countryCode ) return false;
 
     // Normalize country code to uppercase
     const upperCountryCode = countryCode.toUpperCase();
 
     // Check if the country code has a corresponding pattern
-    if (!patterns[upperCountryCode]) return false;
+    if ( !patterns[ upperCountryCode ] ) return false;
 
     // Clean the input string and validate it using the respective pattern
-    return patterns[upperCountryCode].test(str.replace(/\s+/g, ''));  // Remove spaces and check
+    return patterns[ upperCountryCode ].test( str.replace( /\s+/g, '' ) );  // Remove spaces and check
   }
 
   /**
@@ -176,8 +189,9 @@ module.exports = class ValidationFunctions {
    * isLowercase('Hello');  // Returns false
    * isLowercase('123abc'); // Returns false
    */
-  static isLowercase(str) {
-    return /^[a-z]+$/g.test(str);
+  static isLowercase ( str )
+  {
+    return /^[a-z]+$/g.test( str );
   }
 
   /**
@@ -196,8 +210,9 @@ module.exports = class ValidationFunctions {
    * isHexadecimal('1a3f');     // Returns false
    * isHexadecimal('0xg123');   // Returns false
    */
-  static isHexadecimal(str) {
-    return /^0x[0-9a-fA-F]+$/.test(str);
+  static isHexadecimal ( str )
+  {
+    return /^0x[0-9a-fA-F]+$/.test( str );
   }
 
   /**
@@ -232,9 +247,10 @@ module.exports = class ValidationFunctions {
    * isDecimal('-+34');   // Returns false
    * isDecimal('34abc');  // Returns false
    */
-  static isDecimal(str) {
+  static isDecimal ( str )
+  {
     const isDecimalRegex = /^[+-]?(\d+(\.\d*)?|\.\d+)$/;
-    return isDecimalRegex.test(str);
+    return isDecimalRegex.test( str );
   }
 
   /**
@@ -243,9 +259,10 @@ module.exports = class ValidationFunctions {
    * @param {string} str - The string to be tested.
    * @returns {boolean} - Returns `true` if the string is a valid binary string, otherwise `false`.
    */
-  static isBinaryString(str) {
-    const regex = new RegExp("^[01]+$");
-    return regex.test(str);
+  static isBinaryString ( str )
+  {
+    const regex = new RegExp( "^[01]+$" );
+    return regex.test( str );
   }
 
   /**
@@ -254,8 +271,9 @@ module.exports = class ValidationFunctions {
    * @param {string} str - The string to be tested.
    * @returns {boolean} - Returns `true` if the string contains only uppercase letters, otherwise `false`.
    */
-  static isAllCaps(str) {
-    return /^[A-Z]+$/.test(str);
+  static isAllCaps ( str )
+  {
+    return /^[A-Z]+$/.test( str );
   }
 
   /**
@@ -265,8 +283,9 @@ module.exports = class ValidationFunctions {
    * @param {string} str - The string to be tested.
    * @returns {boolean} - Returns `true` if the string is a valid URL, otherwise `false`.
    */
-  static isUrl(str) {
-    return /^(https?:\/\/)?([\w.-]+)\.([a-z]{2,6})(\/[^\s]*)?$/i.test(str);
+  static isUrl ( str )
+  {
+    return /^(https?:\/\/)?([\w.-]+)\.([a-z]{2,6})(\/[^\s]*)?$/i.test( str );
   }
 
   /**
@@ -284,8 +303,9 @@ module.exports = class ValidationFunctions {
    * @param {string} dateStr - The string to be tested.
    * @returns {boolean} - Returns `true` if the string matches any valid date format, otherwise `false`.
    */
-  static isDate(dateStr) {
-    if (!dateStr || typeof dateStr !== "string") return false;
+  static isDate ( dateStr )
+  {
+    if ( !dateStr || typeof dateStr !== "string" ) return false;
 
     const dateFormats = [
       /^\d{4}-\d{2}-\d{2}$/,                   // YYYY-MM-DD
@@ -299,11 +319,11 @@ module.exports = class ValidationFunctions {
     ];
 
     // Check for valid date formats
-    const isValidFormat = dateFormats.some((regex) => regex.test(dateStr));
+    const isValidFormat = dateFormats.some( ( regex ) => regex.test( dateStr ) );
 
     // Ensure that the string only uses a single separator type (e.g., no mixed separators like - and /)
     const invalidSeparators = /[-/.\s]{2,}/; // Match any consecutive mixed separators (e.g., "2025-02/23")
-    const hasInvalidSeparators = invalidSeparators.test(dateStr);
+    const hasInvalidSeparators = invalidSeparators.test( dateStr );
 
     return isValidFormat && !hasInvalidSeparators;
   }
@@ -318,10 +338,11 @@ module.exports = class ValidationFunctions {
    * @param {string[]} onlyTheseCharacters - An array of characters that should be kept in the output string.
    * @returns {string} - A new string containing only the allowed characters.
    */
-  static includeOnlyTheseCharacters(inputString, onlyTheseCharacters) {
-    const regex = new RegExp(`[^${onlyTheseCharacters.join("")}]`, "g");
-    return inputString.replace(regex, "");
-  } 
+  static includeOnlyTheseCharacters ( inputString, onlyTheseCharacters )
+  {
+    const regex = new RegExp( `[^${ onlyTheseCharacters.join( "" ) }]`, "g" );
+    return inputString.replace( regex, "" );
+  }
 
   /**
    * Checks if the given input string represents a valid boolean value.
@@ -343,9 +364,10 @@ module.exports = class ValidationFunctions {
    * isBoolean("False"); // Returns: true
    * isBoolean("0"); // Returns: true
    */
-  static isBoolean(inputString) {
-    const validBooleanValues = ['true', 'false', '0', '1', 'TRUE', 'FALSE', 'True', 'False']
-    return validBooleanValues.includes(inputString)
+  static isBoolean ( inputString )
+  {
+    const validBooleanValues = [ 'true', 'false', '0', '1', 'TRUE', 'FALSE', 'True', 'False' ];
+    return validBooleanValues.includes( inputString );
   }
 
   /**
@@ -368,8 +390,10 @@ module.exports = class ValidationFunctions {
    * isEqual("world", "World", false); // Returns: true
    * isEqual("test", 123); // Returns: false (invalid input type)
    */
-  static isEqual(str, comparison, caseSensitive = true) {
-    if (typeof str !== "string" || typeof comparison !== "string") {
+  static isEqual ( str, comparison, caseSensitive = true )
+  {
+    if ( typeof str !== "string" || typeof comparison !== "string" )
+    {
       return false;
     }
     return caseSensitive ? str === comparison : str.toLowerCase() === comparison.toLowerCase();
@@ -392,13 +416,15 @@ module.exports = class ValidationFunctions {
    * contains("JavaScript", "script", true); // Returns: false (case-sensitive)
    * contains("JavaScript", "Script", false); // Returns: true (case-insensitive)
    */
-  static contains(inputString, stringContained, caseSensitive = true) {
-    if (!caseSensitive) {
-      inputString = inputString.toLowerCase()
-      stringContained = stringContained.toLowerCase()
+  static contains ( inputString, stringContained, caseSensitive = true )
+  {
+    if ( !caseSensitive )
+    {
+      inputString = inputString.toLowerCase();
+      stringContained = stringContained.toLowerCase();
     }
 
-    return inputString.includes(stringContained)
+    return inputString.includes( stringContained );
   }
 
   /**
@@ -416,34 +442,84 @@ module.exports = class ValidationFunctions {
    * await isCountry("Atlantis"); // Returns: false
    * await isCountry(""); // Returns: false
    */
-  static async isCountry(inputString) {
-    try {
-      const reply = await axios.post('https://countriesnow.space/api/v0.1/countries/currency', {
+  static async isCountry ( inputString )
+  {
+    try
+    {
+      const reply = await axios.post( 'https://countriesnow.space/api/v0.1/countries/currency', {
         "country": inputString
-      });
+      } );
 
       return reply.data.error === false;
-    } catch (error) {
-      if (error.response && error.response.status === 404) {
+    } catch ( error )
+    {
+      if ( error.response && error.response.status === 404 )
+      {
         return false;
       }
 
-      const error_details = handleAxiosError(error);
-      throw new Error(error_details);
+      const error_details = handleAxiosError( error );
+      throw new Error( error_details );
     }
   }
-}
 
-const handleAxiosError = (error) => {
-  if (error.response) {
+
+  /**
+ * Validates whether a given string is a valid ABA (American Bankers Association) routing number.
+ * 
+ * ABA routing numbers must meet the following criteria:
+ * - Be exactly 9 digits long.
+ * - Start with valid prefixes:
+ *   - `01-12` (Federal Reserve Bank identifiers)
+ *   - `21-32` (Thrift institutions)
+ *   - `61-72` (Electronic transactions)
+ * - Pass the **checksum validation**:
+ *   - `(3 × (D1 + D4 + D7)) + (7 × (D2 + D5 + D8)) + (D3 + D6 + D9) ≡ 0 (mod 10)`
+ * 
+ * @param {string} inputString - The routing number to check.
+ * @returns {boolean} `true` if the routing number is valid, otherwise `false`.
+ * 
+ * @example
+ * isAbaRouting("011000015"); // true (Valid ABA routing number)
+ * isAbaRouting("123456789"); // false (Invalid)
+ * isAbaRouting("021000021"); // true (Valid)
+ * isAbaRouting("000000000"); // false (Invalid)
+ */
+  static isAbaRouting ( inputString )
+  {
+    if ( typeof inputString !== "string" ) return false;
+
+    // Regex to validate valid ABA routing number prefixes and ensure 9-digit format
+    const isRoutingReg = /^(0[1-9]|1[0-2]|2[1-9]|3[0-2]|6[1-9]|7[0-2])\d{7}$/;
+    if ( !isRoutingReg.test( inputString ) ) return false;
+
+    // Compute checksum validation
+    let checkSumVal = 0;
+    for ( let i = 0; i < 9; i++ )
+    {
+      const weight = i % 3 === 0 ? 3 : i % 3 === 1 ? 7 : 1;
+      checkSumVal += Number( inputString[ i ] ) * weight;
+    }
+
+    return checkSumVal % 10 === 0;
+  }
+
+};
+
+const handleAxiosError = ( error ) =>
+{
+  if ( error.response )
+  {
     // The request was made and the server responded with a status code
     // that falls out of the range of 2xx
-    return `Error ${error.response.status}: ${error.response.data.message}`;
-  } else if (error.request) {
+    return `Error ${ error.response.status }: ${ error.response.data.message }`;
+  } else if ( error.request )
+  {
     // The request was made but no response was received
     return 'No response received from the server';
-  } else {
+  } else
+  {
     // Something happened in setting up the request that triggered an Error
-    return `Error: ${error.message}`;
+    return `Error: ${ error.message }`;
   }
 };
