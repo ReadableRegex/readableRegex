@@ -40,10 +40,10 @@ module.exports = class ValidationFunctions
   }
 
   /**
-   * Removes all alphanumberic characters and spaces, leaving only special characters.
+   * Removes all alphanumeric characters and spaces, leaving only special characters.
    * 
    * @param {string} str - The input string to filter.
-   * @returns {string} - A new string contaninig only special characters (anything that is not a letter, number, or space).
+   * @returns {string} - A new string containing only special characters (anything that is not a letter, number, or space).
    */
   static onlySpecialCharacters ( str )
   {
