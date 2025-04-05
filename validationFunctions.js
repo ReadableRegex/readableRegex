@@ -432,6 +432,24 @@ module.exports = class ValidationFunctions {
       throw new Error(error_details);
     }
   }
+
+  /**
+   * Checks if the provided string is a valid US state code.
+   * 
+   * @param {string} inputString - The state code to validate.
+   * @return {boolean} - Returns `true` if `inputString` is a valid US state code, otherwise `false`.
+   */
+  static isValidStateCode(inputString) {
+    const validStateCodes = [
+      "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA", 
+      "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", 
+      "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", 
+      "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", 
+      "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"
+    ];
+
+    return validStateCodes.includes(inputString);
+  }
 }
 
 const handleAxiosError = (error) => {
