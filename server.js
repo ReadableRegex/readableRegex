@@ -1055,4 +1055,35 @@ app.post('/api/isCountry', async (req, res) => {
   }
 });
 
+/**
+ * POST /api/isValidStateCode
+ * @summary Returns true if valid US state code, otherwise false 
+ * @param {BasicRequest} request.body.required - The state code to validate
+ * @return {BasicResponse} 200 - Success response
+ * @return {BadRequestResponse} 400 - Bad request response
+ * @example request - test
+ * {
+ *   "inputString": "LA"
+ * }
+ * @example response - 200 - example payload
+ * {
+ *   "result": true
+ * }
+ * @example response - 400 - example
+ * {
+ *   "error": "Input string required as a parameter."
+ * }
+ */
+app.post('/api/isValidStateCode', (req, res) => {
+  const { inputString } = req.body;
+
+  if (!inputString) {
+    return res.status(400).json({ error: requiredParameterResponse });
+  }
+
+  const result = ValidationFunctions.isValidStateCode(inputString);
+
+  res.json({ result });
+});
+
 module.exports = app;
