@@ -490,14 +490,17 @@ module.exports = class ValidationFunctions
     if ( typeof inputString !== "string" ) return false;
 
     // Regex to validate valid ABA routing number prefixes and ensure 9-digit format
-    const isRoutingReg = /^(0[1-9]|1[0-2]|2[1-9]|3[0-2]|6[1-9]|7[0-2])\d{7}$/;
+    const isRoutingReg = /^(0[1-9]|1[0-2]|2[1-9]|3[0-2]|6[1-9]|7[0-2]|80)\d{7}$/;
     if ( !isRoutingReg.test( inputString ) ) return false;
 
     // Compute checksum validation
     let checkSumVal = 0;
     for ( let i = 0; i < 9; i++ )
     {
-      const weight = i % 3 === 0 ? 3 : i % 3 === 1 ? 7 : 1;
+      let weight;
+      if ( i % 3 === 0 ) weight = 3;
+      else if ( i % 3 === 1 ) weight = 7;
+      else weight = 1;
       checkSumVal += Number( inputString[ i ] ) * weight;
     }
 

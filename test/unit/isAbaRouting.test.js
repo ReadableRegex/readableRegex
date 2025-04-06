@@ -58,4 +58,26 @@ describe( 'isAbaRouting', () =>
         expect( isAbaRouting( '322271627' ) ).toBe( true ); // Wells Fargo
         expect( isAbaRouting( '121000358' ) ).toBe( true ); // Bank of America
     } );
+
+    it( 'should return true for more valid test cases', () =>
+    {
+        expect( [
+            '322070381',
+            '011103093',
+            '263170175',
+            '124303065',
+        ].every(isAbaRouting) ).toBe( true ); // All valid ABA routing numbers
+    } )
+    
+    it( 'should return false for more invalid test cases', () =>
+    {
+        expect( [
+            '426317017',
+            '789456124',
+            '603558459',
+            'qwerty',
+            '12430306',
+            '382070381',
+        ].every(isAbaRouting) ).toBe( false ); // All invalid ABA routing numbers
+    })
 } );
