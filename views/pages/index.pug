@@ -11,25 +11,9 @@ block content
     label Select a simple operation to perform (all operations can be found on our docs page)
     br
     br
-    select(name='endpoint')
-        option(value='onlyNumbers') Only Numbers
-        option(value='onlyLetters') Only Letters
-        option(value='onlySpecialCharacters') Only Special Characters
-        option(value='isEmailAddress') Is Email Address
-        option(value='isPhoneNumber') Is Phone Number
-        option(Value='trim') Trim
-        option(value='isInteger') Is Integer
-        option(value='isAlphaNumeric') Is Alpha Numeric
-        option(value='isHexadecimal') Is Hexadecimal
-        option(value='isDecimal') Is Decimal
-        option(value='isLowercase') Is Lowercase
-        option(value='isDate') Is Date
-        option(value='isAllCaps') Is AllCaps
-        option(value='isUrl') Is Url
-        option(value='isBinaryString') Is Binary String
-        option(value='isBoolean') Is Boolean
-        option(value='isCountry') Is Country
-
+    input(type="text" id="operationSearch" placeholder="Search operation..." onkeyup="searchOperations()")
+    div(id="searchResults" class="search-results")
+    input(type="hidden" id="selectedOperation")
     br
     br
     button(onclick='getResponse()' id='getResponseButton' disabled='true') Get Response
