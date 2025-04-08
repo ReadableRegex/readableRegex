@@ -73,7 +73,7 @@ function searchOperations() {
   const filteredOperations = operations.filter(
     (operation) =>
       operation.label.toLowerCase().includes(query) ||
-      operation.label.toLowerCase().includes(query)
+      operation.value.toLowerCase().includes(query)
   );
 
   if (filteredOperations.length > 0) {
