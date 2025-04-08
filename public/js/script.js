@@ -80,7 +80,7 @@ function searchOperations() {
     searchResults.style.display = "block";
     filteredOperations.forEach((operation) => {
       const div = document.createElement("div");
-      div.className = "search-result-item";
+      div.className = "search-results-item";
       div.textContent = operation.label;
       div.onclick = () => selectOperation(operation);
       searchResults.appendChild(div);
