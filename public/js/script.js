@@ -58,17 +58,23 @@ function enableButton() {
     inputString.length > 0 ? false : true;
 }
 
-function searchOperations() {
-  const searchInput = document.querySelector("#operationSearch");
+function renderOperations(operations) {
   const searchResults = document.querySelector("#searchResults");
-  const query = searchInput.value.toLowerCase();
-
   searchResults.innerHTML = "";
+  searchResults.style.display = "block";
 
-  if (query.length === 0) {
-    searchResults.style.display = "none";
-    return;
-  }
+  operations.forEach((operation) => {
+    const div = document.createElement("div");
+    div.className = "search-results-item";
+    div.textContent = operation.label;
+    div.onclick = () => selectOperation(operation);
+    searchResults.appendChild(div);
+  });
+}
+
+function searchOperations(showAll = false) {
+  const searchInput = document.querySelector("#operationSearch");
+  const query = showAll ? "" : searchInput.value.toLowerCase();
 
   const filteredOperations = operations.filter(
     (operation) =>
@@ -77,18 +83,15 @@ function searchOperations() {
   );
 
   if (filteredOperations.length > 0) {
-    searchResults.style.display = "block";
-    filteredOperations.forEach((operation) => {
-      const div = document.createElement("div");
-      div.className = "search-results-item";
-      div.textContent = operation.label;
-      div.onclick = () => selectOperation(operation);
-      searchResults.appendChild(div);
-    });
+    renderOperations(query === "" ? operations : filteredOperations);
   } else {
     searchResults.style.display = "none";
   }
 }
+
+document.querySelector("#operationSearch").addEventListener("click", () => {
+  searchOperations(true);
+});
 
 function selectOperation(operation) {
   const searchInput = document.querySelector("#operationSearch");
@@ -104,7 +107,8 @@ document.addEventListener("click", (e) => {
   const searchResults = document.querySelector("#searchResults");
   const operationSearch = document.querySelector("#operationSearch");
 
-  if (e.target !== operationSearch) {
+  if (e.target !== operationSearch && !searchResults.contains(e.target)) {
     searchResults.style.display = "none";
   }
 });
+
