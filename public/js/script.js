@@ -72,8 +72,25 @@ function renderOperations(operations) {
   });
 }
 
+function toggleDropdown() {
+  const searchResults = document.querySelector("#searchResults");
+  const dropdownIcon = document.querySelector("#dropdownToggle");
+  const isVisible = searchResults.style.display === "block";
+
+  if (isVisible) {
+    searchResults.style.display = "none";
+    dropdownIcon.textContent = "▼";
+  } else {
+    renderOperations(operations);
+    searchResults.style.disabled = "block";
+    dropdownIcon.textContent = "▲";
+  }
+}
+
 function searchOperations(showAll = false) {
   const searchInput = document.querySelector("#operationSearch");
+  const searchResults = document.querySelector("#searchResults");
+  const dropdownIcon = document.querySelector("#dropdownToggle");
   const query = showAll ? "" : searchInput.value.toLowerCase();
 
   const filteredOperations = operations.filter(
@@ -82,10 +99,13 @@ function searchOperations(showAll = false) {
       operation.value.toLowerCase().includes(query)
   );
 
-  if (filteredOperations.length > 0) {
-    renderOperations(query === "" ? operations : filteredOperations);
-  } else {
+  renderOperations(filteredOperations);
+  searchResults.style.display = "block";
+  dropdownIcon.textContent = "▲";
+
+  if (filteredOperations.length === 0) {
     searchResults.style.display = "none";
+    dropdownIcon.textContent = "▼";
   }
 }
 
@@ -93,22 +113,49 @@ document.querySelector("#operationSearch").addEventListener("click", () => {
   searchOperations(true);
 });
 
+function clearSelection() {
+  const searchInput = document.querySelector("#operationSearch");
+  const searchResults = document.querySelector("#searchResults");
+  const selectedOperation = document.querySelector("#selectedOperation");
+  const clearIcon = document.querySelector("#clearSearch");
+  const dropdownIcon = document.querySelector("#dropdownToggle");
+
+  searchInput.value = "";
+  renderOperations(operations);
+  selectedOperation.value = "";
+  searchResults.style.display = "block";
+  clearIcon.style.display = "none";
+  dropdownIcon.textContent = "▲";
+}
+
 function selectOperation(operation) {
   const searchInput = document.querySelector("#operationSearch");
   const searchResults = document.querySelector("#searchResults");
   const selectedOperation = document.querySelector("#selectedOperation");
+  const clearIcon = document.querySelector("#clearSearch");
+  const dropdownIcon = document.querySelector("#dropdownToggle");
 
   searchInput.value = operation.label;
   selectedOperation.value = operation.value;
   searchResults.style.display = "none";
+  clearIcon.style.display = "block";
+  dropdownIcon.textContent = "▼";
 }
 
 document.addEventListener("click", (e) => {
   const searchResults = document.querySelector("#searchResults");
   const operationSearch = document.querySelector("#operationSearch");
+  const clearIcon = document.querySelector("#clearSearch");
+  const dropdownIcon = document.querySelector("#dropdownToggle");
 
-  if (e.target !== operationSearch && !searchResults.contains(e.target)) {
-    searchResults.style.display = "none";
+  if (
+    e.target !== operationSearch &&
+    e.target !== clearIcon &&
+    e.target !== dropdownIcon &&
+    !searchResults.contains(e.taget)
+  ) {
+    searchResults.style;
+    display = "none";
+    dropdownIcon.textContent = "▼";
   }
 });
-

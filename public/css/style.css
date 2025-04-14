@@ -314,3 +314,41 @@ footer:hover {
   margin: 10px;
   cursor: pointer;
 }
+
+.search-input-container {
+  position: relative;
+  display: inline-block;
+  width: 50%;
+}
+.dropdown-icon {
+  position: absolute;
+  right: 26%;
+  top: 55%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 15px;
+  color: #999;
+  padding: 0 4px;
+  border-radius: 100%;
+}
+
+.dropdown-icon:hover {
+  background-color: #e0e3e5;
+}
+
+.clear-icon {
+  position: absolute;
+  right: 28%;
+  top: 55%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 15px;
+  color: #999;
+  display: none;
+  padding: 0 4px;
+  border-radius: 100%;
+}
+
+.clear-icon:hover {
+  background-color: #e0e3e5;
+}
