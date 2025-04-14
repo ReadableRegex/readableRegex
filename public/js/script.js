@@ -152,10 +152,10 @@ document.addEventListener("click", (e) => {
     e.target !== operationSearch &&
     e.target !== clearIcon &&
     e.target !== dropdownIcon &&
-    !searchResults.contains(e.taget)
+    !searchResults.contains(e.taget) &&
+    searchResults.style.display === "block"
   ) {
-    searchResults.style;
-    display = "none";
+    searchResults.style.display = "none";
     dropdownIcon.textContent = "▼";
   }
 });
