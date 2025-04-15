@@ -301,6 +301,7 @@ footer:hover {
   }
 }
 .search-results {
+  width: 50%;
   max-height: 200px;
   overflow-y: auto;
   border: 1px solid #bdc3c7;
@@ -310,6 +311,11 @@ footer:hover {
   display: none;
 }
 
+@media (max-width: 768px) {
+  .search-results {
+    width: 100%;
+  }
+}
 .search-results-item {
   margin: 10px;
   cursor: pointer;
@@ -317,38 +323,45 @@ footer:hover {
 
 .search-input-container {
   position: relative;
-  display: inline-block;
   width: 50%;
+  max-width: 100%;
 }
+
+.search-input-container input[type="text"] {
+  width: 100%;
+  padding-right: 60px;
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  .search-input-container {
+    width: 100%;
+  }
+}
+
+.clear-icon,
 .dropdown-icon {
   position: absolute;
-  right: 26%;
-  top: 55%;
+  top: 35%;
   transform: translateY(-50%);
   cursor: pointer;
   font-size: 15px;
   color: #999;
   padding: 0 4px;
   border-radius: 100%;
+  background-color: transparent;
 }
 
+.clear-icon:hover,
 .dropdown-icon:hover {
   background-color: #e0e3e5;
 }
 
 .clear-icon {
-  position: absolute;
-  right: 28%;
-  top: 55%;
-  transform: translateY(-50%);
-  cursor: pointer;
-  font-size: 15px;
-  color: #999;
+  right: 34px;
   display: none;
-  padding: 0 4px;
-  border-radius: 100%;
 }
 
-.clear-icon:hover {
-  background-color: #e0e3e5;
+.dropdown-icon {
+  right: 10px;
 }

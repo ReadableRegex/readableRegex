@@ -20,8 +20,8 @@ const operations = [
 ];
 
 async function getResponse() {
-  const inputString = document.querySelector("#inputString").value;
-  const endpoint = document.querySelector('select[name="endpoint"]').value;
+  const inputString = document.querySelector("#inputString")?.value;
+  const endpoint = document.querySelector("#selectedOperation")?.value;
 
   if (!endpoint) {
     alert("Please select an operation first");
