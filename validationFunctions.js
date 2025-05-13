@@ -450,6 +450,32 @@ module.exports = class ValidationFunctions {
 
     return validStateCodes.includes(inputString);
   }
+
+  /**
+   * Checks if the given string is a valid latitude-longitude coordinate.
+   * 
+   * * Supports two formats:
+   * 1. Decimal degrees: e.g. "37.7749,-122.4194" or "37.7749, -122.4194"
+   * 2. DMS (degrees, minutes, seconds): e.g. "37°46'30\"N 122°25'10\"W" (if checkDMS: true)
+   * 
+   * @param {string} inputString - The coordinate to validate.
+   * @param {Object} [options={ checkDMS: false }] - Options for validation.
+   * @param {boolean} [options.checkDMS=false] - If true, checks for DMS format.
+   * @returns {boolean} - Returns `true` if `inputString` is a valid latitude-longitude coordinate, otherwise `false`.
+   */
+  static isLatLong(inputString, options = { checkDMS: false }) {
+    if (!inputString || typeof inputString !== "string") return false;
+
+    const trimmedInput = inputString.trim();
+
+    if (options.checkDMS) {
+      const dmsRegex = /^(\d{1,3})°\d{1,2}'\d{1,2}"[NS]\s+(\d{1,3})°\d{1,2}'\d{1,2}"[EW]$/;
+      return dmsRegex.test(trimmedInput);
+    }
+
+    const decimalDegreesRegex = /^-?\d{1,3}(?:\.\d+)?,\s*-?\d{1,3}(?:\.\d+)?$/;
+    return decimalDegreesRegex.test(trimmedInput);
+  }
 }
 
 const handleAxiosError = (error) => {
