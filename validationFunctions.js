@@ -469,7 +469,7 @@ module.exports = class ValidationFunctions {
     const trimmedInput = inputString.trim();
 
     if (options.checkDMS) {
-      const dmsRegex = /^(\d{1,3})°\d{1,2}'\d{1,2}"[NS]\s+(\d{1,3})°\d{1,2}'\d{1,2}"[EW]$/;
+      const dmsRegex = /^(\d{1,3})°\d{1,2}'\d{1,2}(\.\d+)?"[NS]\s+(\d{1,3})°\d{1,2}'\d{1,2}(\.\d+)?"[EW]$/;
       return dmsRegex.test(trimmedInput);
     }
 
