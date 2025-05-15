@@ -2,23 +2,23 @@
 // This file sets up the core express server and middleware.
 // We separate the server configuration into this file to address an issue where SuperTest prevents the server from properly closing after tests are executed.
 
-const express = require("express");
+const express = require('express');
 const { rateLimit } = require("express-rate-limit");
-const csv = require("csv-parser");
+const csv = require('csv-parser');
 const app = express();
-const cors = require("cors");
-const axios = require("axios");
+const cors = require('cors')
+const axios = require('axios');
 const { handleAxiosError } = require("./utils/axios");
-const ValidationFunctions = require("./validationFunctions");
+const ValidationFunctions = require('./validationFunctions');
 const { urlUtils } = require("./utils/urlUtils");
-const expressJSDocSwagger = require("express-jsdoc-swagger");
-const fetchAiGeneratedContent = require("./runGeminiPrompt");
+const expressJSDocSwagger = require('express-jsdoc-swagger');
+const fetchAiGeneratedContent = require('./runGeminiPrompt');
 
 // Constants and Error Messages
-const requiredParameterResponse = "Input string required as a parameter.";
-const MAX_REQUEST_SIZE = "10mb"; // Maximum request body size (10 megabytes)
-const MAX_REQUEST_SIZE_BYTES = 10 * 1024 * 1024; // 10MB in bytes
-const SIZE_LIMIT_ERROR = "Input exceeds maximum size of 10MB";
+const requiredParameterResponse = 'Input string required as a parameter.';
+const MAX_REQUEST_SIZE = '10mb';  // Maximum request body size (10 megabytes)
+const MAX_REQUEST_SIZE_BYTES = 10 * 1024 * 1024;  // 10MB in bytes
+const SIZE_LIMIT_ERROR = 'Input exceeds maximum size of 10MB';
 
 /**
  * Global rate limiter middleware
@@ -34,10 +34,10 @@ const limiter = rateLimit({
 
 const options = {
   info: {
-    version: "1.0.0",
-    title: "Readable Regex",
+    version: '1.0.0',
+    title: 'Readable Regex',
     license: {
-      name: "MIT",
+      name: 'MIT',
     },
   },
   //TODO will add this later when we have API tokens
@@ -51,15 +51,15 @@ const options = {
   baseDir: __dirname,
   // Glob pattern to find your jsdoc files (multiple patterns can be added in an array)
   // This pattern finds any .js file. The default value from the docs didn't work
-  filesPattern: "*.js",
+  filesPattern: '*.js',
   // URL where SwaggerUI will be rendered
-  swaggerUIPath: "/api-docs",
+  swaggerUIPath: '/api-docs',
   // Expose OpenAPI UI
   exposeSwaggerUI: true,
   // Expose Open API JSON Docs documentation in `apiDocsPath` path.
   exposeApiDocs: false,
   // Open API JSON Docs endpoint.
-  apiDocsPath: "/v3/api-docs",
+  apiDocsPath: '/v3/api-docs',
   // Set non-required fields as nullable by default
   notRequiredAsNullable: false,
   // You can customize your UI options.
@@ -72,42 +72,37 @@ const options = {
 
 expressJSDocSwagger(app)(options);
 
-app.use(limiter);
 
-app.use(cors());
+app.use(limiter)
+
+app.use(cors())
 // Middleware to parse JSON request bodies with size limit
-app.use(
-  express.json({
-    limit: MAX_REQUEST_SIZE,
-    verify: (req, res, buf) => {
-      if (buf.length > MAX_REQUEST_SIZE_BYTES) {
-        throw new Error("Request payload too large");
-      }
-    },
-  })
-);
+app.use(express.json({
+  limit: MAX_REQUEST_SIZE,
+  verify: (req, res, buf) => {
+    if (buf.length > MAX_REQUEST_SIZE_BYTES) {
+      throw new Error('Request payload too large');
+    }
+  }
+}));
 app.use(express.raw({ limit: MAX_REQUEST_SIZE }));
-app.set("view engine", "pug");
+app.set('view engine', 'pug');
 // Ensure Express looks in the correct folder
-app.set("views", "./views");
+app.set('views', './views');
 
 // Serve static files
-app.use(express.static("public"));
+app.use(express.static('public'));
 
 // Error handling middleware for payload size errors
 app.use((err, req, res, next) => {
   // Check for payload size errors first
-  if (
-    err.status === 413 ||
-    err.type === "entity.too.large" ||
-    err.message === "Request payload too large"
-  ) {
+  if (err.status === 413 || err.type === 'entity.too.large' || err.message === 'Request payload too large') {
     return res.status(413).json({ error: SIZE_LIMIT_ERROR });
   }
 
   // Then check for syntax errors
   if (err instanceof SyntaxError) {
-    return res.status(400).json({ error: "Invalid JSON format" });
+    return res.status(400).json({ error: 'Invalid JSON format' });
   }
 
   next();
@@ -217,7 +212,7 @@ app.use((err, req, res, next) => {
  *   "error": "Input string/FieldTovalidate required as a parameter."
  * }
  */
-app.post("/api/isField", async (req, res) => {
+app.post('/api/isField', async (req, res) => {
   const { inputString, fieldToValidate } = req.body;
 
   if (!inputString || !fieldToValidate) {
@@ -239,12 +234,14 @@ app.post("/api/isField", async (req, res) => {
   Note:In case of zip code take into consideration zip codes all over the world
   `;
   try {
-    const aiJsonResponse = await fetchAiGeneratedContent(instructionToLLM);
-    const jsonResult = JSON.parse(aiJsonResponse); // get the string returned from LLM and extract only the JSON part from it
-    res.json(jsonResult);
-  } catch (e) {
-    res.json({ error: e.message });
+    const aiJsonResponse = await fetchAiGeneratedContent(instructionToLLM)
+    const jsonResult = JSON.parse(aiJsonResponse)// get the string returned from LLM and extract only the JSON part from it
+    res.json(jsonResult)
   }
+  catch (e) {
+    res.json({ error: e.message })
+  }
+
 });
 
 /**
@@ -267,7 +264,7 @@ app.post("/api/isField", async (req, res) => {
  *   "error": "Input string required as a parameter."
  * }
  */
-app.post("/api/isEmailAddress", (req, res) => {
+app.post('/api/isEmailAddress', (req, res) => {
   const { inputString } = req.body;
 
   if (!inputString) {
@@ -298,7 +295,7 @@ app.post("/api/isEmailAddress", (req, res) => {
  *   "error": "Input string required as a parameter."
  * }
  */
-app.post("/api/isBoolean", (req, res) => {
+app.post('/api/isBoolean', (req, res) => {
   const { inputString } = req.body;
 
   if (!inputString) {
@@ -329,7 +326,7 @@ app.post("/api/isBoolean", (req, res) => {
  *   "error": "Input string required as a parameter."
  * }
  */
-app.post("/api/isPhoneNumber", (req, res) => {
+app.post('/api/isPhoneNumber', (req, res) => {
   const { inputString } = req.body;
 
   if (!inputString) {
@@ -360,7 +357,7 @@ app.post("/api/isPhoneNumber", (req, res) => {
  *   "error": "Input string required as a parameter."
  * }
  */
-app.post("/api/onlySpecialCharacters", (req, res) => {
+app.post('/api/onlySpecialCharacters', (req, res) => {
   const { inputString } = req.body;
 
   if (!inputString) {
@@ -391,7 +388,7 @@ app.post("/api/onlySpecialCharacters", (req, res) => {
  *   "error": "Input string required as a parameter."
  * }
  */
-app.post("/api/trim", (req, res) => {
+app.post('/api/trim', (req, res) => {
   const inputString = req.body.inputString;
 
   if (!inputString) {
@@ -424,36 +421,29 @@ app.post("/api/trim", (req, res) => {
  *   "error": "Input string required as a parameter."
  * }
  */
-app.post("/api/contains", (req, res) => {
+app.post('/api/contains', (req, res) => {
   const inputString = req.body.inputString;
-  const stringContained = req.body.stringContained;
-  const caseSensitive = req.body.caseSensitive;
+  const stringContained = req.body.stringContained
+  const caseSensitive = req.body.caseSensitive
 
   if (!inputString) {
     return res.status(400).json({ error: requiredParameterResponse });
   }
 
   if (!stringContained) {
-    return res
-      .status(400)
-      .json({ error: "stringContained is a required parameter" });
+    return res.status(400).json({ error: 'stringContained is a required parameter' })
   }
 
-  // only throw an error if caseSensitive is not passed, which means it's undefiend.
+  // only throw an error if caseSensitive is not passed, which means it's undefiend. 
   // The ! operation won't work because when a boolean is passed, it will flip it, instead of checking if the value exists
   if (caseSensitive === undefined) {
-    return res
-      .status(400)
-      .json({ error: "caseSensitive is a required parameter" });
+    return res.status(400).json({ error: 'caseSensitive is a required parameter' })
   }
 
-  const result = ValidationFunctions.contains(
-    inputString,
-    stringContained,
-    caseSensitive
-  );
+  const result = ValidationFunctions.contains(inputString, stringContained, caseSensitive)
   res.json({ result });
 });
+
 
 /**
  * POST /api/onlyNumbers
@@ -475,7 +465,7 @@ app.post("/api/contains", (req, res) => {
  *   "error": "Input string required as a parameter."
  * }
  */
-app.post("/api/onlyNumbers", (req, res) => {
+app.post('/api/onlyNumbers', (req, res) => {
   const { inputString } = req.body;
   if (!inputString) {
     return res.status(400).json({ error: requiredParameterResponse });
@@ -505,7 +495,7 @@ app.post("/api/onlyNumbers", (req, res) => {
  *   "error": "Input string required as a parameter."
  * }
  */
-app.post("/api/onlyLetters", (req, res) => {
+app.post('/api/onlyLetters', (req, res) => {
   const { inputString } = req.body;
 
   if (!inputString) {
@@ -546,12 +536,9 @@ app.post("/api/excludeTheseCharacters", (req, res) => {
     });
   }
 
-  const result = ValidationFunctions.excludeTheseCharacters(
-    inputString,
-    excludeTheseCharacters
-  );
+  const result = ValidationFunctions.excludeTheseCharacters(inputString, excludeTheseCharacters);
   res.json({ result });
-});
+})
 
 /**
  * POST /api/isAlphaNumeric
@@ -573,7 +560,7 @@ app.post("/api/excludeTheseCharacters", (req, res) => {
  *   "error": "Input string required as a parameter."
  * }
  */
-app.post("/api/isAlphaNumeric", (req, res) => {
+app.post('/api/isAlphaNumeric', (req, res) => {
   const { inputString } = req.body;
 
   if (!inputString) {
@@ -610,7 +597,7 @@ app.post("/api/isAlphaNumeric", (req, res) => {
  *   "supportedCountries": ["US", "UK", "CA", "AU", "DE", "FR", "JP", "BR", "IN"]
  * }
  */
-app.post("/api/isZipCode", (req, res) => {
+app.post('/api/isZipCode', (req, res) => {
   const { inputString, countryCode } = req.body;
 
   // Validate the input and country code, and check if it's a valid zip code
@@ -619,18 +606,8 @@ app.post("/api/isZipCode", (req, res) => {
   if (result === false) {
     // Return a 400 status if the zip code is invalid or the country code is not supported
     return res.status(400).json({
-      error: "Invalid input or country code not supported.",
-      supportedCountries: [
-        "US",
-        "UK",
-        "CA",
-        "AU",
-        "DE",
-        "FR",
-        "JP",
-        "BR",
-        "IN",
-      ],
+      error: 'Invalid input or country code not supported.',
+      supportedCountries: ['US', 'UK', 'CA', 'AU', 'DE', 'FR', 'JP', 'BR', 'IN']
     });
   }
 
@@ -657,12 +634,12 @@ app.post("/api/isZipCode", (req, res) => {
  *   "error": "Input string required as a parameter."
  * }
  */
-app.post("/api/isInteger", (req, res) => {
+app.post('/api/isInteger', (req, res) => {
   const { inputString } = req.body;
 
   if (!inputString) {
     return res.status(400).json({
-      error: { error: requiredParameterResponse },
+      error: { error: requiredParameterResponse }
     });
   }
 
@@ -691,7 +668,7 @@ app.post("/api/isInteger", (req, res) => {
  *   "error": "Input string required as a parameter."
  * }
  */
-app.post("/api/isHexadecimal", (req, res) => {
+app.post('/api/isHexadecimal', (req, res) => {
   const { inputString } = req.body;
 
   if (!inputString) {
@@ -722,12 +699,12 @@ app.post("/api/isHexadecimal", (req, res) => {
  *   "error": "Input string required as a parameter."
  * }
  */
-app.post("/api/isDecimal", (req, res) => {
+app.post('/api/isDecimal', (req, res) => {
   const { inputString } = req.body;
 
   if (!inputString) {
     return res.status(400).json({
-      error: requiredParameterResponse,
+      error: requiredParameterResponse
     });
   }
 
@@ -756,7 +733,7 @@ app.post("/api/isDecimal", (req, res) => {
  *   "error": "Input string required as a parameter."
  * }
  */
-app.post("/api/isLowercase", (req, res) => {
+app.post('/api/isLowercase', (req, res) => {
   const { inputString } = req.body;
 
   if (!inputString) {
@@ -787,7 +764,7 @@ app.post("/api/isLowercase", (req, res) => {
  *   "error": "Input string required as a parameter."
  * }
  */
-app.post("/api/isDate", (req, res) => {
+app.post('/api/isDate', (req, res) => {
   const { inputString } = req.body;
 
   if (!inputString) {
@@ -819,7 +796,7 @@ app.post("/api/isDate", (req, res) => {
  *   "error": "characters to include and inputString are required."
  * }
  */
-app.post("/api/onlyTheseCharacters", (req, res) => {
+app.post('/api/onlyTheseCharacters', (req, res) => {
   const { onlyTheseCharacters, inputString } = req.body;
 
   if (!onlyTheseCharacters || !inputString) {
@@ -828,17 +805,14 @@ app.post("/api/onlyTheseCharacters", (req, res) => {
     });
   }
 
-  const result = ValidationFunctions.includeOnlyTheseCharacters(
-    inputString,
-    onlyTheseCharacters
-  );
+  const result = ValidationFunctions.includeOnlyTheseCharacters(inputString, onlyTheseCharacters);
   res.json({ result });
 });
 
 /**
  * POST /api/isAllCaps
  * @summary Checks if the input string is entirely in uppercase
- * @description Validates if the provided string is entirely made up of uppercase letters.
+ * @description Validates if the provided string is entirely made up of uppercase letters. 
  * @param {BasicRequest} request.body.required - The request body containing the string to validate
  * @return {BasicResponse} 200 - Success response with a boolean result indicating if the string is all uppercase
  * @return {BadRequestResponse} 400 - Bad request response when input is missing or invalid
@@ -855,7 +829,7 @@ app.post("/api/onlyTheseCharacters", (req, res) => {
  *   "error": "Input string required as a parameter."
  * }
  */
-app.post("/api/isAllCaps", (req, res) => {
+app.post('/api/isAllCaps', (req, res) => {
   const { inputString } = req.body;
 
   if (!inputString) {
@@ -888,9 +862,9 @@ app.post("/api/isAllCaps", (req, res) => {
  *   "error": "Input string required as a parameter."
  * }
  */
-app.post("/api/isUrl", async (req, res) => {
+app.post('/api/isUrl', async (req, res) => {
   const inputString = req.body.inputString;
-  const connectToUrlTest = req.body.connectToUrlTest ?? false;
+  const connectToUrlTest = req.body.connectToUrlTest ?? false
 
   if (!inputString) {
     return res.status(400).json({ error: requiredParameterResponse });
@@ -928,7 +902,7 @@ app.post("/api/isUrl", async (req, res) => {
  *   "error": "Input string required as a parameter."
  * }
  */
-app.post("/api/isBinaryString", (req, res) => {
+app.post('/api/isBinaryString', (req, res) => {
   const inputString = req.body.inputString;
 
   if (!inputString) {
@@ -970,20 +944,14 @@ app.post("/api/isBinaryString", (req, res) => {
  *   "error": "inputString and comparisonString are required."
  * }
  */
-app.post("/api/isEqual", (req, res) => {
+app.post('/api/isEqual', (req, res) => {
   const { inputString, comparisonString, caseSensitive = true } = req.body;
 
   if (!inputString || !comparisonString) {
-    return res
-      .status(400)
-      .json({ error: "inputString and comparisonString are required." });
+    return res.status(400).json({ error: "inputString and comparisonString are required." });
   }
 
-  const result = ValidationFunctions.isEqual(
-    inputString,
-    comparisonString,
-    caseSensitive
-  );
+  const result = ValidationFunctions.isEqual(inputString, comparisonString, caseSensitive);
   res.json({ result });
 });
 
@@ -1006,7 +974,7 @@ app.post("/api/isEqual", (req, res) => {
  *   "error": "Input string required as a parameter."
  * }
  */
-app.post("/api/isCSV", (req, res) => {
+app.post('/api/isCSV', (req, res) => {
   const { inputString } = req.body;
 
   if (!inputString) {
@@ -1014,41 +982,42 @@ app.post("/api/isCSV", (req, res) => {
   }
 
   // Check if input size exceeds limit
-  if (Buffer.byteLength(inputString, "utf8") > MAX_REQUEST_SIZE_BYTES) {
+  if (Buffer.byteLength(inputString, 'utf8') > MAX_REQUEST_SIZE_BYTES) {
     return res.status(413).json({ error: SIZE_LIMIT_ERROR });
   }
 
   const records = [];
   const csvParser = csv({ headers: false });
 
-  csvParser.on("data", (row) => {
+  csvParser.on('data', (row) => {
     records.push(row);
   });
 
-  csvParser.on("end", () => {
+  csvParser.on('end', () => {
     res.json({ result: true });
   });
 
-  csvParser.on("error", (err) => {
+  csvParser.on('error', (err) => {
     console.error(err);
-    res.status(500).json({ error: "Failed to parse CSV data" });
+    res.status(500).json({ error: 'Failed to parse CSV data' });
   });
 
   csvParser.write(inputString);
   csvParser.end();
 });
 
-app.get("/", (req, res) => {
-  res.render("pages/index", { title: "Home" });
+app.get('/', (req, res) => {
+  res.render('pages/index', { title: 'Home' });
 });
 
-app.get("/about", (req, res) => {
-  res.render("pages/about", { title: "About" });
+app.get('/about', (req, res) => {
+  res.render('pages/about', { title: 'About' });
 });
 
-app.get("/contact", (req, res) => {
-  res.render("pages/contact", { title: "Contact" });
+app.get('/contact', (req, res) => {
+  res.render('pages/contact', { title: 'Contact' });
 });
+
 
 /**
  * POST /api/isCountry
@@ -1069,7 +1038,7 @@ app.get("/contact", (req, res) => {
  *   "error": "Input string required as a parameter."
  * }
  */
-app.post("/api/isCountry", async (req, res) => {
+app.post('/api/isCountry', async (req, res) => {
   const inputString = req.body.inputString;
 
   if (!inputString) {
@@ -1077,12 +1046,9 @@ app.post("/api/isCountry", async (req, res) => {
   }
 
   try {
-    const reply = await axios.post(
-      "https://countriesnow.space/api/v0.1/countries/currency",
-      {
-        country: inputString,
-      }
-    );
+    const reply = await axios.post('https://countriesnow.space/api/v0.1/countries/currency', {
+      "country": inputString
+    });
 
     return res.json({ result: reply.data.error === false });
   } catch (error) {
@@ -1097,7 +1063,7 @@ app.post("/api/isCountry", async (req, res) => {
 
 /**
  * POST /api/isValidStateCode
- * @summary Returns true if valid US state code, otherwise false
+ * @summary Returns true if valid US state code, otherwise false 
  * @param {BasicRequest} request.body.required - The state code to validate
  * @return {BasicResponse} 200 - Success response
  * @return {BadRequestResponse} 400 - Bad request response
@@ -1114,7 +1080,7 @@ app.post("/api/isCountry", async (req, res) => {
  *   "error": "Input string required as a parameter."
  * }
  */
-app.post("/api/isValidStateCode", (req, res) => {
+app.post('/api/isValidStateCode', (req, res) => {
   const { inputString } = req.body;
 
   if (!inputString) {
@@ -1154,7 +1120,7 @@ app.post("/api/isValidStateCode", (req, res) => {
  *   "error": "Input string required as a parameter."
  * }
  */
-app.post("/api/isLatLong", (req, res) => {
+app.post('/api/isLatLong', (req, res) => {
   const { inputString, checkDMS = false } = req.body;
 
   if (!inputString) {
