@@ -190,6 +190,13 @@ app.use((err, req, res, next) => {
  */
 
 /**
+ * A LatLongRequest
+ * @typedef {object} LatLongRequest
+ * @property {string} inputString.required - The latitude and longitude to validate (supports decimal degrees or DMS format)
+ * @property {boolean} [checkDMS=false] - Optionally check if the input is in DMS (Degrees, Minutes, Seconds) format
+ */
+
+/**
  * POST /api/isField
  * @summary Returns true/false based on the input string and fieldToValidate
  * @param {GeminiValidationRequest} request.body.required
@@ -1122,8 +1129,11 @@ app.post("/api/isValidStateCode", (req, res) => {
 /**
  * POST /api/isLatLong
  * @summary Returns true if valid latitude and longitude, otherwise false
- * @param {BasicRequest} request.body.required - The latitude and longitude to validate
- * @param {boolean} [checkDMS=false] - Optionally check if the input is in DMS (Degrees, Minutes, Seconds) format
+ * @description
+ * Supports two formats:
+ * 1. Decimal degrees: e.g. "37.7749,-122.4194" or "37.7749, -122.4194"
+ * 2. DMS (degrees, minutes, seconds): e.g. "37°46'30\"N 122°25'10\"W" (if checkDMS: true)
+ * @param {LatLongRequest} request.body.required - The input string and optional checkDMS flag
  * @return {BasicResponse} 200 - Success response
  * @return {BadRequestResponse} 400 - Bad request response
  * @example request - decimal degrees
@@ -1141,7 +1151,7 @@ app.post("/api/isValidStateCode", (req, res) => {
  * }
  * @example response - 400 - example
  * {
- *  "error": "Input string required as a parameter."
+ *   "error": "Input string required as a parameter."
  * }
  */
 app.post("/api/isLatLong", (req, res) => {
