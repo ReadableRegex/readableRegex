@@ -17,6 +17,7 @@ const operations = [
   { value: "isBoolean", label: "Is Boolean" },
   { value: "isCountry", label: "Is Country" },
   { value: "isValidStateCode", label: "Is Valid State Code" },
+  { value: "isLatLong", label: "Is Latitude/Longitude" },
 ];
 
 async function getResponse() {
@@ -119,6 +120,8 @@ function clearSelection() {
   const selectedOperation = document.querySelector("#selectedOperation");
   const clearIcon = document.querySelector("#clearSearch");
   const dropdownIcon = document.querySelector("#dropdownToggle");
+  const checkDMSContainer = document.querySelector("#checkDMSContainer");
+  const checkDMS = document.querySelector("#checkDMS");
 
   searchInput.value = "";
   renderOperations(operations);
@@ -126,6 +129,8 @@ function clearSelection() {
   searchResults.style.display = "block";
   clearIcon.style.display = "none";
   dropdownIcon.textContent = "▲";
+  checkDMSContainer.style.display = "none";
+  checkDMS.checked = false;
 }
 
 function selectOperation(operation) {
@@ -140,6 +145,13 @@ function selectOperation(operation) {
   searchResults.style.display = "none";
   clearIcon.style.display = "block";
   dropdownIcon.textContent = "▼";
+
+  if (operation.value === "isLatLong") {
+    checkDMSContainer.style.display = "block";
+  } else {
+    checkDMSContainer.style.display = "none";
+    document.querySelector("#checkDMS").checked = false;
+  }
 }
 
 document.addEventListener("click", (e) => {
