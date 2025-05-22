@@ -17,11 +17,13 @@ const operations = [
   { value: "isBoolean", label: "Is Boolean" },
   { value: "isCountry", label: "Is Country" },
   { value: "isValidStateCode", label: "Is Valid State Code" },
+  { value: "isLatLong", label: "Is Latitude/Longitude" },
 ];
 
 async function getResponse() {
   const inputString = document.querySelector("#inputString")?.value;
   const endpoint = document.querySelector("#selectedOperation")?.value;
+  const checkDMS = document.querySelector("#checkDMS")?.checked;
 
   if (!endpoint) {
     alert("Please select an operation first");
@@ -31,12 +33,16 @@ async function getResponse() {
   // Use window.location.origin to get the base URL
   const baseUrl = window.location.origin;
 
+  let requestBody = { inputString };
+
+  if (endpoint === "isLatLong") {
+    requestBody.checkDMS = checkDMS;
+  }
+
   try {
     const response = await fetch(`${baseUrl}/api/${endpoint}`, {
       method: "POST",
-      body: JSON.stringify({
-        inputString: inputString,
-      }),
+      body: JSON.stringify(requestBody),
       headers: {
         "Content-Type": "application/json",
       },
@@ -119,6 +125,8 @@ function clearSelection() {
   const selectedOperation = document.querySelector("#selectedOperation");
   const clearIcon = document.querySelector("#clearSearch");
   const dropdownIcon = document.querySelector("#dropdownToggle");
+  const checkDMSContainer = document.querySelector("#checkDMSContainer");
+  const checkDMS = document.querySelector("#checkDMS");
 
   searchInput.value = "";
   renderOperations(operations);
@@ -126,6 +134,8 @@ function clearSelection() {
   searchResults.style.display = "block";
   clearIcon.style.display = "none";
   dropdownIcon.textContent = "▲";
+  checkDMSContainer.style.display = "none";
+  checkDMS.checked = false;
 }
 
 function selectOperation(operation) {
@@ -140,6 +150,13 @@ function selectOperation(operation) {
   searchResults.style.display = "none";
   clearIcon.style.display = "block";
   dropdownIcon.textContent = "▼";
+
+  if (operation.value === "isLatLong") {
+    checkDMSContainer.style.display = "block";
+  } else {
+    checkDMSContainer.style.display = "none";
+    document.querySelector("#checkDMS").checked = false;
+  }
 }
 
 document.addEventListener("click", (e) => {
