@@ -23,6 +23,7 @@ const operations = [
 async function getResponse() {
   const inputString = document.querySelector("#inputString")?.value;
   const endpoint = document.querySelector("#selectedOperation")?.value;
+  const checkDMS = document.querySelector("#checkDMS")?.checked;
 
   if (!endpoint) {
     alert("Please select an operation first");
@@ -32,12 +33,16 @@ async function getResponse() {
   // Use window.location.origin to get the base URL
   const baseUrl = window.location.origin;
 
+  let requestBody = { inputString };
+
+  if (endpoint === "isLatLong") {
+    requestBody.checkDMS = checkDMS;
+  }
+
   try {
     const response = await fetch(`${baseUrl}/api/${endpoint}`, {
       method: "POST",
-      body: JSON.stringify({
-        inputString: inputString,
-      }),
+      body: JSON.stringify(requestBody),
       headers: {
         "Content-Type": "application/json",
       },
