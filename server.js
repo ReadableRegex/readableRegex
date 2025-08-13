@@ -452,7 +452,7 @@ app.post('/api/contains', (req, res) => {
     return res.status(400).json({ error: 'caseSensitive is a required parameter' })
   }
 
-  const result = ValidationFunctions.contains(inputString, stringContained, caseSensitive); // <-- cambia aquí
+  const result = ValidationFunctions.contains(inputString, stringContained, caseSensitive);
   res.json({ result });
 });
 
