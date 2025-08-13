@@ -12,6 +12,7 @@ const { handleAxiosError } = require("./utils/axios");
 const ValidationFunctions = require('./validationFunctions');
 const { urlUtils } = require("./utils/urlUtils");
 const expressJSDocSwagger = require('express-jsdoc-swagger');
+const swaggerUi = require('swagger-ui-express')
 const fetchAiGeneratedContent = require('./runGeminiPrompt');
 
 // Constants and Error Messages
@@ -26,7 +27,7 @@ const SIZE_LIMIT_ERROR = 'Input exceeds maximum size of 10MB';
  * each IP can make up to 1000 requests per `windowsMs` (1 minute)
  */
 const limiter = rateLimit({
-  windowMs: 1 * 60 * 1000, // 1 minute
+  windowMs: 1 * 60 * 1000,
   limit: 1000,
   standardHeaders: true,
   legacyHeaders: false,
@@ -55,9 +56,9 @@ const options = {
   // URL where SwaggerUI will be rendered
   swaggerUIPath: '/api-docs',
   // Expose OpenAPI UI
-  exposeSwaggerUI: true,
+  exposeSwaggerUI: false,
   // Expose Open API JSON Docs documentation in `apiDocsPath` path.
-  exposeApiDocs: false,
+  exposeApiDocs: true,
   // Open API JSON Docs endpoint.
   apiDocsPath: '/v3/api-docs',
   // Set non-required fields as nullable by default
@@ -65,13 +66,25 @@ const options = {
   // You can customize your UI options.
   // you can extend swagger-ui-express config. You can checkout an example of this
   // in the `example/configuration/swaggerOptions.js`
-  swaggerUiOptions: {},
+  swaggerUiOptions: {
+    filter: true
+  },
   // multiple option in case you want more that one instance
   multiple: true,
 };
 
+
 expressJSDocSwagger(app)(options);
 
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(undefined,
+  {
+    swaggerOptions: {
+      url: '/v3/api-docs',
+      filter: true,
+    },
+    ...options.swaggerUiOptions
+  }
+));
 
 app.use(limiter)
 
@@ -144,7 +157,7 @@ app.use((err, req, res, next) => {
  * Contains request
  * @typedef {object} ContainsRequest
  * @property {string} inputString.required - Input string
- * @property {string} stringContained.required - String contained
+  * @property {string} stringContained.required - String contained
  * @property {boolean} caseSensitive.required - Case sensitivity
  */
 
@@ -197,6 +210,7 @@ app.use((err, req, res, next) => {
  * @param {GeminiValidationRequest} request.body.required
  * @return {GeminiResponse} 200 - Success response
  * @return {BadRequestResponse} 400 - Bad request response
+ * @tags IsEmailAddress
  * @example request - test
  * {
  *   "inputString": "test@gmail.com",
@@ -409,7 +423,7 @@ app.post('/api/trim', (req, res) => {
  * @example request - test
  * {
  *   "inputString": "   Hello World!   ",
- *   "containsString": "World",
+ *   "stringContained": "World",
  *   "caseSensitive": true
  * }
  * @example response - 200 - example payload
@@ -423,8 +437,8 @@ app.post('/api/trim', (req, res) => {
  */
 app.post('/api/contains', (req, res) => {
   const inputString = req.body.inputString;
-  const stringContained = req.body.stringContained
-  const caseSensitive = req.body.caseSensitive
+  const stringContained = req.body.stringContained;
+  const caseSensitive = req.body.caseSensitive;
 
   if (!inputString) {
     return res.status(400).json({ error: requiredParameterResponse });
@@ -434,13 +448,11 @@ app.post('/api/contains', (req, res) => {
     return res.status(400).json({ error: 'stringContained is a required parameter' })
   }
 
-  // only throw an error if caseSensitive is not passed, which means it's undefiend. 
-  // The ! operation won't work because when a boolean is passed, it will flip it, instead of checking if the value exists
   if (caseSensitive === undefined) {
     return res.status(400).json({ error: 'caseSensitive is a required parameter' })
   }
 
-  const result = ValidationFunctions.contains(inputString, stringContained, caseSensitive)
+  const result = ValidationFunctions.contains(inputString, stringContained, caseSensitive);
   res.json({ result });
 });
 
