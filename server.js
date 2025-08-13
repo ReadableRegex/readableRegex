@@ -157,7 +157,7 @@ app.use((err, req, res, next) => {
  * Contains request
  * @typedef {object} ContainsRequest
  * @property {string} inputString.required - Input string
- * @property {string} containsString.required - String contained
+  * @property {string} stringContained.required - String contained
  * @property {boolean} caseSensitive.required - Case sensitivity
  */
 
@@ -423,7 +423,7 @@ app.post('/api/trim', (req, res) => {
  * @example request - test
  * {
  *   "inputString": "   Hello World!   ",
- *   "containsString": "World",
+ *   "stringContained": "World",
  *   "caseSensitive": true
  * }
  * @example response - 200 - example payload
@@ -437,22 +437,22 @@ app.post('/api/trim', (req, res) => {
  */
 app.post('/api/contains', (req, res) => {
   const inputString = req.body.inputString;
-  const containsString = req.body.containsString; // <-- cambia aquí
+  const stringContained = req.body.stringContained;
   const caseSensitive = req.body.caseSensitive;
 
   if (!inputString) {
     return res.status(400).json({ error: requiredParameterResponse });
   }
 
-  if (!containsString) { // <-- cambia aquí
-    return res.status(400).json({ error: 'containsString is a required parameter' })
+  if (!stringContained) {
+    return res.status(400).json({ error: 'stringContained is a required parameter' })
   }
 
   if (caseSensitive === undefined) {
     return res.status(400).json({ error: 'caseSensitive is a required parameter' })
   }
 
-  const result = ValidationFunctions.contains(inputString, containsString, caseSensitive); // <-- cambia aquí
+  const result = ValidationFunctions.contains(inputString, stringContained, caseSensitive); // <-- cambia aquí
   res.json({ result });
 });
 
