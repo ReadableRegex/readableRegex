@@ -507,6 +507,37 @@ app.post('/api/onlyLetters', (req, res) => {
 });
 
 /**
+ * POST /api/isAlpha
+ * @summary Returns true if the input string contains only alphabetical characters (letters), otherwise false
+ * @description This endpoint checks whether the provided input string contains only letters (both uppercase and lowercase). It returns `true` if the string contains only alphabetical characters, and `false` otherwise.
+ * @param {BasicRequest} request.body.required - The input string to check
+ * @return {BasicResponse} 200 - Success response with a boolean result
+ * @return {BadRequestResponse} 400 - Bad request response when the input string is missing
+ * @example request - test
+ * {
+ *   "inputString": "hello"
+ * }
+ * @example response - 200 - example payload
+ * {
+ *   "result": true
+ * }
+ * @example response - 400 - example
+ * {
+ *   "error": "Input string required as a parameter."
+ * }
+ */
+app.post('/api/isAlpha', (req, res) => {
+  const { inputString } = req.body;
+
+  if (!inputString) {
+    return res.status(400).json({ error: requiredParameterResponse });
+  }
+
+  const result = ValidationFunctions.isAlpha(inputString);
+  res.json({ result });
+});
+
+/**
  * POST /api/excludeTheseCharacters
  * @summary Removes the specified characters from the input string
  * @description This endpoint removes all occurrences of the specified characters from the given input string.
