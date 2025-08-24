@@ -1132,4 +1132,35 @@ app.post('/api/isLatLong', (req, res) => {
   res.json({ result });
 });
 
+/**
+ * POST /api/isDigit
+ * @summary Returns true if the input string contains only digits (0-9), otherwise false
+ * @description This endpoint validates if the input string consists exclusively of numeric digits.
+ * @param {BasicRequest} request.body.required - Request body containing the input string
+ * @return {BasicResponse} 200 - Success response
+ * @return {BadRequestResponse} 400 - Bad request response
+ * @example request - test
+ * {
+ *   "inputString": "123"
+ * }
+ * @example response - 200 - example payload
+ * {
+ *   "result": true
+ * }
+ * @example response - 400 - example
+ * {
+ *   "error": "Input string required as a parameter."
+ * }
+ */
+app.post('/api/isDigit', (req, res) => {
+  const { inputString } = req.body;
+
+  if (!inputString) {
+    return res.status(400).json({ error: requiredParameterResponse });
+  }
+
+  const result = ValidationFunctions.isDigit(inputString);
+  res.json({ result });
+});
+
 module.exports = app;
