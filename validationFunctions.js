@@ -36,6 +36,27 @@ module.exports = class ValidationFunctions {
   }
 
   /**
+   * Checks if the given string contains only alphabetical characters (letters).
+   * 
+   * This function validates whether the input string contains only letters (both uppercase and lowercase).
+   * It will return `true` if the string contains only alphabetical characters, and `false` otherwise.
+   * 
+   * @param {string} str - The string to be checked.
+   * @returns {boolean} - Returns `true` if the string contains only letters, `false` otherwise.
+   * 
+   * @example
+   * isAlpha('hello');     // Returns true
+   * isAlpha('HelloWorld'); // Returns true
+   * isAlpha('hello123');   // Returns false (contains numbers)
+   * isAlpha('hello world'); // Returns false (contains space)
+   * isAlpha('hello!');     // Returns false (contains special character)
+   */
+  static isAlpha(str) {
+    const alphaRegex = /^[a-zA-Z]+$/;
+    return alphaRegex.test(str);
+  }
+
+  /**
    * Removes all alphanumberic characters and spaces, leaving only special characters.
    * 
    * @param {string} str - The input string to filter.
