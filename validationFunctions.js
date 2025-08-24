@@ -476,6 +476,31 @@ module.exports = class ValidationFunctions {
     const decimalDegreesRegex = /^-?\d{1,3}(?:\.\d+)?,\s*-?\d{1,3}(?:\.\d+)?$/;
     return decimalDegreesRegex.test(trimmedInput);
   }
+
+  /**
+   * Checks if the given string contains only digit characters (0-9).
+   * 
+   * This function validates that the input string consists exclusively of numeric digits.
+   * It returns false for empty strings, null, undefined, or strings containing any non-digit characters.
+   * 
+   * @param {string} inputString - The string to validate.
+   * @returns {boolean} - Returns `true` if `inputString` contains only digits, otherwise `false`.
+   * 
+   * @example
+   * isDigit("123"); // Returns: true
+   * isDigit("0"); // Returns: true
+   * isDigit("12a3"); // Returns: false
+   * isDigit("12.3"); // Returns: false
+   * isDigit(""); // Returns: false
+   * isDigit("abc"); // Returns: false
+   */
+  static isDigit(inputString) {
+    if (!inputString || typeof inputString !== "string") return false;
+    
+    const trimmedInput = inputString.trim();
+    const digitRegex = /^[0-9]+$/;
+    return digitRegex.test(trimmedInput);
+  }
 }
 
 const handleAxiosError = (error) => {
