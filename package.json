@@ -22,7 +22,7 @@
     "express-jsdoc-swagger": "^1.8.0",
     "express-rate-limit": "^7.5.0",
     "install": "^0.13.0",
-    "npm": "^11.1.0",
+    "npm": "^11.11.0",
     "pug": "^3.0.3"
   },
   "devDependencies": {
